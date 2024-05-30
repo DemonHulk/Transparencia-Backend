@@ -87,6 +87,33 @@ Las contribuciones son bienvenidas. Para contribuir, por favor sigue estos pasos
 4. Empuja la rama (`git push origin feature/nueva-funcionalidad`).
 5. Crea un nuevo Pull Request.
 
-## Licencia
+#Roles
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+Branko Jaziel Lomelí Ríos
+Frontend (Principal)
+FullStack (Apoyo)
+UI
+
+Marco Fabián Gómez Bautista
+Frontend (Principal)
+FullStack (Apoyo)
+UI
+
+Alexis Guadalupe Rivera Cabrera
+Tester (Principal)
+Quality Assurance
+UX
+
+Daniel Contreras Zamarripa
+Backend (Principal)
+Analista
+DBA
+UX
+
+Ernesto Ibarra Villanueva
+Backend (Principal)
+Analista
+DBA
+
+Marco Antonio Núñez Andrade
+Scrum Master
