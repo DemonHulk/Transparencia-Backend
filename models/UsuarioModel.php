@@ -6,7 +6,7 @@ class UsuarioModel {
     public function QueryAllModel() {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM usuario");
+            $stmt = $conn->prepare("SELECT * FROM usuario WHERE activo = true ORDER BY id_usuario");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -17,7 +17,7 @@ class UsuarioModel {
     public function QueryOneModel($id) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM usuario WHERE id_usuario = :id");
+            $stmt = $conn->prepare("SELECT * FROM usuario WHERE id_usuario = :id AND activo = true");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -40,7 +40,7 @@ class UsuarioModel {
     public function UpdateModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("UPDATE usuario SET nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, correo = :correo, contrasenia = :contrasenia, id_area = :id_area, activo = :activo, fecha_actualizado = :fecha_actualizado WHERE id_usuario = :id");
+            $stmt = $conn->prepare("UPDATE usuario SET nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, correo = :correo, contrasenia = :contrasenia, id_area = :id_area, fecha_actualizado = :fecha_actualizado WHERE id_usuario = :id AND activo = true");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':nombre', $datos['nombre'], PDO::PARAM_STR);
             $stmt->bindParam(':apellido1', $datos['apellido1'], PDO::PARAM_STR);
@@ -48,11 +48,10 @@ class UsuarioModel {
             $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
             $stmt->bindParam(':contrasenia', $datos['contrasenia'], PDO::PARAM_STR);
             $stmt->bindParam(':id_area', $datos['id_area'], PDO::PARAM_INT);
-            $stmt->bindParam(':activo', $datos['activo'], PDO::PARAM_BOOL);
             $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
-                throw new Exception("No se encontró un usuario con ID $id");
+                throw new Exception("No se encontró un usuario activo con ID $id");
             }
             return "Usuario con ID $id actualizado exitosamente";
         } catch (PDOException $e) {
@@ -63,15 +62,15 @@ class UsuarioModel {
     public function DeleteModel($id) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("DELETE FROM usuario WHERE id_usuario = :id");
+            $stmt = $conn->prepare("UPDATE usuario SET activo = false WHERE id_usuario = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
-                throw new Exception("No se encontró un usuario con ID $id");
+                throw new Exception("No se encontró un usuario activo con ID $id");
             }
-            return "Usuario con ID $id eliminado exitosamente";
+            return "Usuario con ID $id desactivado exitosamente";
         } catch (PDOException $e) {
-            throw new Exception("Error al eliminar el usuario: " . $e->getMessage());
+            throw new Exception("Error al desactivar el usuario: " . $e->getMessage());
         }
     }
 }

@@ -4,10 +4,16 @@ require_once 'models/UsuarioModel.php';
 require_once 'middleware/ExceptionHandler.php';
 
 class UsuarioController {
+
+    private $usuarioModel;
+    
+    public function __construct() {
+        $this->usuarioModel = new UsuarioModel();
+    }
+
     public function QueryAllController() {
         try {
-            $usuarioModel = new UsuarioModel();
-            $resultado = $usuarioModel->QueryAllModel();
+            $resultado = $this->usuarioModel->QueryAllModel();
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -16,8 +22,7 @@ class UsuarioController {
 
     public function QueryOneController($id) {
         try {
-            $usuarioModel = new UsuarioModel();
-            $resultado = $usuarioModel->QueryOneModel($id);
+            $resultado = $this->usuarioModel->QueryOneModel($id);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -26,8 +31,7 @@ class UsuarioController {
 
     public function InsertController($datos) {
         try {
-            $usuarioModel = new UsuarioModel();
-            $resultado = $usuarioModel->InsertModel($datos);
+            $resultado = $this->usuarioModel->InsertModel($datos);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -36,8 +40,7 @@ class UsuarioController {
 
     public function UpdateController($id, $datos) {
         try {
-            $usuarioModel = new UsuarioModel();
-            $resultado = $usuarioModel->UpdateModel($id, $datos);
+            $resultado = $this->usuarioModel->UpdateModel($id, $datos);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -46,8 +49,7 @@ class UsuarioController {
 
     public function DeleteController($id) {
         try {
-            $usuarioModel = new UsuarioModel();
-            $resultado = $usuarioModel->DeleteModel($id);
+            $resultado = $this->usuarioModel->DeleteModel($id);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);

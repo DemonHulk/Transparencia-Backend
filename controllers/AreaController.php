@@ -4,10 +4,17 @@ require_once 'models/AreaModel.php';
 require_once 'middleware/ExceptionHandler.php';
 
 class AreaController {
+
+    private $areaModel;
+
+    public function __construct() {
+        $this->areaModel = new AreaModel();
+    }
+
     public function QueryAllController() {
         try {
-            $areaModel = new AreaModel();
-            $resultado = $areaModel->QueryAllModel();
+            
+            $resultado = $this->areaModel->QueryAllModel();
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -16,8 +23,8 @@ class AreaController {
 
     public function QueryOneController($id) {
         try {
-            $areaModel = new AreaModel();
-            $resultado = $areaModel->QueryOneModel($id);
+            
+            $resultado = $this->areaModel->QueryOneModel($id);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -26,8 +33,8 @@ class AreaController {
 
     public function InsertController($datos) {
         try {
-            $areaModel = new AreaModel();
-            $resultado = $areaModel->InsertModel($datos);
+            
+            $resultado = $this->areaModel->InsertModel($datos);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -36,8 +43,8 @@ class AreaController {
 
     public function UpdateController($id, $datos) {
         try {
-            $areaModel = new AreaModel();
-            $resultado = $areaModel->UpdateModel($id, $datos);
+            
+            $resultado = $this->areaModel->UpdateModel($id, $datos);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -46,8 +53,8 @@ class AreaController {
 
     public function DeleteController($id) {
         try {
-            $areaModel = new AreaModel();
-            $resultado = $areaModel->DeleteModel($id);
+            
+            $resultado = $this->areaModel->DeleteModel($id);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);

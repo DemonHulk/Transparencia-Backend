@@ -6,7 +6,7 @@ class AreaModel {
     public function QueryAllModel() {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM area");
+            $stmt = $conn->prepare("SELECT * FROM area WHERE activo = true ORDER BY id_area");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -17,7 +17,7 @@ class AreaModel {
     public function QueryOneModel($id) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM area WHERE id_area = :id");
+            $stmt = $conn->prepare("SELECT * FROM area WHERE id_area = :id AND activo = true");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -29,7 +29,7 @@ class AreaModel {
     public function InsertModel($datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("INSERT INTO area (nombre_area, fecha_creacion, hora_creacion, fecha_actualizado) VALUES (:nombre_area, :fecha_creacion, :hora_creacion, :fecha_actualizado)");
+            $stmt = $conn->prepare("INSERT INTO area (nombre_area, fecha_creacion, hora_creacion, fecha_actualizado, activo) VALUES (:nombre_area, :fecha_creacion, :hora_creacion, :fecha_actualizado, :activo)");
             $stmt->execute($datos);
             return "Área guardada exitosamente";
         } catch (PDOException $e) {
@@ -40,13 +40,13 @@ class AreaModel {
     public function UpdateModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("UPDATE area SET nombre_area = :nombre_area, fecha_actualizado = :fecha_actualizado WHERE id_area = :id");
+            $stmt = $conn->prepare("UPDATE area SET nombre_area = :nombre_area, fecha_actualizado = :fecha_actualizado WHERE id_area = :id AND activo = true");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':nombre_area', $datos['nombre_area'], PDO::PARAM_STR);
             $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
-                throw new Exception("No se encontró un área con ID $id");
+                throw new Exception("No se encontró un área activa con ID $id");
             }
             return "Área con ID $id actualizada exitosamente";
         } catch (PDOException $e) {
@@ -57,15 +57,15 @@ class AreaModel {
     public function DeleteModel($id) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("DELETE FROM area WHERE id_area = :id");
+            $stmt = $conn->prepare("UPDATE area SET activo = false WHERE id_area = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
-                throw new Exception("No se encontró un área con ID $id");
+                throw new Exception("No se encontró un área activa con ID $id");
             }
-            return "Área con ID $id eliminada exitosamente";
+            return "Área con ID $id desactivada exitosamente";
         } catch (PDOException $e) {
-            throw new Exception("Error al eliminar el área: " . $e->getMessage());
+            throw new Exception("Error al desactivar el área: " . $e->getMessage());
         }
     }
 }
