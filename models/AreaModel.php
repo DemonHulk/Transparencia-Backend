@@ -29,9 +29,14 @@ class AreaModel {
     public function InsertModel($datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("INSERT INTO area (nombre_area, fecha_creacion, hora_creacion, fecha_actualizado, activo) VALUES (:nombre_area, :fecha_creacion, :hora_creacion, :fecha_actualizado, :activo)");
-            $stmt->execute($datos);
-            return "Área guardada exitosamente";
+            $stmt = $conn->prepare("INSERT INTO area (nombre_area, fecha_creacion, hora_creacion, fecha_actualizado) VALUES (:nombreArea, :fecha_creacion, :hora_creacion, :fecha_actualizado)");
+            $stmt->bindParam(':nombreArea', $datos['nombreArea'], PDO::PARAM_STR);
+            $stmt->bindParam(':fecha_creacion', $datos['fecha_creacion'], PDO::PARAM_STR);
+            $stmt->bindParam(':hora_creacion', $datos['hora_creacion'], PDO::PARAM_STR);
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+            $stmt->execute();
+
+            return "Área insertada exitosamente";
         } catch (PDOException $e) {
             throw new Exception("Error al insertar el área: " . $e->getMessage());
         }
