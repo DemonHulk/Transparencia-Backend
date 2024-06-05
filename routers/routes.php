@@ -21,6 +21,7 @@ return [
         'usuario' => 'UsuarioController@InsertController',
         'punto' => 'PuntoController@InsertController',
         'trimestre' => 'TrimestreController@InsertController',
+        'verificarUser' => 'UsuarioController@VerificarUserController',
         'puntosareas/insertoractivate_puntoArea' => 'PuntosAreasController@InsertOrActivate_PuntoAreaController',
         'puntosareas/desactivate_puntoarea' => 'PuntosAreasController@Desactivate_PuntoAreaController',
     ],

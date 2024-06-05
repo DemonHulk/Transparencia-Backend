@@ -4,9 +4,9 @@ class Conexion {
 
     static public function InfoDatabase() {
         return array(
-            "database" => "transpariencia",
+            "database" => "transparencia",
             "user" => "postgres",
-            "pass" => "Ernesto1",
+            "pass" => "DannyCZ4",
             "host" => "localhost",
             "port" => "5432"     
         );
