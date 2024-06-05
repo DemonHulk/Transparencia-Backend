@@ -44,4 +44,6 @@ class ApartadoPuntoController {
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
-       
+       }
+   }
+}
