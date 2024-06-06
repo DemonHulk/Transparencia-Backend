@@ -73,4 +73,22 @@ class UsuarioModel {
             throw new Exception("Error al desactivar el usuario: " . $e->getMessage());
         }
     }
+
+
+    /********************
+        extraer los usuarios que tienen acceso a un area en especifica segun el id
+    ********************/
+    public function QueryAllUsuariosAccesoAreaModel($id) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT * from usuario u where id_area  = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
+        } catch (PDOException $e) {
+            return ['res' => false, 'data' => "Error los puntos de acceso con el $id: " . $e->getMessage()];
+        }
+    }
+
+
 }
