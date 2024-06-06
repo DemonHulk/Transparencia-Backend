@@ -66,7 +66,7 @@ class AreaController {
         try {
             // Insertar área
             $resultado = $this->areaModel->InsertModel($datos);
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => true, 'data' => $resultado]]);
+            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
