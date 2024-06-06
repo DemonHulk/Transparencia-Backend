@@ -46,7 +46,7 @@ class AreaController {
     public function InsertController($datos) {
         // Validar nombre del área
         if (!$this->validacionesModel->ValidarTexto($datos['nombreArea'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'message' => "El nombre del área no es válido."]]);
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre del área no es válido."]]);
             return;
         }
 
@@ -59,14 +59,14 @@ class AreaController {
         if (!$this->validacionesModel->ValidarFecha($datos['fecha_creacion']) ||
             !$this->validacionesModel->ValidarHora($datos['hora_creacion']) ||
             !$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'message' => "Las fechas u horas no son válidas."]]);
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "Las fechas u horas no son válidas."]]);
             return;
         }
 
         try {
             // Insertar área
             $resultado = $this->areaModel->InsertModel($datos);
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => true, 'message' => $resultado]]);
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => true, 'data' => $resultado]]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
@@ -78,9 +78,10 @@ class AreaController {
      * @param array $datos Datos del área.
      */
     public function UpdateController($id, $datos) {
+
         // Validar nombre del área si está presente
-        if (isset($datos['nombre_area']) && !$this->validacionesModel->ValidarTexto($datos['nombre_area'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'message' => "El nombre del área no es válido."]]);
+        if (isset($datos['nombreArea']) && !$this->validacionesModel->ValidarTexto($datos['nombreArea'])) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre del área no es válido."]]);
             return;
         }
 
@@ -89,14 +90,14 @@ class AreaController {
 
         // Validar fecha actualizada
         if (!$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'message' => "La fecha actualizada no es válida."]]);
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La fecha actualizada no es válida."]]);
             return;
         }
 
         try {
             // Actualizar área
             $resultado = $this->areaModel->UpdateModel($id, $datos);
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => true, 'message' => $resultado]]);
+            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
@@ -112,16 +113,36 @@ class AreaController {
 
         // Validar fecha actualizada
         if (!$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'message' => "La fecha actualizada no es válida."]]);
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La fecha actualizada no es válida."]]);
             return;
         }
 
         try {
             // Desactivar área
             $resultado = $this->areaModel->DeleteModel($id);
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => true, 'message' => $resultado]]);
+            echo json_encode(['estado' => 200, 'resultado' =>  $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
     }
+
+    public function ActivateController($id) {
+        // Asignar fecha actualizada
+        $datos['fecha_actualizado'] = date('Y-m-d');
+
+        // Validar fecha actualizada
+        if (!$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La fecha actualizada no es válida."]]);
+            return;
+        }
+
+        try {
+            // Activar área
+            $resultado = $this->areaModel->ActivateModel($id);
+            echo json_encode(['estado' => 200, 'resultado' =>  $resultado]);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
 }

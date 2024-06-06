@@ -55,4 +55,19 @@ class UsuarioController {
             ExceptionHandler::handle($e);
         }
     }
+
+
+    /**
+     * Obtiene el id de un area en especifico y extrae todos sus usuarios 
+     * que tienen activa la area
+     */
+    public function QueryAllUsuariosAccesoAreaController($id) {
+        try {
+            $resultado = $this->usuarioModel->QueryAllUsuariosAccesoAreaModel($id);
+            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
 }

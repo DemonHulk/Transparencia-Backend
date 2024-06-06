@@ -1,0 +1,100 @@
+[06-Jun-2024 04:09:37 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "try" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\AreaController.php on line 98
+[06-Jun-2024 04:09:55 Europe/Berlin] PHP Warning:  Array to string conversion in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\AreaController.php on line 96
+[06-Jun-2024 08:01:37 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, class PuntosAreasController does not have a method "QueryOneController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:60
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 60
+[06-Jun-2024 08:02:01 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, class PuntosAreasController does not have a method "QueryOneController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:60
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 60
+[06-Jun-2024 08:02:10 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, class PuntosAreasController does not have a method "QueryOneController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:60
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 60
+[06-Jun-2024 08:10:13 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, class PuntosAreasController does not have a method "QueryOneController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:60
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 60
+[06-Jun-2024 08:10:31 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, class PuntosAreasController does not have a method "QueryOneController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:60
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 60
+[06-Jun-2024 08:13:25 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, class PuntosAreasController does not have a method "QueryOneController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:60
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 60
+[06-Jun-2024 08:13:55 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, class PuntosAreasController does not have a method "QueryOneController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:60
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 60
+[06-Jun-2024 08:17:38 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, class PuntosAreasController does not have a method "QueryOneController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:61
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 61
+[06-Jun-2024 08:19:17 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, class PuntosAreasController does not have a method "QueryOneController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:62
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 62
+[06-Jun-2024 08:20:42 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, class PuntosAreasController does not have a method "QueryOneController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:60
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 60
+[06-Jun-2024 08:20:46 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func_array(): Argument #1 ($callback) must be a valid callback, class PuntosAreasController does not have a method "QueryOneController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:60
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 60
+[06-Jun-2024 17:56:49 Europe/Berlin] PHP Warning:  Undefined property: UsuarioController::$PuntosAreasModel in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\UsuarioController.php on line 66
+[06-Jun-2024 17:56:49 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function QueryAllUsuariosAccesoAreaModel() on null in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\UsuarioController.php:66
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): UsuarioController->QueryAllUsuariosAccesoAreaController('1')
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\UsuarioController.php on line 66
+[06-Jun-2024 21:35:54 Europe/Berlin] PHP Warning:  Undefined property: PuntosAreasController::$validacionesModel in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntosAreasController.php on line 33
+[06-Jun-2024 21:35:54 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function ValidarFecha() on null in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntosAreasController.php:33
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(65): PuntosAreasController->InsertOrActivate_PuntoAreaController(Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntosAreasController.php on line 33
+[06-Jun-2024 21:36:04 Europe/Berlin] PHP Warning:  Undefined property: PuntosAreasController::$validacionesModel in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntosAreasController.php on line 33
+[06-Jun-2024 21:36:04 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function ValidarFecha() on null in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntosAreasController.php:33
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(65): PuntosAreasController->InsertOrActivate_PuntoAreaController(Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntosAreasController.php on line 33
+[06-Jun-2024 21:50:05 Europe/Berlin] PHP Fatal error:  Uncaught Error: Cannot use object of type PDOStatement as array in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntosAreasModel.php:72
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntosAreasController.php(32): PuntosAreasModel->ExistPuntoAccesoModel(Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(65): PuntosAreasController->InsertOrActivate_PuntoAreaController(Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntosAreasCont...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntosAreasModel.php on line 72
