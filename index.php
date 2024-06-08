@@ -26,3 +26,4 @@ require_once 'routers/FrontController.php';
 
 $frontController = new FrontController();
 $frontController->manejarSolicitud();
+?>
