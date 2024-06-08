@@ -98,3 +98,25 @@ Stack trace:
 #3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
 #4 {main}
   thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntosAreasModel.php on line 72
+[08-Jun-2024 01:21:01 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function ValidarTexto() on null in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php:36
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->InsertController(Array)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 36
+[08-Jun-2024 01:22:58 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function ValidarTexto() on null in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php:36
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->InsertController(Array)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 36
+[08-Jun-2024 01:23:17 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function ValidarTexto() on null in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php:36
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->InsertController(Array)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 36
+[08-Jun-2024 01:39:42 Europe/Berlin] PHP Warning:  Undefined array key "correo" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 99

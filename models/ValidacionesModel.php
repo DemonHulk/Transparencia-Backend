@@ -15,7 +15,7 @@ class ValidacionesModel {
         }
     }
 
-    public function ValidarTxtNum($texto) {
+    public function ValidarTextoNumero($texto) {
         try {
             $conn = Conexion::Conexion();
             $stmt = $conn->prepare("SELECT validar_txt_num(:texto)");
