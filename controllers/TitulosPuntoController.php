@@ -1,19 +1,25 @@
 <?php
 
-require_once 'models/ContenidoModel.php';
+require_once 'models/TitulosPuntoModel.php';
 require_once 'middleware/ExceptionHandler.php';
+require_once 'models/ValidacionesModel.php';
 
-class ContenidoController {
 
-    private $ContenidoModel;
+
+class TitulosPuntoController {
+
+    private $TitulosPuntoModel;
+    private $validacionesModel;
 
     public function __construct() {
-        $this->ContenidoModel = new ContenidoModel();
+        $this->TitulosPuntoModel = new TitulosPuntoModel();
+        $this->validacionesModel = new ValidacionesModel();
     }
+
 
     public function QueryAllController() {
         try {
-            $resultado = $this->ContenidoModel->QueryAllModel();
+            $resultado = $this->TitulosPuntoModel->QueryAllModel();
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -22,25 +28,16 @@ class ContenidoController {
 
     public function QueryOneController($id) {
         try {
-            $resultado = $this->ContenidoModel->QueryOneModel($id);
+            $resultado = $this->TitulosPuntoModel->QueryOneModel($id);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
     }
 
-    public function InsertDocumentoController($datos) {
+    public function InsertController($datos) {
         try {
-            $resultado = $this->ContenidoModel->InsertDocumentoModel($datos);
-            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
-        } catch (Exception $e) {
-            ExceptionHandler::handle($e);
-        }
-    }
-
-    public function InsertContenidoController($datos) {
-        try {
-            $resultado = $this->ContenidoModel->InsertContenidoModel($datos);
+            $resultado = $this->TitulosPuntoModel->InsertModel($datos);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -49,7 +46,7 @@ class ContenidoController {
 
     public function UpdateController($id, $datos) {
         try {
-            $resultado = $this->ContenidoModel->UpdateModel($id, $datos);
+            $resultado = $this->TitulosPuntoModel->UpdateModel($id, $datos);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -58,11 +55,11 @@ class ContenidoController {
 
     public function DeleteController($id) {
         try {
-            $resultado = $this->ContenidoModel->DeleteModel($id);
+            $resultado = $this->TitulosPuntoModel->DeleteModel($id);
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
     }
+    
 }
-?>

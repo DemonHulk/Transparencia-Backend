@@ -2,7 +2,7 @@
 
 require_once 'database/conexion.php';
 
-class ContenidoModel {
+class ContenidoDinamicoModel {
     public function QueryAllModel() {
         try {
             $conn = Conexion::Conexion();
