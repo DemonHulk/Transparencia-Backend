@@ -15,6 +15,7 @@ return [
         'contenido/(\d+)' => 'ContenidoController@QueryOneController',
         'trimestre' => 'TrimestreController@QueryAllController',
         'trimestre/(\d+)' => 'TrimestreController@QueryOneController',
+        'usuario/activar/(\d+)' => 'UsuarioController@ActivateController',
     ],
     'POST' => [
         'area' => 'AreaController@InsertController',
