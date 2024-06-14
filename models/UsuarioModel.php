@@ -50,7 +50,10 @@ class UsuarioModel {
             $stmt = $conn->prepare("INSERT INTO usuario (nombre, apellido1, apellido2, telefono, correo, contrasenia, id_area, fecha_creacion, hora_creacion, fecha_actualizado) VALUES (:nombre, :apellido1, :apellido2, :telefono, :correo, :contrasenia, :id_area, :fecha_creacion, :hora_creacion, :fecha_actualizado)");
             $stmt->bindParam(':nombre', $datos['nombre'], PDO::PARAM_STR);
             $stmt->bindParam(':apellido1', $datos['primerApellido'], PDO::PARAM_STR);
-            $stmt->bindParam(':apellido2', $datos['segundoApellido'], PDO::PARAM_STR);
+            // Manejar para que segundoApellido pueda estar vacío
+            $segundoApellido = isset($datos['segundoApellido']) ? $datos['segundoApellido'] : '';
+            $stmt->bindParam(':apellido2', $segundoApellido, PDO::PARAM_STR);
+            
             $stmt->bindParam(':telefono', $datos['telefono'], PDO::PARAM_STR);
             $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
             $stmt->bindParam(':contrasenia', $datos['password'], PDO::PARAM_STR);
@@ -92,7 +95,7 @@ class UsuarioModel {
                 $set_password = ", contrasenia = :password";
             }
     
-            $sql = "UPDATE usuario SET nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, telefono = :telefono, correo = :correo, id_area = :id_area, fecha_actualizado = :fecha_actualizado $set_password WHERE id_usuario = :id AND activo = true";
+            $sql = "UPDATE usuario SET nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, telefono = :telefono, correo = :correo, id_area = :id_area, fecha_actualizado = :fecha_actualizado $set_password WHERE id_usuario = :id";
             
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -112,7 +115,7 @@ class UsuarioModel {
             $stmt->execute();
     
             if ($stmt->rowCount() == 0) {
-                throw new Exception("No se encontró un usuario activo con ID $id");
+                throw new Exception("No se encontró al usuario");
             }
             return ['res' => true, 'data' => "Usuario actualizado exitosamente"];
         } catch (PDOException $e) {

@@ -45,8 +45,8 @@ class UsuarioController {
             return;
         }
         
-        // Validar el segundo apellido del usuario
-        if (!$this->validacionesModel->ValidarTexto($datos['segundoApellido'])) {
+        // Validar el segundo apellido del usuario en caso de que exista
+        if (isset($datos['segundoApellido']) && $datos['segundoApellido'] !== '' && !$this->validacionesModel->ValidarTexto($datos['segundoApellido'])) {
             echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El segundo apellido no es válido."]]);
             return;
         }
