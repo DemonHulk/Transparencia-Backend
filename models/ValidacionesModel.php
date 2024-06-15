@@ -98,4 +98,5 @@ class ValidacionesModel {
             throw new Exception("Error al validar el script: " . $e->getMessage());
         }
     }
+
 }
