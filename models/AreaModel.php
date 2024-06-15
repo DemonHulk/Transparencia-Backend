@@ -60,8 +60,9 @@ class AreaModel {
             $conn = Conexion::Conexion();
 
              // Verificar si ya existe un área con el mismo nombre (sin importar mayúsculas o minúsculas)
-             $stmt = $conn->prepare("SELECT COUNT(*) FROM area WHERE LOWER(nombre_area) = LOWER(:nombreArea)");
+             $stmt = $conn->prepare("SELECT COUNT(*) FROM area WHERE LOWER(nombre_area) = LOWER(:nombreArea) AND id_area != :id");
              $stmt->bindParam(':nombreArea', $datos['nombreArea'], PDO::PARAM_STR);
+             $stmt->bindParam(':id', $id, PDO::PARAM_STR);
              $stmt->execute();
              $count = $stmt->fetchColumn();
  
