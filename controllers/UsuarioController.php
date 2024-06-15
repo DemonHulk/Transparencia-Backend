@@ -16,7 +16,7 @@ class UsuarioController {
 
     public function QueryAllController() {
         try {
-            $resultado = $this->usuarioModel->QueryAllModel();
+            $resultado = $this->usuarioModel->QueryAllUserArea();
             echo json_encode(['estado' => 200, 'resultado' => $resultado]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -40,13 +40,13 @@ class UsuarioController {
         }
         
         // Validar el primer apellido del usuario
-        if (!$this->validacionesModel->ValidarTexto($datos['apellido1'])) {
+        if (!$this->validacionesModel->ValidarTexto($datos['primerApellido'])) {
             echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El primer apellido no es válido."]]);
             return;
         }
         
-        // Validar el segundo apellido del usuario
-        if (!$this->validacionesModel->ValidarTexto($datos['apellido2'])) {
+        // Validar el segundo apellido del usuario en caso de que exista
+        if (isset($datos['segundoApellido']) && $datos['segundoApellido'] !== '' && !$this->validacionesModel->ValidarTexto($datos['segundoApellido'])) {
             echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El segundo apellido no es válido."]]);
             return;
         }
@@ -54,6 +54,11 @@ class UsuarioController {
         // Validar el correo electrónico
         if (!$this->validacionesModel->ValidarCorreo($datos['correo'])) {
             echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El correo electrónico no es válido."]]);
+            return;
+        }
+
+        if (isset($datos['password']) && !$this->validacionesModel->ValidarPassword($datos['password'])) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La contraseña no es válida."]]);
             return;
         }
     
@@ -87,12 +92,12 @@ class UsuarioController {
             return;
         }
     
-        if (isset($datos['apellido1']) && !$this->validacionesModel->ValidarTexto($datos['apellido1'])) {
+        if (isset($datos['primerApellido']) && !$this->validacionesModel->ValidarTexto($datos['primerApellido'])) {
             echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El primer apellido no es válido."]]);
             return;
         }
     
-        if (isset($datos['apellido2']) && !$this->validacionesModel->ValidarTexto($datos['apellido2'])) {
+        if (isset($datos['segundoApellido']) && !$this->validacionesModel->ValidarTexto($datos['segundoApellido'])) {
             echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El segundo apellido no es válido."]]);
             return;
         }
@@ -101,13 +106,22 @@ class UsuarioController {
             echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El correo electrónico no es válido."]]);
             return;
         }
+
+        if (isset($datos['password']) && !$this->validacionesModel->ValidarPassword($datos['password'])) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La contraseña no es válida."]]);
+            return;
+        }
     
         // Asignar la fecha actualizada
+        $datos['fecha_creacion'] = date('Y-m-d');
+        $datos['hora_creacion'] = date('H:i:s');
         $datos['fecha_actualizado'] = date('Y-m-d');
-    
-        // Validar la fecha actualizada
-        if (!$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La fecha actualizada no es válida."]]);
+
+        // Validar fechas y horas
+        if (!$this->validacionesModel->ValidarFecha($datos['fecha_creacion']) ||
+            !$this->validacionesModel->ValidarHora($datos['hora_creacion']) ||
+            !$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "Las fechas u horas no son válidas."]]);
             return;
         }
     
@@ -131,6 +145,14 @@ class UsuarioController {
         }
     }
 
+    public function ActivateController($id) {
+        try {
+            $resultado = $this->usuarioModel->ActivateModel($id);
+            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
 
     /**
      * Obtiene el id de un area en especifico y extrae todos sus usuarios 

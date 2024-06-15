@@ -120,3 +120,24 @@ Stack trace:
 #3 {main}
   thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 36
 [08-Jun-2024 01:39:42 Europe/Berlin] PHP Warning:  Undefined array key "correo" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 99
+[13-Jun-2024 01:43:31 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func(): Argument #1 ($callback) must be a valid callback, class UsuarioController does not have a method "QueryAllUserArea" in C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php:65
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#1 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php on line 65
+[13-Jun-2024 01:49:16 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func(): Argument #1 ($callback) must be a valid callback, class UsuarioController does not have a method "QueryAllUserArea" in C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php:65
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#1 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php on line 65
+[13-Jun-2024 03:06:23 Europe/Berlin] PHP Warning:  Undefined array key "apellido1" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 43
+[13-Jun-2024 03:09:45 Europe/Berlin] PHP Warning:  Undefined array key "apellido1" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 43
+[13-Jun-2024 03:11:58 Europe/Berlin] PHP Warning:  Undefined array key "apellido1" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 43
+[13-Jun-2024 03:12:59 Europe/Berlin] PHP Warning:  Undefined array key "apellido1" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 43
+[14-Jun-2024 01:29:44 Europe/Berlin] PHP Warning:  Undefined array key "primerApellido" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 43
+[14-Jun-2024 01:30:03 Europe/Berlin] PHP Warning:  Undefined array key "password" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 33
+[14-Jun-2024 01:55:44 Europe/Berlin] PHP Warning:  Undefined variable $set_password in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 92
+[14-Jun-2024 01:56:45 Europe/Berlin] PHP Warning:  Undefined variable $set_password in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 92
+[14-Jun-2024 01:56:45 Europe/Berlin] PHP Warning:  Undefined variable $set_password in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 104
