@@ -58,6 +58,18 @@ class AreaModel {
     public function UpdateModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
+
+             // Verificar si ya existe un área con el mismo nombre (sin importar mayúsculas o minúsculas)
+             $stmt = $conn->prepare("SELECT COUNT(*) FROM area WHERE LOWER(nombre_area) = LOWER(:nombreArea) AND id_area != :id");
+             $stmt->bindParam(':nombreArea', $datos['nombreArea'], PDO::PARAM_STR);
+             $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+             $stmt->execute();
+             $count = $stmt->fetchColumn();
+ 
+             if ($count > 0) {
+                 return ['res' => false, 'data' => "El área con el nombre '{$datos['nombreArea']}' ya existe"];
+             }
+
             $stmt = $conn->prepare("UPDATE area SET nombre_area = :nombre_area, fecha_actualizado = :fecha_actualizado WHERE id_area = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':nombre_area', $datos['nombreArea'], PDO::PARAM_STR);

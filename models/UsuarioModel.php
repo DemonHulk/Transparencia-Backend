@@ -38,7 +38,7 @@ class UsuarioModel {
             $conn = Conexion::Conexion();
 
              // Verificar si el correo ya está registrado
-                $checkStmt = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE correo = :correo");
+                $checkStmt = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE LOWER(correo) = LOWER(:correo)");
                 $checkStmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
                 $checkStmt->execute();
                 $count = $checkStmt->fetchColumn();
@@ -74,7 +74,7 @@ class UsuarioModel {
             $conn = Conexion::Conexion();
     
             // Verificar si el nuevo correo ya está registrado por otro usuario
-            $checkStmt = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE correo = :correo AND id_usuario != :id");
+            $checkStmt = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE LOWER(correo) = LOWER(:correo) AND id_usuario != :id");
             $checkStmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
             $checkStmt->bindParam(':id', $id, PDO::PARAM_INT);
             $checkStmt->execute();
@@ -87,7 +87,8 @@ class UsuarioModel {
             // Inicializar $set_password
             $set_password = '';
     
-            if (isset($datos['password']) && $datos['password'] !== null) {
+            // Verificar si se ha proporcionado una nueva contraseña
+            if (isset($datos['password']) && !empty($datos['password'])) {
                 // Encriptar la contraseña usando password_hash
                 $contrasenia_encriptada = password_hash($datos['password'], PASSWORD_DEFAULT);
                 // Actualizar el array $datos con la contraseña encriptada
@@ -95,7 +96,7 @@ class UsuarioModel {
                 $set_password = ", contrasenia = :password";
             }
     
-            $sql = "UPDATE usuario SET nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, telefono = :telefono, correo = :correo, id_area = :id_area, fecha_actualizado = :fecha_actualizado $set_password WHERE id_usuario = :id";
+            $sql = "UPDATE usuario SET nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, telefono = :telefono, correo = :correo, id_area = :id_area, fecha_actualizado = :fecha_actualizado $set_password WHERE id_usuario = :id AND activo = TRUE";
             
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -108,7 +109,7 @@ class UsuarioModel {
             $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
     
             // Vincular la contraseña solo si se proporciona
-            if ($set_password !== '') {
+            if (!empty($set_password)) {
                 $stmt->bindParam(':password', $datos['password'], PDO::PARAM_STR);
             }
     
@@ -122,6 +123,7 @@ class UsuarioModel {
             return ['res' => false, 'data' => "Error al actualizar el usuario: " . $e->getMessage()];
         }
     }
+    
     
 
     public function DeleteModel($id) {
