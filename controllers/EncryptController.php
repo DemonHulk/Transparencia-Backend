@@ -23,7 +23,7 @@ class EncryptController {
     // Funcion para encriptar los datos que enviaremos a angular
     public function encryptData($encryptedData) {
         try {
-            return $this->EncryptModel->encryptData($encryptedData);
+            return $this->EncryptModel->encryptJSON($encryptedData);
         } catch (Exception $e) {
             return false;
         }

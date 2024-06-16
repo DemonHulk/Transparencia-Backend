@@ -3,6 +3,7 @@
 require_once 'models/PuntosAreasModel.php';
 require_once 'middleware/ExceptionHandler.php';
 require_once 'models/ValidacionesModel.php';
+require_once 'models/EncryptModel.php';
 
 
 
@@ -10,10 +11,12 @@ class PuntosAreasController {
 
     private $PuntosAreasModel;
     private $validacionesModel;
+    private $EncryptModel;
 
     public function __construct() {
         $this->PuntosAreasModel = new PuntosAreasModel();
         $this->validacionesModel = new ValidacionesModel();
+        $this->EncryptModel = new EncryptModel();
     }
 
 
@@ -90,7 +93,11 @@ class PuntosAreasController {
     public function QueryAllPuntosAccesoAreaController($id) {
         try {
             $resultado = $this->PuntosAreasModel->QueryAllPuntosAccesoAreaModel($id);
-            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
+            $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
+
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }

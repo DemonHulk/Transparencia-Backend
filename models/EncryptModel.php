@@ -34,14 +34,19 @@ class EncryptModel {
     }
 
     // Función interna para encriptar los datos
-    function encryptData($response) {
+    public function encryptJSON($data) {
         $secretKey = 'ea2df1a3c1540005189bb447bd15e80f';
-        $iv = openssl_random_pseudo_bytes(16); // Genera un IV aleatorio
-        $encrypted = openssl_encrypt($response, 'AES-256-CBC', $secretKey, 0, $iv);
-        // Concatenar IV y datos cifrados, ambos en base64
-        $ivBase64 = base64_encode($iv);
-        $encryptedBase64 = base64_encode($encrypted);
-        return $ivBase64 . ':' . $encryptedBase64; // Usa ':' como delimitador
+            // Generar un IV (vector de inicialización) aleatorio
+            $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+    
+            // Encriptar los datos
+            $encrypted = openssl_encrypt($data, 'aes-256-cbc', $secretKey, OPENSSL_RAW_DATA, $iv);
+    
+            // Concatenar IV y datos cifrados en base64
+            $ivBase64 = base64_encode($iv);
+            $encryptedBase64 = base64_encode($encrypted);
+    
+            return $ivBase64 . ':' . $encryptedBase64;
     }
     
 }

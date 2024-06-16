@@ -183,3 +183,47 @@ Stack trace:
 #3 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
 #4 {main}
   thrown in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 14
+[16-Jun-2024 02:36:56 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: openssl_encrypt(): Argument #1 ($data) must be of type string, array given in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php:40
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php(40): openssl_encrypt(Object(SensitiveParameterValue), 'AES-256-CBC', Object(SensitiveParameterValue), 0, 'J\x12\x12u\xCD\xA2&\xB0[\x8E/L\xFD%\xCC...')
+#1 C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php(24): EncryptModel->encryptData(Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->QueryAllController(NULL)
+#3 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#4 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#5 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 40
+[16-Jun-2024 02:39:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Undefined constant "data" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php:24
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->QueryAllController(NULL)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 24
+[16-Jun-2024 02:50:50 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method EncryptModel::encryptData() in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php:26
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->QueryAllController(NULL)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 26
+[16-Jun-2024 02:50:56 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method EncryptModel::encryptData() in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php:26
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->QueryAllController(NULL)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 26
+[16-Jun-2024 03:20:00 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function encryptJSON() on null in C:\xampp\htdocs\Transparencia-Backend\controllers\AreaController.php:28
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): AreaController->QueryAllController(NULL)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('AreaController@...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\AreaController.php on line 28
+[16-Jun-2024 03:20:03 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function encryptJSON() on null in C:\xampp\htdocs\Transparencia-Backend\controllers\AreaController.php:28
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): AreaController->QueryAllController(NULL)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('AreaController@...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\AreaController.php on line 28
