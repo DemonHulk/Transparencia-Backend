@@ -5,8 +5,8 @@ class Conexion {
     static public function InfoDatabase() {
         return array(
             "database" => "transparencia",
-            "user" => "postgres",
-            "pass" => "DannyCZ4",
+            "user" => "transparencia_user_uh345",
+            "pass" => "jkjrytuf*53sd",
             "host" => "localhost",
             "port" => "5432"     
         );
