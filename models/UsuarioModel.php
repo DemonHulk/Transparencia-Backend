@@ -201,7 +201,7 @@ class UsuarioModel {
                     unset($usuario['contrasenia']); 
                     return ['res' => true, 'message' => 'Inicio de Sesión Exitoso', 'user' => $usuario];
                 } else {
-                    return ['res' => false, 'message' => 'Contraseña Inválida'];
+                    return ['res' => false, 'message' => 'Credenciales Incorrectas'];
                 }
             } else {
                 return ['res' => false, 'message' => 'Correo no Registrado en el Sistema'];

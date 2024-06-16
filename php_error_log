@@ -255,3 +255,21 @@ Stack trace:
 [16-Jun-2024 10:38:13 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
 [16-Jun-2024 10:38:22 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
 [16-Jun-2024 10:38:22 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 20:32:57 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:33:17 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:34:01 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 28
+[16-Jun-2024 20:34:01 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 29
+[16-Jun-2024 20:34:01 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:35:02 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 28
+[16-Jun-2024 20:35:02 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 29
+[16-Jun-2024 20:35:02 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:35:02 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:37:20 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 28
+[16-Jun-2024 20:37:20 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:38:13 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 28
+[16-Jun-2024 20:38:13 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 29
+[16-Jun-2024 20:38:13 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:38:13 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:38:36 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:38:36 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 1 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 20:38:36 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
