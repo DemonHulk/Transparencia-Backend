@@ -38,14 +38,24 @@ class UsuarioModel {
             $conn = Conexion::Conexion();
 
              // Verificar si el correo ya está registrado
-                $checkStmt = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE LOWER(correo) = LOWER(:correo)");
-                $checkStmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
-                $checkStmt->execute();
-                $count = $checkStmt->fetchColumn();
+            $checkStmt = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE LOWER(correo) = LOWER(:correo)");
+            $checkStmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
+            $checkStmt->execute();
+            $count = $checkStmt->fetchColumn();
 
-                if ($count > 0) {
-                    return ['res' => false, 'data' => "El correo ya esta registrado en el sistema"];
-                }
+            if ($count > 0) {
+                return ['res' => false, 'data' => "El correo ya esta registrado en el sistema"];
+            }
+
+            // Verificar que el número de teléfono no este registrado en el sistema
+            $checktell = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE telefono = :telefono");
+            $checktell->bindParam(':telefono', $datos['telefono'], PDO::PARAM_STR);
+            $checktell->execute();
+            $countTell = $checktell->fetchColumn();
+
+            if ($countTell > 0) {
+                return ['res' => false, 'data' => "El Número de Teléfono ya esta registrado en el sistema"];
+            }
                 
             $stmt = $conn->prepare("INSERT INTO usuario (nombre, apellido1, apellido2, telefono, correo, contrasenia, id_area, fecha_creacion, hora_creacion, fecha_actualizado) VALUES (:nombre, :apellido1, :apellido2, :telefono, :correo, :contrasenia, :id_area, :fecha_creacion, :hora_creacion, :fecha_actualizado)");
             $stmt->bindParam(':nombre', $datos['nombre'], PDO::PARAM_STR);
@@ -82,6 +92,17 @@ class UsuarioModel {
     
             if ($count > 0) {
                 return ['res' => false, 'data' => "El correo ya está registrado por otro usuario"];
+            }
+
+            // Verificar que el número de teléfono no este registrado en el sistema
+            $checktell = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE telefono = :telefono AND id_usuario != :id");
+            $checktell->bindParam(':telefono', $datos['telefono'], PDO::PARAM_STR);
+            $checktell->bindParam(':id', $id, PDO::PARAM_INT);
+            $checktell->execute();
+            $countTell = $checktell->fetchColumn();
+
+            if ($countTell > 0) {
+                return ['res' => false, 'data' => "El Número de Teléfono ya esta registrado por otro usuario"];
             }
     
             // Inicializar $set_password
@@ -126,11 +147,12 @@ class UsuarioModel {
     
     
 
-    public function DeleteModel($id) {
+    public function DeleteModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("UPDATE usuario SET activo = false WHERE id_usuario = :id");
+            $stmt = $conn->prepare("UPDATE usuario SET activo = false, fecha_actualizado = :fecha_actualizado WHERE id_usuario = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
                 return ['res' => false, 'data' => "No se encontró el usuario, intente mas tarde"];
@@ -141,11 +163,12 @@ class UsuarioModel {
         }
     }
 
-    public function ActivateModel($id) {
+    public function ActivateModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("UPDATE usuario SET activo = true WHERE id_usuario = :id");
+            $stmt = $conn->prepare("UPDATE usuario SET activo = true, fecha_actualizado = :fecha_actualizado WHERE id_usuario = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
                 return ['res' => false, 'data' => "No se encontró el usuario, intente mas tarde"];
@@ -178,7 +201,7 @@ class UsuarioModel {
                     unset($usuario['contrasenia']); 
                     return ['res' => true, 'message' => 'Inicio de Sesión Exitoso', 'user' => $usuario];
                 } else {
-                    return ['res' => false, 'message' => 'Contraseña Inválida'];
+                    return ['res' => false, 'message' => 'Credenciales Incorrectas'];
                 }
             } else {
                 return ['res' => false, 'message' => 'Correo no Registrado en el Sistema'];

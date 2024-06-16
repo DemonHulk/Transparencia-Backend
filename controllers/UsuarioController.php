@@ -3,21 +3,29 @@
 require_once 'models/UsuarioModel.php';
 require_once 'models/ValidacionesModel.php';
 require_once 'middleware/ExceptionHandler.php';
+require_once 'models/EncryptModel.php';
 
 class UsuarioController {
 
     private $usuarioModel;
     private $validacionesModel;
+    private $EncryptModel;
     
     public function __construct() {
         $this->usuarioModel = new UsuarioModel();
         $this->validacionesModel = new ValidacionesModel();
+        $this->EncryptModel = new EncryptModel();
     }
 
     public function QueryAllController() {
         try {
             $resultado = $this->usuarioModel->QueryAllUserArea();
-            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
+            $response = json_encode(['estado' => 200, 'resultado' =>['res' => true, 'data' => $resultado]]);
+            // Mandamos los datos a encriptar
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
@@ -25,130 +33,245 @@ class UsuarioController {
 
     public function QueryOneController($id) {
         try {
-            $resultado = $this->usuarioModel->QueryOneModel($id);
-            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            $resultado = $this->usuarioModel->QueryOneModel($decryptedID);
+            $response = json_encode(['estado' => 200, 'resultado' =>['res' => true, 'data' => $resultado]]);
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
     }
 
+
     public function InsertController($datos) {
-        // Validar el nombre del usuario
-        if (!$this->validacionesModel->ValidarTexto($datos['nombre'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre del usuario no es válido."]]);
-            return;
-        }
-        
-        // Validar el primer apellido del usuario
-        if (!$this->validacionesModel->ValidarTexto($datos['primerApellido'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El primer apellido no es válido."]]);
-            return;
-        }
-        
-        // Validar el segundo apellido del usuario en caso de que exista
-        if (isset($datos['segundoApellido']) && $datos['segundoApellido'] !== '' && !$this->validacionesModel->ValidarTexto($datos['segundoApellido'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El segundo apellido no es válido."]]);
+        // Obtener los datos encriptados
+        $encryptedData = $datos['data'];
+    
+        try {
+            // Mandamos los datos encriptados a la funcion para desencriptarlos
+            $decryptedData = $this->EncryptModel->decryptData($encryptedData);
+        } catch (Exception $e) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
             return;
         }
     
-        // Validar el correo electrónico
-        if (!$this->validacionesModel->ValidarCorreo($datos['correo'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El correo electrónico no es válido."]]);
+        // Validar los datos desencriptados
+        if (!isset($decryptedData['nombre']) || !$this->validacionesModel->ValidarTexto($decryptedData['nombre'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre del usuario no es válido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
             return;
         }
-
-        if (isset($datos['password']) && !$this->validacionesModel->ValidarPassword($datos['password'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La contraseña no es válida."]]);
+    
+        if (!isset($decryptedData['primerApellido']) || !$this->validacionesModel->ValidarTexto($decryptedData['primerApellido'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El primer apellido no es válido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+    
+        if (isset($decryptedData['segundoApellido']) && $decryptedData['segundoApellido'] !== '' && !$this->validacionesModel->ValidarTexto($decryptedData['segundoApellido'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El segundo apellido no es válido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+    
+        if (!isset($decryptedData['correo']) || !$this->validacionesModel->ValidarCorreo($decryptedData['correo'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El correo electrónico no es válido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+    
+        if (isset($decryptedData['password']) && !$this->validacionesModel->ValidarPassword($decryptedData['password'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La contraseña no es válida."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
             return;
         }
     
         // Asignar fechas y horas
-        $datos['fecha_creacion'] = date('Y-m-d');
-        $datos['hora_creacion'] = date('H:i:s');
-        $datos['fecha_actualizado'] = date('Y-m-d');
+        $decryptedData['fecha_creacion'] = date('Y-m-d');
+        $decryptedData['hora_creacion'] = date('H:i:s');
+        $decryptedData['fecha_actualizado'] = date('Y-m-d');
     
         // Validar fechas y horas
-        if (!$this->validacionesModel->ValidarFecha($datos['fecha_creacion']) ||
-            !$this->validacionesModel->ValidarHora($datos['hora_creacion']) ||
-            !$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "Las fechas u horas no son válidas."]]);
+        if (!$this->validacionesModel->ValidarFecha($decryptedData['fecha_creacion']) ||
+            !$this->validacionesModel->ValidarHora($decryptedData['hora_creacion']) ||
+            !$this->validacionesModel->ValidarFecha($decryptedData['fecha_actualizado'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "Las fechas u horas no son válidas."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
             return;
         }
     
         try {
             // Insertar usuario
-            $resultado = $this->usuarioModel->InsertModel($datos);
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => true, 'data' => $resultado]]);
+            $resultado = $this->usuarioModel->InsertModel($decryptedData);
+            $response = json_encode(['estado' => 200, 'resultado' =>['res' => true, 'data' => $resultado]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
     }
-    
+
 
     public function UpdateController($id, $datos) {
-        // Validar cada campo sólo si está presente en $datos
-        if (isset($datos['nombre']) && !$this->validacionesModel->ValidarTexto($datos['nombre'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre del usuario no es válido."]]);
-            return;
-        }
-    
-        if (isset($datos['primerApellido']) && !$this->validacionesModel->ValidarTexto($datos['primerApellido'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El primer apellido no es válido."]]);
-            return;
-        }
-    
-        if (isset($datos['segundoApellido']) && !$this->validacionesModel->ValidarTexto($datos['segundoApellido'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El segundo apellido no es válido."]]);
-            return;
-        }
-    
-        if (isset($datos['correo']) && !$this->validacionesModel->ValidarCorreo($datos['correo'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El correo electrónico no es válido."]]);
+
+        // Obtener los datos encriptados
+        $encryptedData = $datos['data'];
+
+        try {
+            // Mandamos los datos encriptados a la funcion para desencriptarlos
+            $decryptedData = $this->EncryptModel->decryptData($encryptedData);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+        } catch (Exception $e) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
             return;
         }
 
-        if (isset($datos['password']) && !$this->validacionesModel->ValidarPassword($datos['password'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La contraseña no es válida."]]);
+        // Validar los datos desencriptados
+        if (!isset($decryptedData['nombre']) || !$this->validacionesModel->ValidarTexto($decryptedData['nombre'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre del usuario no es válido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
             return;
         }
     
-        // Asignar la fecha actualizada
-        $datos['fecha_creacion'] = date('Y-m-d');
-        $datos['hora_creacion'] = date('H:i:s');
-        $datos['fecha_actualizado'] = date('Y-m-d');
-
+        if (!isset($decryptedData['primerApellido']) || !$this->validacionesModel->ValidarTexto($decryptedData['primerApellido'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El primer apellido no es válido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+    
+        if (isset($decryptedData['segundoApellido']) && $decryptedData['segundoApellido'] !== '' && !$this->validacionesModel->ValidarTexto($decryptedData['segundoApellido'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El segundo apellido no es válido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+    
+        if (!isset($decryptedData['correo']) || !$this->validacionesModel->ValidarCorreo($decryptedData['correo'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El correo electrónico no es válido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+    
+        if (isset($decryptedData['password']) && !$this->validacionesModel->ValidarPassword($decryptedData['password'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La contraseña no es válida."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+    
+        // Asignar fechas y horas
+        $decryptedData['fecha_creacion'] = date('Y-m-d');
+        $decryptedData['hora_creacion'] = date('H:i:s');
+        $decryptedData['fecha_actualizado'] = date('Y-m-d');
+    
         // Validar fechas y horas
-        if (!$this->validacionesModel->ValidarFecha($datos['fecha_creacion']) ||
-            !$this->validacionesModel->ValidarHora($datos['hora_creacion']) ||
-            !$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "Las fechas u horas no son válidas."]]);
+        if (!$this->validacionesModel->ValidarFecha($decryptedData['fecha_creacion']) ||
+            !$this->validacionesModel->ValidarHora($decryptedData['hora_creacion']) ||
+            !$this->validacionesModel->ValidarFecha($decryptedData['fecha_actualizado'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "Las fechas u horas no son válidas."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
             return;
         }
     
         try {
             // Actualizar usuario
-            $resultado = $this->usuarioModel->UpdateModel($id, $datos);
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => true, 'data' => $resultado]]);
+            $resultado = $this->usuarioModel->UpdateModel($decryptedID, $decryptedData);
+            $response = json_encode(['estado' => 200, 'resultado' =>['res' => true, 'data' => $resultado]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
     }
     
 
-
     public function DeleteController($id) {
+        // Asignar fecha actualizada
+        $datos['fecha_actualizado'] = date('Y-m-d');
+
+        // Validar fecha actualizada
+        if (!$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La fecha actualizada no es válida."]]);
+            return;
+        }
         try {
-            $resultado = $this->usuarioModel->DeleteModel($id);
-            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            // Actualizamos el estado
+            $resultado = $this->usuarioModel->DeleteModel($decryptedID, $datos);
+            $response = json_encode(['estado' => 200, 'resultado' =>['res' => true, 'data' => $resultado]]);
+            // Mandamos los datos a encriptar
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
     }
 
     public function ActivateController($id) {
+        // Asignar fecha actualizada
+        $datos['fecha_actualizado'] = date('Y-m-d');
+
+        // Validar fecha actualizada
+        if (!$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La fecha actualizada no es válida."]]);
+            return;
+        }
+
         try {
-            $resultado = $this->usuarioModel->ActivateModel($id);
-            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            $resultado = $this->usuarioModel->ActivateModel($decryptedID, $datos);
+             // Actualizamos el estado
+             $response = json_encode(['estado' => 200, 'resultado' =>['res' => true, 'data' => $resultado]]);
+            // Mandamos los datos a encriptar
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
@@ -160,8 +283,14 @@ class UsuarioController {
      */
     public function QueryAllUsuariosAccesoAreaController($id) {
         try {
-            $resultado = $this->usuarioModel->QueryAllUsuariosAccesoAreaModel($id);
-            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            $resultado = $this->usuarioModel->QueryAllUsuariosAccesoAreaModel($decryptedID);
+            $response = json_encode(['estado' => 200, 'resultado' =>['res' => true, 'data' => $resultado]]);
+
+            // Mandamos los datos a encriptar
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
@@ -169,9 +298,24 @@ class UsuarioController {
 
     // Recibe las credenciales del usuario, verifica que sean correctas y regresa los datos necesarios para la sesión 
     public function VerificarUserController($datos) {
+        // Obtener los datos encriptados
+        $encryptedData = $datos['data'];
+
         try {
-            $resultado = $this->usuarioModel->verificarUserModel($datos);
-            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
+            // Mandamos los datos encriptados a la funcion para desencriptarlos
+            $decryptedData = $this->EncryptModel->decryptData($encryptedData);
+        } catch (Exception $e) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
+            return;
+        }
+
+        try {
+            $resultado = $this->usuarioModel->verificarUserModel($decryptedData);
+            $response = json_encode(['estado' => 200, 'resultado' =>['res' => true, 'data' => $resultado]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }

@@ -141,3 +141,135 @@ Stack trace:
 [14-Jun-2024 01:55:44 Europe/Berlin] PHP Warning:  Undefined variable $set_password in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 92
 [14-Jun-2024 01:56:45 Europe/Berlin] PHP Warning:  Undefined variable $set_password in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 92
 [14-Jun-2024 01:56:45 Europe/Berlin] PHP Warning:  Undefined variable $set_password in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 104
+[15-Jun-2024 07:43:13 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 47
+[15-Jun-2024 07:45:01 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 47
+[15-Jun-2024 07:54:20 Europe/Berlin] PHP Warning:  Array to string conversion in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 44
+[15-Jun-2024 19:07:26 Europe/Berlin] PHP Warning:  Undefined array key "nombre" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 59
+[15-Jun-2024 19:08:11 Europe/Berlin] PHP Warning:  Array to string conversion in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 59
+[15-Jun-2024 19:08:11 Europe/Berlin] PHP Warning:  Undefined array key "nombre" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 62
+[15-Jun-2024 19:09:00 Europe/Berlin] PHP Warning:  Undefined array key "nombre" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 62
+[15-Jun-2024 19:14:33 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 24 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 98
+[15-Jun-2024 19:19:43 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 126
+[15-Jun-2024 19:32:25 Europe/Berlin] PHP Warning:  Array to string conversion in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 123
+[15-Jun-2024 20:03:23 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: openssl_decrypt(): Argument #4 ($options) must be of type int, string given in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php:96
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php(96): openssl_decrypt('Salted__\xE5\x11\x02r\xB1:e...', 'ea2df1a3c154000...', Object(SensitiveParameterValue), '\v\xF9n\x08\x96\xD8\xF2\x1A\x90\xB0\x8B\x80\x96\x9E\xF3...')
+#1 C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php(121): decryptData('U2FsdGVkX1/lEQJ...', 'C/luCJbY8hqQsIu...', 'ea2df1a3c154000...')
+#2 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->InsertController(Array)
+#3 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#4 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#5 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 96
+[15-Jun-2024 21:08:41 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method ValidacionesModel::decryptData() in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php:97
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->InsertController(Array)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 97
+[15-Jun-2024 23:21:14 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function EncryptModel::encryptData(), 1 passed in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 26 and exactly 2 expected in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php:37
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php(26): EncryptModel->encryptData('{"estado":200,"...')
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->QueryAllController(NULL)
+#2 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#3 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 37
+[16-Jun-2024 00:49:19 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function encryptData() on null in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php:14
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php(22): UsuarioModel->QueryAllUserArea()
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->QueryAllController(NULL)
+#2 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#3 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 14
+[16-Jun-2024 02:36:56 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: openssl_encrypt(): Argument #1 ($data) must be of type string, array given in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php:40
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php(40): openssl_encrypt(Object(SensitiveParameterValue), 'AES-256-CBC', Object(SensitiveParameterValue), 0, 'J\x12\x12u\xCD\xA2&\xB0[\x8E/L\xFD%\xCC...')
+#1 C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php(24): EncryptModel->encryptData(Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->QueryAllController(NULL)
+#3 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#4 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#5 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 40
+[16-Jun-2024 02:39:11 Europe/Berlin] PHP Fatal error:  Uncaught Error: Undefined constant "data" in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php:24
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->QueryAllController(NULL)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 24
+[16-Jun-2024 02:50:50 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method EncryptModel::encryptData() in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php:26
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->QueryAllController(NULL)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 26
+[16-Jun-2024 02:50:56 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method EncryptModel::encryptData() in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php:26
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->QueryAllController(NULL)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php on line 26
+[16-Jun-2024 03:20:00 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function encryptJSON() on null in C:\xampp\htdocs\Transparencia-Backend\controllers\AreaController.php:28
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): AreaController->QueryAllController(NULL)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('AreaController@...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\AreaController.php on line 28
+[16-Jun-2024 03:20:03 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function encryptJSON() on null in C:\xampp\htdocs\Transparencia-Backend\controllers\AreaController.php:28
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): AreaController->QueryAllController(NULL)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('AreaController@...', Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\AreaController.php on line 28
+[16-Jun-2024 06:37:16 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 08:06:07 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 12
+[16-Jun-2024 10:02:33 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:02:40 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:03:23 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:10:27 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:11:13 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:12:01 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:14:06 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:14:33 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:17:29 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:18:06 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:34:53 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:34:53 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:34:53 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:36:10 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:36:10 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:36:17 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:36:17 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:36:32 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:36:32 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:37:07 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:37:07 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:37:07 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:38:13 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:38:13 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:38:22 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:38:22 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 20:32:57 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:33:17 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:34:01 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 28
+[16-Jun-2024 20:34:01 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 29
+[16-Jun-2024 20:34:01 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:35:02 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 28
+[16-Jun-2024 20:35:02 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 29
+[16-Jun-2024 20:35:02 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:35:02 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:37:20 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 28
+[16-Jun-2024 20:37:20 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:38:13 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 28
+[16-Jun-2024 20:38:13 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Transparencia-Backend\controllers\PuntosAreasController.php on line 29
+[16-Jun-2024 20:38:13 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:38:13 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:38:36 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 20:38:36 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 1 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 20:38:36 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
