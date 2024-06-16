@@ -11,7 +11,7 @@ class EncryptModel {
         list($ivBase64, $encryptedBase64) = explode(':', $encryptedData, 2);
 
         // Decodificar el IV y los datos encriptados desde base64
-        $iv = base64_decode($ivBase64);
+        $iv = substr(base64_decode($ivBase64), 0, 16); // Asegurar que el IV sea de 16 bytes
         $encrypted = base64_decode($encryptedBase64);
 
         // Desencriptar los datos

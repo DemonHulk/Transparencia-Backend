@@ -40,7 +40,8 @@ class AreaController {
      */
     public function QueryOneController($id) {
         try {
-            $resultado = $this->areaModel->QueryOneModel($id);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            $resultado = $this->areaModel->QueryOneModel($decryptedID);
             $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
 
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
@@ -112,6 +113,7 @@ class AreaController {
         try {
             // Mandamos los datos encriptados a la funcion para desencriptarlos
             $decryptedData = $this->EncryptModel->decryptData($encryptedData);
+            $decryptedID = $this->EncryptModel->decryptData($id);
         } catch (Exception $e) {
             echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
             return;
@@ -134,7 +136,7 @@ class AreaController {
 
         try {
             // Actualizar área
-            $resultado = $this->areaModel->UpdateModel($id, $decryptedData);
+            $resultado = $this->areaModel->UpdateModel($decryptedID, $decryptedData);
             $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
             // Retornamos los datos ya encriptados
@@ -159,8 +161,9 @@ class AreaController {
         }
 
         try {
+            $decryptedID = $this->EncryptModel->decryptData($id);
             // Desactivar área
-            $resultado = $this->areaModel->DeleteModel($id);
+            $resultado = $this->areaModel->DeleteModel($decryptedID, $datos);
             $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
             // Mandamos los datos a encriptar
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
@@ -182,8 +185,9 @@ class AreaController {
         }
 
         try {
+            $decryptedID = $this->EncryptModel->decryptData($id);
             // Activar área
-            $resultado = $this->areaModel->ActivateModel($id);
+            $resultado = $this->areaModel->ActivateModel($decryptedID, $datos);
             $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
             // Mandamos los datos a encriptar
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);

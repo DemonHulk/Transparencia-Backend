@@ -33,7 +33,8 @@ class UsuarioController {
 
     public function QueryOneController($id) {
         try {
-            $resultado = $this->usuarioModel->QueryOneModel($id);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            $resultado = $this->usuarioModel->QueryOneModel($decryptedID);
             $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
             // Retornamos los datos ya encriptados
@@ -115,10 +116,11 @@ class UsuarioController {
 
         // Obtener los datos encriptados
         $encryptedData = $datos['data'];
-    
+
         try {
             // Mandamos los datos encriptados a la funcion para desencriptarlos
             $decryptedData = $this->EncryptModel->decryptData($encryptedData);
+            $decryptedID = $this->EncryptModel->decryptData($id);
         } catch (Exception $e) {
             echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
             return;
@@ -165,7 +167,7 @@ class UsuarioController {
     
         try {
             // Actualizar usuario
-            $resultado = $this->usuarioModel->UpdateModel($id, $decryptedData);
+            $resultado = $this->usuarioModel->UpdateModel($decryptedID, $decryptedData);
             $response = json_encode(['estado' => 200, 'resultado' =>$resultado]);
              // Mandamos los datos a encriptar
              $encryptedResponse = $this->EncryptModel->encryptJSON($response);
@@ -179,8 +181,18 @@ class UsuarioController {
 
 
     public function DeleteController($id) {
+        // Asignar fecha actualizada
+        $datos['fecha_actualizado'] = date('Y-m-d');
+
+        // Validar fecha actualizada
+        if (!$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La fecha actualizada no es válida."]]);
+            return;
+        }
         try {
-            $resultado = $this->usuarioModel->DeleteModel($id);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            // Actualizamos el estado
+            $resultado = $this->usuarioModel->DeleteModel($decryptedID, $datos);
             $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
             // Mandamos los datos a encriptar
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
@@ -192,8 +204,19 @@ class UsuarioController {
     }
 
     public function ActivateController($id) {
+        // Asignar fecha actualizada
+        $datos['fecha_actualizado'] = date('Y-m-d');
+
+        // Validar fecha actualizada
+        if (!$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La fecha actualizada no es válida."]]);
+            return;
+        }
+
         try {
-            $resultado = $this->usuarioModel->ActivateModel($id);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            $resultado = $this->usuarioModel->ActivateModel($decryptedID, $datos);
+             // Actualizamos el estado
             $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
             // Mandamos los datos a encriptar
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
@@ -210,7 +233,8 @@ class UsuarioController {
      */
     public function QueryAllUsuariosAccesoAreaController($id) {
         try {
-            $resultado = $this->usuarioModel->QueryAllUsuariosAccesoAreaModel($id);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            $resultado = $this->usuarioModel->QueryAllUsuariosAccesoAreaModel($decryptedID);
             $response =  json_encode(['estado' => 200, 'resultado' => $resultado]);
 
             // Mandamos los datos a encriptar

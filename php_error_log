@@ -227,3 +227,31 @@ Stack trace:
 #2 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
 #3 {main}
   thrown in C:\xampp\htdocs\Transparencia-Backend\controllers\AreaController.php on line 28
+[16-Jun-2024 06:37:16 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 08:06:07 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 12
+[16-Jun-2024 10:02:33 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:02:40 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:03:23 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:10:27 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:11:13 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:12:01 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:14:06 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:14:33 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:17:29 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:18:06 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is 22 bytes long which is longer than the 16 expected by selected cipher, truncating in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:34:53 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:34:53 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:34:53 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:36:10 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:36:10 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:36:17 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:36:17 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:36:32 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:36:32 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:37:07 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:37:07 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:37:07 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:38:13 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:38:13 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[16-Jun-2024 10:38:22 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[16-Jun-2024 10:38:22 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 15 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18

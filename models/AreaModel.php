@@ -82,11 +82,12 @@ class AreaModel {
         }
     }
 
-    public function DeleteModel($id) {
+    public function DeleteModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("UPDATE area SET activo = false WHERE id_area = :id");
+            $stmt = $conn->prepare("UPDATE area SET activo = false, fecha_actualizado = :fecha_actualizado WHERE id_area = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
                 return ['res' => false, 'data' => "No se encontro el área, intente mas tarde"];
@@ -97,11 +98,12 @@ class AreaModel {
         }
     }
 
-    public function ActivateModel($id) {
+    public function ActivateModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("UPDATE area SET activo = true WHERE id_area = :id");
+            $stmt = $conn->prepare("UPDATE area SET activo = true, fecha_actualizado = :fecha_actualizado WHERE id_area = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
                 return ['res' => false, 'data' => "No se encontró el área, intente más tarde"];

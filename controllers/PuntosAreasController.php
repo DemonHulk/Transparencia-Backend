@@ -92,7 +92,8 @@ class PuntosAreasController {
      */
     public function QueryAllPuntosAccesoAreaController($id) {
         try {
-            $resultado = $this->PuntosAreasModel->QueryAllPuntosAccesoAreaModel($id);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            $resultado = $this->PuntosAreasModel->QueryAllPuntosAccesoAreaModel($decryptedID);
             $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
 
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
