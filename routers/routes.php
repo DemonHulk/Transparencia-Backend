@@ -16,6 +16,9 @@ return [
         'trimestre' => 'TrimestreController@QueryAllController',
         'trimestre/(\d+)' => 'TrimestreController@QueryOneController',
         'activarUser/(.+)' => 'UsuarioController@ActivateController',
+        'ejercicio' => 'EjercicioController@QueryAllController',
+        'ejercicio/(.+)' => 'EjercicioController@QueryOneController',
+        'ejercicioAct/(.+)' => 'EjercicioController@ActivateController',
     ],
     'POST' => [
         'area' => 'AreaController@InsertController',
@@ -25,18 +28,21 @@ return [
         'verificarUser' => 'UsuarioController@VerificarUserController',
         'puntosareas/insertoractivate_puntoArea' => 'PuntosAreasController@InsertOrActivate_PuntoAreaController',
         'puntosareas/desactivate_puntoarea' => 'PuntosAreasController@Desactivate_PuntoAreaController',
+        'ejercicio' => 'EjercicioController@InsertController',
     ],
     'PUT' => [
         'area/(.+)' => 'AreaController@UpdateController',
         'usuario/(.+)' => 'UsuarioController@UpdateController',
         'punto/(\d+)' => 'PuntoController@UpdateController',
         'trimestre/(\d+)' => 'TrimestreController@UpdateController',
+        'ejercicio/(.+)' => 'EjercicioController@UpdateController',
     ],
     'DELETE' => [
         'area/(.+)' => 'AreaController@DeleteController',
         'usuario/(.+)' => 'UsuarioController@DeleteController',
         'punto/(\d+)' => 'PuntoController@DeleteController',
         'trimestre/(\d+)' => 'TrimestreController@DeleteController',
+        'ejercicio/(.+)' => 'EjercicioController@DeleteController',
     ],
 ];
 
