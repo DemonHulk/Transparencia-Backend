@@ -76,7 +76,7 @@ class TrimestreModel {
             $count = $checkStmt->fetchColumn();
 
             if ($count > 0) {
-                return array(false, "Error: Ya existe un trimestre con el mismo nombre y ejercicio fiscal");
+                return ['res' => false, 'data' => "Ya existe un trimestre con el mismo nombre y ejercicio fiscal"];
             }
 
             $stmt = $conn->prepare("UPDATE trimestre SET trimestre = :trimestre, id_ejercicio = :ejercicio, fecha_actualizado = :fecha_actualizado WHERE id_trimestre = :id AND activo = true");
