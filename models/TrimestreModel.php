@@ -69,9 +69,10 @@ class TrimestreModel {
             $conn = Conexion::Conexion();
 
             // Verificar si ya existe un trimestre con el mismo nombre
-            $checkStmt = $conn->prepare("SELECT COUNT(*) FROM trimestre WHERE trimestre = :trimestre AND id_ejercicio = :id_ejercicio");
+            $checkStmt = $conn->prepare("SELECT COUNT(*) FROM trimestre WHERE trimestre = :trimestre AND id_ejercicio = :id_ejercicio AND id_trimestre != :id");
             $checkStmt->bindParam(':trimestre', $datos['trimestre'], PDO::PARAM_STR);
             $checkStmt->bindParam(':id_ejercicio', $datos['ejercicio'], PDO::PARAM_INT);
+            $checkStmt->bindParam(':id', $id, PDO::PARAM_INT);
             $checkStmt->execute();
             $count = $checkStmt->fetchColumn();
 
