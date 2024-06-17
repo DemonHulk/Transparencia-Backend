@@ -93,20 +93,21 @@ class UsuarioModel {
             if ($count > 0) {
                 return ['res' => false, 'data' => "El correo ya está registrado por otro usuario"];
             }
-
-            // Verificar que el número de teléfono no este registrado en el sistema
+    
+            // Verificar que el número de teléfono no esté registrado en el sistema
             $checktell = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE telefono = :telefono AND id_usuario != :id");
             $checktell->bindParam(':telefono', $datos['telefono'], PDO::PARAM_STR);
-            $checktell->bindParam(':id', $id, PDO::PARAM_INT);
+            $checktell->bindValue(':id', $id, PDO::PARAM_INT);
             $checktell->execute();
             $countTell = $checktell->fetchColumn();
-
+    
             if ($countTell > 0) {
-                return ['res' => false, 'data' => "El Número de Teléfono ya esta registrado por otro usuario"];
+                return ['res' => false, 'data' => "El Número de Teléfono ya está registrado por otro usuario"];
             }
     
-            // Inicializar $set_password
+            // Inicializar $set_password y $set_id_area
             $set_password = '';
+            $set_id_area = '';
     
             // Verificar si se ha proporcionado una nueva contraseña
             if (isset($datos['password']) && !empty($datos['password'])) {
@@ -117,8 +118,13 @@ class UsuarioModel {
                 $set_password = ", contrasenia = :password";
             }
     
-            $sql = "UPDATE usuario SET nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, telefono = :telefono, correo = :correo, id_area = :id_area, fecha_actualizado = :fecha_actualizado $set_password WHERE id_usuario = :id AND activo = TRUE";
-            
+            // Verificar si se ha proporcionado un id_area
+            if (isset($datos['id_area']) && !is_null($datos['id_area'])) {
+                $set_id_area = ", id_area = :id_area";
+            }
+    
+            $sql = "UPDATE usuario SET nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, telefono = :telefono, correo = :correo $set_id_area, fecha_actualizado = :fecha_actualizado $set_password WHERE id_usuario = :id AND activo = TRUE";
+    
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':nombre', $datos['nombre'], PDO::PARAM_STR);
@@ -126,13 +132,18 @@ class UsuarioModel {
             $stmt->bindParam(':apellido2', $datos['segundoApellido'], PDO::PARAM_STR);
             $stmt->bindParam(':telefono', $datos['telefono'], PDO::PARAM_STR);
             $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
-            $stmt->bindParam(':id_area', $datos['id_area'], PDO::PARAM_INT);
-            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+    
+            // Vincular el id_area solo si se proporciona
+            if (!empty($set_id_area)) {
+                $stmt->bindParam(':id_area', $datos['id_area'], PDO::PARAM_INT);
+            }
     
             // Vincular la contraseña solo si se proporciona
             if (!empty($set_password)) {
                 $stmt->bindParam(':password', $datos['password'], PDO::PARAM_STR);
             }
+    
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
     
             $stmt->execute();
     
