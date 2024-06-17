@@ -273,3 +273,17 @@ Stack trace:
 [16-Jun-2024 20:38:36 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
 [16-Jun-2024 20:38:36 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 1 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
 [16-Jun-2024 20:38:36 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
+[17-Jun-2024 00:52:43 Europe/Berlin] PHP Warning:  Array to string conversion in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 100
+[17-Jun-2024 00:57:46 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 130
+[17-Jun-2024 00:57:46 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 130
+[17-Jun-2024 00:59:44 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 130
+[17-Jun-2024 00:59:44 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 130
+[17-Jun-2024 01:06:49 Europe/Berlin] PHP Warning:  Undefined array key "id_usuario" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 124
+[17-Jun-2024 01:06:49 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 130
+[17-Jun-2024 01:06:49 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 130
+[17-Jun-2024 01:26:07 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 129
+[17-Jun-2024 01:26:07 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 129
+[17-Jun-2024 01:26:42 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 129
+[17-Jun-2024 01:26:42 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 129
+[17-Jun-2024 01:27:13 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 129
+[17-Jun-2024 01:27:13 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 129
