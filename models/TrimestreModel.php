@@ -7,11 +7,11 @@ class TrimestreModel {
     public function QueryAllModel() {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM trimestre WHERE activo = true ORDER BY id_trimestre");
+            $stmt = $conn->prepare("SELECT t.id_trimestre, t.trimestre, t.activo, t.fecha_creacion, e.ejercicio FROM trimestre t JOIN ejercicio e ON t.id_ejercicio = e.id_ejercicio ORDER BY  t.id_trimestre");
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
-            throw new Exception("Error al obtener todos los trimestre: " . $e->getMessage());
+            return ['res' => false, 'data' => "Error al obtener todos los trimestres: " . $e->getMessage()];
         }
     }
     
@@ -33,8 +33,19 @@ class TrimestreModel {
             $hora_creacion = date('H:i:s');
 
             $conn = Conexion::Conexion();
+
+            // Verificar si ya existe un trimestre con el mismo nombre
+            $checkStmt = $conn->prepare("SELECT COUNT(*) FROM trimestre WHERE trimestre = :trimestre");
+            $checkStmt->bindParam(':trimestre', $datos['trimestre'], PDO::PARAM_STR);
+            $checkStmt->execute();
+            $count = $checkStmt->fetchColumn();
+
+            if ($count > 0) {
+                return array(false, "Error: Ya existe un trimestre con el mismo nombre");
+            }
+
             $stmt = $conn->prepare("
-                INSERT INTO trimestre (trimestre, ejercicio, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
+                INSERT INTO trimestre (trimestre, id_ejercicio, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
                 VALUES (:trimestre, :ejercicio, :activo, :fecha_creacion, :hora_creacion, :fecha_actualizado)");
         
             // Pasamos los datos que recibimos de parte del frontend y ponemos los datos de la fecha y hora
@@ -46,7 +57,7 @@ class TrimestreModel {
             $stmt->bindParam(':fecha_actualizado', $fecha, PDO::PARAM_STR);
 
             $stmt->execute();
-            return "Trimestre guardado exitosamente";
+            return array(true, "Trimestre guardado exitosamente");
         } catch (PDOException $e) {
             throw new Exception("Error al insertar el Trimestre: " . $e->getMessage());
         }
