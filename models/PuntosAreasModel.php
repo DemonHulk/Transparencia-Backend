@@ -30,6 +30,29 @@ class PuntosAreasModel {
         }
     }
 
+    /********************
+        Extrae las areas activas de un punto en especifico segun su id
+    ********************/
+    public function QueryAreaPunto_PuntoModel($id) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT 
+                                        id_puntosareas, 
+                                        id_punto, 
+                                        id_area, 
+                                        activo  
+                                    from puntosareas   
+                                    WHERE 
+                                        id_punto = :id 
+                                    ");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
+        } catch (PDOException $e) {
+            return ['res' => false, 'data' => "Error los puntos de acceso con el $id: " . $e->getMessage()];
+        }
+    }
+
     public function InsertPuntoAreaModel($datos) {
         try {
             $conn = Conexion::Conexion();

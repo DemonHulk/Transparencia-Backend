@@ -153,4 +153,23 @@ class PuntosAreasController {
         }
     }
 
+    /**
+     * Obtiene el id de un punto en especifico y extrae todos sus areas 
+     * que tienen acceso a el punto
+     */
+    public function QueryAreaPunto_PuntoController($id) {
+        try {
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            $resultado = $this->PuntosAreasModel->QueryAreaPunto_PuntoModel($decryptedID);
+            $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
+
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+
 }

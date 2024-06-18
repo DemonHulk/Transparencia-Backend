@@ -287,3 +287,50 @@ Stack trace:
 [17-Jun-2024 01:26:42 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 129
 [17-Jun-2024 01:27:13 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 129
 [17-Jun-2024 01:27:13 Europe/Berlin] PHP Warning:  Undefined array key "id_area" in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 129
+[18-Jun-2024 07:16:56 Europe/Berlin] PHP Parse error:  syntax error, unexpected identifier "json_encode" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntoController.php on line 64
+[18-Jun-2024 07:17:07 Europe/Berlin] PHP Parse error:  syntax error, unexpected identifier "json_encode" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntoController.php on line 64
+[18-Jun-2024 07:18:35 Europe/Berlin] PHP Parse error:  syntax error, unexpected identifier "json_encode" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntoController.php on line 64
+[18-Jun-2024 07:23:27 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "echo" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntoController.php on line 69
+[18-Jun-2024 07:23:51 Europe/Berlin] PHP Parse error:  syntax error, unexpected token "echo" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntoController.php on line 97
+[18-Jun-2024 17:45:03 Europe/Berlin] PHP Fatal error:  Uncaught Error: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php:50
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntoController.php(78): PuntoModel->InsertModel(Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(65): PuntoController->InsertController(Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntoController...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 50
+[18-Jun-2024 17:46:32 Europe/Berlin] PHP Fatal error:  Uncaught Error: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php:50
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntoController.php(78): PuntoModel->InsertModel(Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(65): PuntoController->InsertController(Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntoController...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 50
+[18-Jun-2024 21:06:40 Europe/Berlin] PHP Fatal error:  Cannot redeclare PuntoModel::QueryOneModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 29
+[18-Jun-2024 21:06:43 Europe/Berlin] PHP Fatal error:  Cannot redeclare PuntoModel::QueryOneModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 29
+[18-Jun-2024 21:07:03 Europe/Berlin] PHP Fatal error:  Cannot redeclare PuntoModel::QueryOneModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 29
+[18-Jun-2024 21:11:08 Europe/Berlin] PHP Fatal error:  Cannot redeclare PuntoModel::QueryOneModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 29
+[18-Jun-2024 22:51:12 Europe/Berlin] PHP Warning:  Undefined array key "orden_punto" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 109
+[18-Jun-2024 22:54:36 Europe/Berlin] PHP Warning:  Undefined array key "orden_punto" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 109
+[18-Jun-2024 23:18:54 Europe/Berlin] PHP Warning:  Undefined variable $currentAreas in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 143
+[18-Jun-2024 23:18:54 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: in_array(): Argument #2 ($haystack) must be of type array, null given in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php:143
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php(143): in_array('1', NULL)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\PuntoController.php(137): PuntoModel->UpdateModel('19', Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(57): PuntoController->UpdateController('M5zDGmZNXhUClaE...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntoController...', Array)
+#4 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#5 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 143
+[18-Jun-2024 23:30:02 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: call_user_func(): Argument #1 ($callback) must be a valid callback, class PuntoController does not have a method "UpdateController" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php:57
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('PuntoController...', Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#2 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php on line 57
+[19-Jun-2024 00:52:55 Europe/Berlin] PHP Fatal error:  Can't use function return value in write context in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 136
+[19-Jun-2024 00:52:56 Europe/Berlin] PHP Fatal error:  Can't use function return value in write context in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 136
+[19-Jun-2024 00:53:35 Europe/Berlin] PHP Parse error:  syntax error, unexpected token ";" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 137
+[19-Jun-2024 00:54:14 Europe/Berlin] PHP Parse error:  syntax error, unexpected token ";" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 137
