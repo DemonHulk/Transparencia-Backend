@@ -242,4 +242,24 @@ class PuntoModel {
         $stmt->bindParam(':orden_punto', $newOrder, PDO::PARAM_INT);
         $stmt->execute();
     }
+
+    public function QueryPuntoUserModel($id_area) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT p.id_punto, p.nombre_punto, p.fecha_creacion, p.activo
+                                    FROM punto as p 
+                                    INNER JOIN puntosareas as pa ON p.id_punto = pa.id_punto
+                                    WHERE pa.id_area = :id_area 
+                                    ORDER BY p.nombre_punto");
+            
+            $stmt->bindParam(':id_area', $id_area, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
+        } catch (PDOException $e) {
+            return ['res' => false, 'data' => "Error al obtener los puntos: " . $e->getMessage()];
+        }
+    }
+    
+    
 }

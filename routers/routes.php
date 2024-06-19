@@ -24,6 +24,7 @@ return [
         'ejercicio/(.+)' => 'EjercicioController@QueryOneController',
         'ejercicioAct/(.+)' => 'EjercicioController@ActivateController',
         'trimestreAct/(.+)' => 'TrimestreController@ActivateController',
+        'puntoUser/(.+)' => 'PuntoController@QueryPuntoUserController',
     ],
     'POST' => [
         'area' => 'AreaController@InsertController',

@@ -193,5 +193,28 @@ class PuntoController {
 
     }
 
+    public function QueryPuntoUserController($id) {
+        try {
+            // Mandamos la ID y la desencriptamos
+            $decryptedID = $this->EncryptModel->decryptData($id);
+        } catch (Exception $e) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
+            // Mandamos los datos a encriptar
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+            return;
+        }
 
+        try {
+            $resultado = $this->puntoModel->QueryPuntoUserModel($decryptedID);
+            $response =  json_encode(['estado' => 200, 'resultado' => $resultado]);
+            // Mandamos los datos a encriptar
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
 }
