@@ -15,6 +15,17 @@ class AreaModel {
         }
     }
 
+    public function QueryActModel() {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT area.*, COUNT(puntosareas.id_puntosareas) AS total_puntos FROM area LEFT JOIN puntosareas ON area.id_area = puntosareas.id_area WHERE area.activo = true GROUP BY area.id_area  ORDER BY area.id_area");
+            $stmt->execute();
+            return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
+        } catch (PDOException $e) {
+            return ['res' => false, 'data' => "Error al obtener las áreas activas: " . $e->getMessage()];
+        }
+    }
+
     public function QueryOneModel($id) {
         try {
             $conn = Conexion::Conexion();

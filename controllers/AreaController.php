@@ -18,7 +18,7 @@ class AreaController {
     }
 
     /**
-     * Obtiene todas las áreas activas.
+     * Obtiene todas las áreas 
      */
     public function QueryAllController() {
         try {
@@ -33,6 +33,24 @@ class AreaController {
             ExceptionHandler::handle($e);
         }
     }
+
+    /**
+     * Obtiene todas las áreas activas.
+     */
+    public function QueryActController() {
+        try {
+            $resultado = $this->areaModel->QueryActModel();
+            $response =  json_encode(['estado' => 200, 'resultado' => ['res' => true, 'data' => $resultado]]);
+
+            // Mandamos los datos a encriptar
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
 
     /**
      * Obtiene una área activa por ID.
@@ -177,12 +195,6 @@ class AreaController {
     public function DeleteController($id) {
         // Asignar fecha actualizada
         $datos['fecha_actualizado'] = date('Y-m-d');
-
-        // Validar fecha actualizada
-        if (!$this->validacionesModel->ValidarFecha($datos['fecha_actualizado'])) {
-            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La fecha actualizada no es válida."]]);
-            return;
-        }
 
         try {
             $decryptedID = $this->EncryptModel->decryptData($id);
