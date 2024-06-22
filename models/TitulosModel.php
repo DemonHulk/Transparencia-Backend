@@ -228,7 +228,7 @@ class TitulosModel {
             if ($stmt->rowCount() == 0) {
                 return ['res' => false, 'data' => "No se encontro el titulo, intente mas tarde"];
             }
-            return ['res' => true, 'data' => "Titulo desactivado"];
+            return ['res' => true, 'data' => "Titulo activado"];
         } catch (PDOException $e) {
             return ['res' => false, 'data' => "Error al desactivar el titulo: " . $e->getMessage()];
         }
