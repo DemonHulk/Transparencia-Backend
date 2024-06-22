@@ -24,7 +24,12 @@ return [
         'ejercicio/(.+)' => 'EjercicioController@QueryOneController',
         'ejercicioAct/(.+)' => 'EjercicioController@ActivateController',
         'trimestreAct/(.+)' => 'TrimestreController@ActivateController',
+        'titulosAct/(.+)' => 'TitulosController@ActivateController',
         'puntoUser/(.+)' => 'PuntoController@QueryPuntoUserController',
+
+        'titulosdepunto/(.+)' => 'TitulosController@QueryTitulosPuntoController',
+        'titulosmaspunto/(.+)' => 'TitulosController@QueryTitulosMasPuntoController',
+
     ],
     'POST' => [
         'area' => 'AreaController@InsertController',
@@ -35,6 +40,8 @@ return [
         'puntosareas/insertoractivate_puntoArea' => 'PuntosAreasController@InsertOrActivate_PuntoAreaController',
         'puntosareas/desactivate_puntoarea' => 'PuntosAreasController@Desactivate_PuntoAreaController',
         'ejercicio' => 'EjercicioController@InsertController',
+        'titulos' => 'TitulosController@InsertController',
+
     ],
     'PUT' => [
         'area/(.+)' => 'AreaController@UpdateController',
@@ -42,6 +49,7 @@ return [
         'punto/(.+)' => 'PuntoController@UpdateController',
         'trimestre/(.+)' => 'TrimestreController@UpdateController',
         'ejercicio/(.+)' => 'EjercicioController@UpdateController',
+        'titulos/(.+)' => 'TitulosController@UpdateController',
     ],
     'DELETE' => [
         'area/(.+)' => 'AreaController@DeleteController',
@@ -49,6 +57,7 @@ return [
         'punto/(.+)' => 'PuntoController@DeleteController',
         'trimestre/(.+)' => 'TrimestreController@DeleteController',
         'ejercicio/(.+)' => 'EjercicioController@DeleteController',
+        'titulos/(.+)' => 'TitulosController@DeleteController',
     ],
 ];
 
