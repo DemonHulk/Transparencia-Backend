@@ -51,7 +51,7 @@ class TitulosController {
         }
     }
     /**
-     * extrae los datos de un titulo + nombre del punto a que pertenece e id
+     * extrae los datos de un Tema + nombre del punto a que pertenece e id
      */
     public function QueryTitulosMasPuntoController($id) {
         try {
@@ -70,7 +70,7 @@ class TitulosController {
 
 
     /**
-     * Insert para un titulo
+     * Insert para un Tema
      */
     public function InsertController($datos) {
          // Obtener los datos encriptados
@@ -148,8 +148,8 @@ class TitulosController {
 
 
     /**
-     * Desactiva un titulo.
-     * @param int $id ID del titulo.
+     * Desactiva un Tema
+     * @param int $id ID del Tema.
      */
     public function DeleteController($id) {
         // Asignar fecha actualizada
@@ -171,8 +171,8 @@ class TitulosController {
 
 
     /**
-     * Activa un titulo.
-     * @param int $id ID del titulo.
+     * Activa un Tema.
+     * @param int $id ID del Tema.
      */
     public function ActivateController($id) {
         // Asignar fecha actualizada
@@ -180,7 +180,7 @@ class TitulosController {
 
         try {
             $decryptedID = $this->EncryptModel->decryptData($id);
-            // Activar titulo
+            // Activar Tema
             $resultado = $this->TitulosModel->ActivateModel($decryptedID, $datos);
             $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
             // Mandamos los datos a encriptar

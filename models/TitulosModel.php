@@ -41,7 +41,7 @@ class TitulosModel {
 
             if ($existingCount > 0) {
                 $conn->rollBack();
-                return ['res' => false, 'data' => "Ya existe el titulo con ese nombre"];
+                return ['res' => false, 'data' => "Ya existe el tema con ese nombre"];
             }
 
             if (!isset($datos['orden_titulos']) || empty($datos['orden_titulos'])) {
@@ -76,7 +76,7 @@ class TitulosModel {
 
 
             $conn->commit();
-            return ['res' => true, 'data' => "Punto guardado exitosamente"];
+            return ['res' => true, 'data' => "Tema guardado exitosamente"];
         } catch (PDOException $e) {
             $conn->rollBack();
             throw new Exception("Error al insertar el Titulo: " . $e->getMessage());
@@ -92,7 +92,7 @@ class TitulosModel {
             $stmt->execute();
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
-            return ['res' => false, 'data' => "Error al obtener los titulos del punto"];
+            return ['res' => false, 'data' => "Error al obtener los Tema del punto"];
         }
     }
 
@@ -104,31 +104,10 @@ class TitulosModel {
             $stmt->execute();
             return ['res' => true, 'data' => $stmt->fetch(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
-            return ['res' => false, 'data' => "Error al obtener los datos del titulo"];
+            return ['res' => false, 'data' => "Error al obtener los datos del Tema"];
         }
     }
 
-
-    // public function UpdateModel($id, $datos) {
-    //     try {
-    //         $conn = Conexion::Conexion();
-    //         $stmt = $conn->prepare("
-    //             UPDATE titulos 
-    //             SET nombre_titulo = :nombre_titulo, tipo_contenido = :tipo_contenido, fecha_actualizado = :fecha_actualizado 
-    //             WHERE id_titulo = :id AND activo = true");
-    //         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    //         $stmt->bindParam(':nombre_titulo', $datos['nombre_titulo'], PDO::PARAM_STR);
-    //         $stmt->bindParam(':tipo_contenido', $datos['tipo_contenido'], PDO::PARAM_INT);
-    //         $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
-    //         $stmt->execute();
-    //         if ($stmt->rowCount() == 0) {
-    //             throw new Exception("No se encontró un título activo con ID $id");
-    //         }
-    //         return "Título con ID $id actualizado exitosamente";
-    //     } catch (PDOException $e) {
-    //         throw new Exception("Error al actualizar el título: " . $e->getMessage());
-    //     }
-    // }
 
     public function UpdateModel($id, $datos) {
         try {
@@ -205,11 +184,11 @@ class TitulosModel {
             $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
-                return ['res' => false, 'data' => "No se encontro el titulo, intente mas tarde"];
+                return ['res' => false, 'data' => "No se encontro el Tema, intente mas tarde"];
             }
-            return ['res' => true, 'data' => "Titulo desactivado"];
+            return ['res' => true, 'data' => "Tema desactivado"];
         } catch (PDOException $e) {
-            return ['res' => false, 'data' => "Error al desactivar el titulo: " . $e->getMessage()];
+            return ['res' => false, 'data' => "Error al desactivar el Tema: " . $e->getMessage()];
         }
     }
 
@@ -226,11 +205,11 @@ class TitulosModel {
             $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
-                return ['res' => false, 'data' => "No se encontro el titulo, intente mas tarde"];
+                return ['res' => false, 'data' => "No se encontro el Tema, intente mas tarde"];
             }
-            return ['res' => true, 'data' => "Titulo activado"];
+            return ['res' => true, 'data' => "Tema activado"];
         } catch (PDOException $e) {
-            return ['res' => false, 'data' => "Error al desactivar el titulo: " . $e->getMessage()];
+            return ['res' => false, 'data' => "Error al desactivar el Tema: " . $e->getMessage()];
         }
     }
 
@@ -244,7 +223,6 @@ class TitulosModel {
                 WHERE orden_titulos >= :new_order 
                   AND id_punto = :id_punto 
                   AND fk_titulos IS NULL 
-                  AND activo = true
             ");
         }
         $stmt->bindParam(':new_order', $newOrder, PDO::PARAM_INT);
