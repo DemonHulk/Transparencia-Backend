@@ -334,3 +334,50 @@ Stack trace:
 [19-Jun-2024 00:52:56 Europe/Berlin] PHP Fatal error:  Can't use function return value in write context in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 136
 [19-Jun-2024 00:53:35 Europe/Berlin] PHP Parse error:  syntax error, unexpected token ";" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 137
 [19-Jun-2024 00:54:14 Europe/Berlin] PHP Parse error:  syntax error, unexpected token ";" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\PuntoModel.php on line 137
+[22-Jun-2024 02:46:35 Europe/Berlin] PHP Fatal error:  Cannot redeclare TitulosController::InsertController() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 80
+[22-Jun-2024 02:47:20 Europe/Berlin] PHP Fatal error:  Cannot redeclare TitulosModel::InsertModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 86
+[22-Jun-2024 02:47:44 Europe/Berlin] PHP Fatal error:  Cannot redeclare TitulosModel::InsertModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 86
+[22-Jun-2024 02:48:14 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function decryptData() on null in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php:49
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(65): TitulosController->InsertController(Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 49
+[22-Jun-2024 02:51:12 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function decryptData() on null in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php:49
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(65): TitulosController->InsertController(Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 49
+[22-Jun-2024 02:53:47 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function decryptData() on null in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php:48
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(65): TitulosController->InsertController(Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 48
+[22-Jun-2024 03:16:33 Europe/Berlin] PHP Fatal error:  Uncaught Error: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:67
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(66): TitulosModel->InsertModel(Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(65): TitulosController->InsertController(Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 67
+[22-Jun-2024 03:18:00 Europe/Berlin] PHP Fatal error:  Uncaught Error: PDOStatement::bindParam(): Argument #2 ($var) cannot be passed by reference in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:67
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(66): TitulosModel->InsertModel(Array)
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(65): TitulosController->InsertController(Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 67
+[22-Jun-2024 07:01:55 Europe/Berlin] PHP Fatal error:  Cannot redeclare TitulosModel::UpdateModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 134
+[22-Jun-2024 07:02:07 Europe/Berlin] PHP Fatal error:  Cannot redeclare TitulosModel::UpdateModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 134
+[22-Jun-2024 07:02:19 Europe/Berlin] PHP Fatal error:  Cannot redeclare TitulosModel::UpdateModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 134
+[22-Jun-2024 07:02:22 Europe/Berlin] PHP Fatal error:  Cannot redeclare TitulosModel::UpdateModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 134
+[22-Jun-2024 07:03:25 Europe/Berlin] PHP Fatal error:  Cannot redeclare TitulosModel::UpdateModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 134
+[22-Jun-2024 07:22:14 Europe/Berlin] PHP Parse error:  syntax error, unexpected variable "$stmt" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 154
+[22-Jun-2024 07:23:10 Europe/Berlin] PHP Parse error:  syntax error, unexpected variable "$stmt" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 154
