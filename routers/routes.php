@@ -27,7 +27,7 @@ return [
         'trimestreAct/(.+)' => 'TrimestreController@ActivateController',
         'titulosAct/(.+)' => 'TitulosController@ActivateController',
         'puntoUser/(.+)' => 'PuntoController@QueryPuntoUserController',
-
+        'titulosCompletos/(.+)' => 'TitulosController@mostrarTitulosSubtitulos',
         'titulosdepunto/(.+)' => 'TitulosController@QueryTitulosPuntoController',
         'titulosmaspunto/(.+)' => 'TitulosController@QueryTitulosMasPuntoController',
         'contenidoDinamico/(.+)' => 'ContenidoDinamicoController@QueryAllController',

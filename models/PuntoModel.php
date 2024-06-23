@@ -6,7 +6,7 @@ class PuntoModel {
     public function QueryAllModel() {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM punto  ORDER BY orden_punto");
+            $stmt = $conn->prepare("SELECT * FROM punto ORDER BY orden_punto");
             $stmt->execute();
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
@@ -100,9 +100,9 @@ class PuntoModel {
 
             // Verificar si ya existe un registro con el mismo nombre
             $stmt = $conn->prepare("
-                SELECT COUNT(*) 
-                FROM punto 
-                WHERE nombre_punto = :nombre_punto 
+                SELECT COUNT(*)
+                FROM punto
+                WHERE nombre_punto = :nombre_punto
                 AND id_punto != :id");
             $stmt->bindParam(':nombre_punto', $datos['nombrePunto'], PDO::PARAM_STR);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -116,10 +116,10 @@ class PuntoModel {
 
             // Proceder con la actualización si no se encuentra duplicado
             $stmt = $conn->prepare("
-                UPDATE punto 
-                SET 
-                    nombre_punto = :nombre_punto, 
-                    fecha_actualizado = :fecha_actualizado 
+                UPDATE punto
+                SET
+                    nombre_punto = :nombre_punto,
+                    fecha_actualizado = :fecha_actualizado
                 WHERE id_punto = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':nombre_punto', $datos['nombrePunto'], PDO::PARAM_STR);
@@ -207,7 +207,7 @@ class PuntoModel {
     }
 
 
-    public function ActivateModel($id,$datos) {
+    public function ActivateModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
             $conn->beginTransaction();
@@ -218,7 +218,7 @@ class PuntoModel {
             $stmt->execute();
 
             if ($stmt->rowCount() == 0) {
-                return ['res' => false, 'data' => "No se encontro el punto, intente mas tarde"];
+                return ['res' => false, 'data' => "No se encontró el punto, intente más tarde"];
             }
 
             $conn->commit();
@@ -226,9 +226,12 @@ class PuntoModel {
             return ['res' => true, 'data' => "Punto activado"];
 
         } catch (PDOException $e) {
-            return ['res' => false, 'data' => "Error al activado el Punto: " . $e->getMessage()];
+            // Si ocurre un error, deshacemos la transacción
+            $conn->rollBack();
+            return ['res' => false, 'data' => "Error al activar el punto: " . $e->getMessage()];
         }
     }
+
 
 
 
@@ -247,19 +250,19 @@ class PuntoModel {
         try {
             $conn = Conexion::Conexion();
             $stmt = $conn->prepare("SELECT p.id_punto, p.nombre_punto, p.fecha_creacion, p.activo
-                                    FROM punto as p 
+                                    FROM punto as p
                                     INNER JOIN puntosareas as pa ON p.id_punto = pa.id_punto
                                     WHERE pa.id_area = :id_area and pa.activo = TRUE
                                     ORDER BY p.nombre_punto");
-            
+
             $stmt->bindParam(':id_area', $id_area, PDO::PARAM_INT);
             $stmt->execute();
-    
+
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
             return ['res' => false, 'data' => "Error al obtener los puntos: " . $e->getMessage()];
         }
     }
-    
-    
+
+
 }
