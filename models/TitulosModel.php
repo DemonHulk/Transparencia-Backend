@@ -7,7 +7,7 @@ class TitulosModel {
     public function QueryAllModel() {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM titulos WHERE activo = true ORDER BY id_titulo");
+            $stmt = $conn->prepare("SELECT * FROM titulos WHERE activo = true ORDER BY orden_titulos");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -233,7 +233,7 @@ class TitulosModel {
     public function QueryAllModelByPunto($idPunto) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM titulos WHERE activo = true and id_punto = $idPunto ORDER BY id_titulo");
+            $stmt = $conn->prepare("SELECT * FROM titulos WHERE activo = true and id_punto = $idPunto ORDER BY orden_titulos");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
