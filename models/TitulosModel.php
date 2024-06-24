@@ -15,15 +15,15 @@ class TitulosModel {
         }
     }
 
-    public function QueryOneModel($id) {
+    public function QueryOneTituloModel($id) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM titulos WHERE id_titulo = :id AND activo = true");
+            $stmt = $conn->prepare("SELECT * FROM titulos WHERE id_titulo = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            return ['res' => true, 'data' => $stmt->fetch(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
-            throw new Exception("Error al obtener el título con ID $id: " . $e->getMessage());
+            return ['res' => false, 'data' => "Error al obtener el título: " . $e->getMessage()];
         }
     }
 
@@ -84,6 +84,63 @@ class TitulosModel {
     }
 
 
+
+    public function InsertSubtemaModel($datos) {
+        try {
+            $conn = Conexion::Conexion();
+            $conn->beginTransaction();
+
+            // Validar si el nombre del Subtema ya existe
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM titulos WHERE nombre_titulo = :nombre and id_punto = :punto and fk_titulos = :fktitulo");
+            $stmt->bindParam(':nombre', $datos['nombreSubtema'], PDO::PARAM_STR);
+            $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
+            $stmt->bindParam(':fktitulo', $datos['titulo'], PDO::PARAM_INT);
+            $stmt->execute();
+            $existingCount = $stmt->fetchColumn();
+
+            if ($existingCount > 0) {
+                $conn->rollBack();
+                return ['res' => false, 'data' => "Ya existe el Subtema con ese nombre"];
+            }
+
+            if (!isset($datos['orden_titulos']) || empty($datos['orden_titulos'])) {
+                // Obtener el último orden existente sin importar el estado
+                $stmt = $conn->prepare("SELECT MAX(orden_titulos) FROM titulos WHERE id_punto = :punto and fk_titulos = :fktitulo");
+                $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
+                $stmt->bindParam(':fktitulo', $datos['titulo'], PDO::PARAM_INT);
+                $stmt->execute();
+                $lastOrder = $stmt->fetchColumn();
+                $datos['orden_titulos'] = $lastOrder + 1;
+            }
+
+            // Ajustar los valores de orden_titulos
+            $this->adjustOrderSubTitulos($conn, $datos['orden_titulos'], 0, $datos['punto'] , $datos['titulo']);
+
+
+            // Insertar el subtema en la tabla titulos
+            $stmt = $conn->prepare("
+                INSERT INTO titulos (id_punto, fk_titulos, nombre_titulo, tipo_contenido,  orden_titulos, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
+                VALUES(:punto, :fktitulo, :nombre, :tipocontenido, :orden, true, :fecha_creacion, :hora_creacion, :fecha_actualizado);");
+            $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
+            $stmt->bindParam(':fktitulo', $datos['titulo'], PDO::PARAM_INT);
+            $stmt->bindParam(':nombre', $datos['nombreSubtema'], PDO::PARAM_STR);
+            $stmt->bindParam(':tipocontenido', $datos['tipoContenido'], PDO::PARAM_STR);
+            $stmt->bindParam(':orden', $datos['orden_titulos'], PDO::PARAM_INT);
+            $stmt->bindParam(':fecha_creacion', $datos['fecha_creacion'], PDO::PARAM_STR);
+            $stmt->bindParam(':hora_creacion', $datos['hora_creacion'], PDO::PARAM_STR);
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+            $stmt->execute();
+
+
+            $conn->commit();
+            return ['res' => true, 'data' => "Subtema guardado exitosamente"];
+        } catch (PDOException $e) {
+            $conn->rollBack();
+            throw new Exception("Error al insertar el Subtema: " . $e->getMessage());
+        }
+    }
+
+
     public function QueryTitulosPuntoModel($id) {
         try {
             $conn = Conexion::Conexion();
@@ -105,6 +162,18 @@ class TitulosModel {
             return ['res' => true, 'data' => $stmt->fetch(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
             return ['res' => false, 'data' => "Error al obtener los datos del Tema"];
+        }
+    }
+
+    public function QuerySubetemasDelTemaModel($id) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT t.*, p.nombre_punto, p.id_punto  FROM titulos t inner join punto p on p.id_punto = t.id_punto  WHERE t.fk_titulos  = :id order by orden_titulos asc");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
+        } catch (PDOException $e) {
+            return ['res' => false, 'data' => "Error al obtener los Subtemas"];
         }
     }
 
@@ -168,7 +237,60 @@ class TitulosModel {
         }
     }
 
+    public function UpdateSubtituloModel($id, $datos) {
+        try {
+            $conn = Conexion::Conexion();
+            $conn->beginTransaction();
 
+            // Validar si el nombre del subtitulo ya existe y no es el mimso
+            $stmt = $conn->prepare("
+                SELECT COUNT(*) 
+                FROM titulos 
+                WHERE nombre_titulo = :nombre 
+                  AND id_punto = :punto 
+                  AND fk_titulos = :fktitulo
+                  AND id_titulo != :id");
+            $stmt->bindParam(':nombre', $datos['nombreSubtema'], PDO::PARAM_STR);
+            $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':fktitulo', $datos['titulo'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            $count = $stmt->fetchColumn();
+
+            if ($count > 0) {
+                $conn->rollBack();
+                return ['res' => false, 'data' => "Error: Ya existe otro Subtema con el mismo nombre"];
+            }
+
+            // Proceder con la actualización si no se encuentra duplicado
+            $stmt = $conn->prepare("
+                UPDATE titulos 
+                SET 
+                    nombre_titulo = :nombreTitulo, 
+                    tipo_contenido = :tipocontenido, 
+                    fecha_actualizado = :fecha_actualizado 
+                WHERE id_titulo = :id");
+            
+            // Vincular los parámetros correctamente
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':nombreTitulo', $datos['nombreSubtema'], PDO::PARAM_STR);
+            $stmt->bindParam(':tipocontenido', $datos['tipoContenido'], PDO::PARAM_STR);
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+            $stmt->execute();
+
+            if ($stmt->rowCount() == 0) {
+                $conn->rollBack();
+                return ['res' => false, 'data' => "Error al actualizar el Subtema"];
+            }
+
+            $conn->commit();
+            return ['res' => true, 'data' => "Subtema actualizado exitosamente"];
+        } catch (PDOException $e) {
+            $conn->rollBack();
+            return ['res' => false, 'data' => "Error al actualizar el Subtema: " . $e->getMessage()];
+        }
+    }
 
 
     public function DeleteModel($id, $datos) {
@@ -191,6 +313,47 @@ class TitulosModel {
             return ['res' => false, 'data' => "Error al desactivar el Tema: " . $e->getMessage()];
         }
     }
+
+    public function DeleteSubtemaModel($id, $datos) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("
+                UPDATE titulos 
+                SET activo = false ,
+                fecha_actualizado = :fecha_actualizado
+                WHERE id_titulo = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+            $stmt->execute();
+            if ($stmt->rowCount() == 0) {
+                return ['res' => false, 'data' => "No se encontro el Subtema, intente mas tarde"];
+            }
+            return ['res' => true, 'data' => "Subtema desactivado"];
+        } catch (PDOException $e) {
+            return ['res' => false, 'data' => "Error al desactivar el Subtema: " . $e->getMessage()];
+        }
+    }
+
+    public function ActivateSubtemaModel($id, $datos) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("
+                UPDATE titulos 
+                SET activo = true ,
+                fecha_actualizado = :fecha_actualizado
+                WHERE id_titulo = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+            $stmt->execute();
+            if ($stmt->rowCount() == 0) {
+                return ['res' => false, 'data' => "No se encontro el Subtema, intente mas tarde"];
+            }
+            return ['res' => true, 'data' => "Subtema activado"];
+        } catch (PDOException $e) {
+            return ['res' => false, 'data' => "Error al activar el Subtema: " . $e->getMessage()];
+        }
+    }
+
 
     public function ActivateModel($id, $datos) {
 
@@ -227,6 +390,23 @@ class TitulosModel {
         }
         $stmt->bindParam(':new_order', $newOrder, PDO::PARAM_INT);
         $stmt->bindParam(':id_punto', $idPunto, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    private function adjustOrderSubTitulos($conn, $newOrder, $currentOrder, $idPunto, $idtitulo) {
+        if ($newOrder < $currentOrder || $currentOrder == 0) {
+            // Incrementar orden para aquellos registros con `fk_titulos` que sean `NULL` y `id_punto` igual a `$idPunto`
+            $stmt = $conn->prepare("
+                UPDATE titulos 
+                SET orden_titulos = orden_titulos + 1 
+                WHERE orden_titulos >= :new_order 
+                    AND id_punto = :id_punto 
+                    AND fk_titulos = :fktitulo
+            ");
+        }
+        $stmt->bindParam(':new_order', $newOrder, PDO::PARAM_INT);
+        $stmt->bindParam(':id_punto', $idPunto, PDO::PARAM_INT);
+        $stmt->bindParam(':fktitulo', $idtitulo, PDO::PARAM_INT);
         $stmt->execute();
     }
 

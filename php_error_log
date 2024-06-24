@@ -381,3 +381,178 @@ Stack trace:
 [22-Jun-2024 07:03:25 Europe/Berlin] PHP Fatal error:  Cannot redeclare TitulosModel::UpdateModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 134
 [22-Jun-2024 07:22:14 Europe/Berlin] PHP Parse error:  syntax error, unexpected variable "$stmt" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 154
 [22-Jun-2024 07:23:10 Europe/Berlin] PHP Parse error:  syntax error, unexpected variable "$stmt" in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 154
+[23-Jun-2024 20:13:26 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('WO2nAR4UFKsxkF1...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:20:15 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('gG3BD17rxMJRapn...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:21:33 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('qpccFiPiZAeVoS/...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:21:56 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('kCoB220+URGDZ8c...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:23:59 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('iczOvXAj8q33+Q9...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:24:27 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('/NzqZcG1hlGZqtV...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:27:14 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('luj4oxuZ6OujilJ...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:28:18 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('9vzH59oeVN6mP0C...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:29:55 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('/DePBjIOtsG6Z2B...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:36:17 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('mdOgxy0tNWqC/Lk...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:36:24 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('3lb7hq9RVl+YkyR...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:37:12 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('O5f94nU+E/UXHQ7...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:37:15 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('yhASBrJdXhGQ2Vr...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:41:19 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('6CMniKqKozSPlYA...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:41:36 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('/4aBNmbNdSAGHnB...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:42:35 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('cM3ueCiY/Tc8Aov...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:42:54 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('kty+jEVGuksi82a...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:43:12 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('RAYAB6OW20Lb5y7...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:43:28 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('rsfvoMqwv/l9IHb...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:44:01 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('6z0YI9lCw5rpmZt...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 20:44:25 Europe/Berlin] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function TitulosModel::QueryOneTituloModel(), 0 passed in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 32 and exactly 1 expected in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php:18
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php(32): TitulosModel->QueryOneTituloModel()
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QueryOneTituloController('6YVXJIfDs1I2sjV...')
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#3 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\models\TitulosModel.php on line 18
+[23-Jun-2024 22:38:49 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method TitulosModel::QuerySubetemasDelTemaModel() in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php:85
+Stack trace:
+#0 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(60): TitulosController->QuerySubetemasDelTemaController('uBjgSbv48u8hOZg...')
+#1 C:\xampp\htdocs\transpariencia\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('TitulosControll...', Array)
+#2 C:\xampp\htdocs\transpariencia\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#3 {main}
+  thrown in C:\xampp\htdocs\transpariencia\Transparencia-Backend\controllers\TitulosController.php on line 85
