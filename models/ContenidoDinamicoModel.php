@@ -48,25 +48,32 @@ class ContenidoDinamicoModel {
         try {
             $conn = Conexion::Conexion();
             $conn->beginTransaction();
-    
+            
+            // Verificar y manejar la extensión .pdf en nombreInterno
+            if (!preg_match('/\.pdf$/i', $datos['nombreInterno'])) {
+                $datos['nombreInterno'] .= '.pdf';
+            }
+
             // Validar si ya existe un archivo con el mismo nombre interno
-            $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_interno_documento = :nombre_interno_documento");
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_interno_documento = :nombre_interno_documento AND id_titulo = :id_titulo");
             $stmt->bindParam(':nombre_interno_documento', $datos['nombreInterno'], PDO::PARAM_STR);
+            $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
             $stmt->execute();
             $existingInternalFileCount = $stmt->fetchColumn();
     
             if ($existingInternalFileCount > 0) {
-                return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre interno."];
+                return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre interno para el mismo titulo."];
             }
     
             // Validar si ya existe un archivo con el mismo nombre externo
-            $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_externo_documento = :nombre_externo_documento");
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_externo_documento = :nombre_externo_documento AND id_titulo = :id_titulo");
             $stmt->bindParam(':nombre_externo_documento', $datos['nombreExterno'], PDO::PARAM_STR);
+            $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
             $stmt->execute();
             $existingExternalFileCount = $stmt->fetchColumn();
     
             if ($existingExternalFileCount > 0) {
-                return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre externo."];
+                return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre externo para el mismo titulo."];
             }
     
             // Si no se pasa el orden, obtener el último orden
@@ -79,16 +86,27 @@ class ContenidoDinamicoModel {
             }
             
             $activo = true;
-
-            // Verificar y manejar la extensión .pdf en nombreInterno
-            if (!preg_match('/\.pdf$/i', $datos['nombreInterno'])) {
-                $datos['nombreInterno'] .= '.pdf';
+    
+            // Obtener el título del documento
+            $stmt = $conn->prepare("SELECT nombre_titulo FROM titulos WHERE id_titulo = :id_titulo");
+            $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
+            $stmt->execute();
+            $titulo = $stmt->fetchColumn();
+    
+            if (!$titulo) {
+                return ['res' => false, 'data' => "No se encontró el título con el ID especificado."];
             }
     
-            // Guardar el archivo en la ruta especificada
+            // Verificar si existe la carpeta, si no, crearla
+            $rutaCarpeta = 'assets/documents/' . $titulo;
+            if (!is_dir($rutaCarpeta)) {
+                mkdir($rutaCarpeta, 0777, true);
+            }
+    
+            // Guardar el archivo en la carpeta especificada
             $archivoBase64 = base64_encode($datos['archivo']);
-            $contenidoArchivo = base64_decode($archivoBase64);  
-            $rutaDocumento = 'assets/documents/' . $datos['nombreInterno'];
+            $contenidoArchivo = base64_decode($archivoBase64);
+            $rutaDocumento = $rutaCarpeta . '/' . $datos['nombreInterno'];
             file_put_contents($rutaDocumento, $contenidoArchivo);
     
             $stmt = $conn->prepare("INSERT INTO contenido_dinamico (id_usuario, id_titulo, nombre_externo_documento, nombre_interno_documento, ruta_documento, id_trimestre, descripcion, orden, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
@@ -117,46 +135,69 @@ class ContenidoDinamicoModel {
             return ['res' => false, 'data' => "Error al insertar el contenido: " . $e->getMessage()];
         }
     }
-
+    
     public function UpdateModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
             $conn->beginTransaction();
+
+            // Verificar y manejar la extensión .pdf en nombreInterno
+            if (!preg_match('/\.pdf$/i', $datos['nombreInterno'])) {
+                $datos['nombreInterno'] .= '.pdf';
+            }
     
             // Obtener la información actual del documento
             $stmtSelect = $conn->prepare("SELECT ruta_documento, nombre_interno_documento, nombre_externo_documento FROM contenido_dinamico WHERE id_contenido_dinamico = :id");
             $stmtSelect->bindParam(':id', $id, PDO::PARAM_INT);
             $stmtSelect->execute();
             $documentoActual = $stmtSelect->fetch(PDO::FETCH_ASSOC);
-
+    
             $rutaDocumento = $documentoActual['ruta_documento'];
             $nombreAnteriorInterno = $documentoActual['nombre_interno_documento'];
             $nombreAnteriorExterno = $documentoActual['nombre_externo_documento'];
     
             // Validar si ya existe un archivo con el mismo nombre interno (si se cambia)
             if ($nombreAnteriorInterno !== $datos['nombreInterno']) {
-                $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_interno_documento = :nombre_interno_documento AND id_contenido_dinamico != :id");
+                $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_interno_documento = :nombre_interno_documento AND id_contenido_dinamico != :id AND id_titulo = :id_titulo");
                 $stmt->bindParam(':nombre_interno_documento', $datos['nombreInterno'], PDO::PARAM_STR);
                 $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
                 $stmt->execute();
                 $existingInternalFileCount = $stmt->fetchColumn();
     
                 if ($existingInternalFileCount > 0) {
-                    return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre interno."];
+                    return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre interno en este tema."];
                 }
             }
     
             // Validar si ya existe un archivo con el mismo nombre externo (si se cambia)
             if ($nombreAnteriorExterno !== $datos['nombreExterno']) {
-                $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_externo_documento = :nombre_externo_documento AND id_contenido_dinamico != :id");
+                $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_externo_documento = :nombre_externo_documento AND id_contenido_dinamico != :id AND id_titulo = :id_titulo");
                 $stmt->bindParam(':nombre_externo_documento', $datos['nombreExterno'], PDO::PARAM_STR);
                 $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
                 $stmt->execute();
                 $existingExternalFileCount = $stmt->fetchColumn();
     
                 if ($existingExternalFileCount > 0) {
-                    return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre externo."];
+                    return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre externo en este tema."];
                 }
+            }
+    
+            // Obtener el título del documento
+            $stmt = $conn->prepare("SELECT nombre_titulo FROM titulos WHERE id_titulo = :id_titulo");
+            $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
+            $stmt->execute();
+            $titulo = $stmt->fetchColumn();
+    
+            if (!$titulo) {
+                return ['res' => false, 'data' => "No se encontró el título con el ID especificado."];
+            }
+    
+            // Verificar si existe la carpeta, si no, crearla
+            $rutaCarpeta = 'assets/documents/' . $titulo;
+            if (!is_dir($rutaCarpeta)) {
+                mkdir($rutaCarpeta, 0777, true);
             }
     
             // Actualizar el archivo si se proporciona uno nuevo
@@ -166,13 +207,13 @@ class ContenidoDinamicoModel {
                     unlink($rutaDocumento);
                 }
                 
-                $rutaDocumento = 'assets/documents/' . $datos['nombreInterno'];
+                $rutaDocumento = $rutaCarpeta . '/' . $datos['nombreInterno'];
                 file_put_contents($rutaDocumento, $datos['archivo']);
             } 
             // Si solo se cambió el nombre, renombrar el archivo existente
             elseif ($nombreAnteriorInterno !== $datos['nombreInterno']) {
                 $rutaAnterior = $rutaDocumento;
-                $rutaDocumento = 'assets/documents/' . $datos['nombreInterno'];
+                $rutaDocumento = $rutaCarpeta . '/' . $datos['nombreInterno'];
                 if (file_exists($rutaAnterior)) {
                     rename($rutaAnterior, $rutaDocumento);
                 }
@@ -214,6 +255,7 @@ class ContenidoDinamicoModel {
     }
     
     
+    
 
     public function DeleteModel($id, $datos) {
         try {
@@ -248,30 +290,49 @@ class ContenidoDinamicoModel {
     }
 
 
-    public function getDocument($fileName) {
-        // Definir la ruta base correcta
-        $baseDir = 'C:/xampp/htdocs/Transparencia-Backend/assets/documents/';
-        
-        // Asegurarse de que el nombre del archivo no contenga caracteres maliciosos
-        $fileName = basename($fileName);
-        
-        $filePath = $baseDir . $fileName;
-
-        error_log("Buscando archivo: " . $filePath);
-
-        if (file_exists($filePath) && strpos(realpath($filePath), realpath($baseDir)) === 0) {
-            $fileContent = file_get_contents($filePath);
-            $mimeType = mime_content_type($filePath);
-            return [
-                'res' => true, 
-                'data' => base64_encode($fileContent), 
-                'mime' => $mimeType,
-                'filename' => $fileName
-            ];
-        } else {
-            error_log("Archivo no encontrado o fuera del directorio permitido: " . $filePath);
-            return ['res' => false, 'data' => "Archivo no Encontrado: " . $fileName . " (Ruta completa: " . $filePath . ")"];
+    public function getDocument($id_contenido_dinamico) {
+        try {
+            $conn = Conexion::Conexion();
+            
+            // Consulta para obtener la ruta del documento y el nombre interno del documento
+            $stmt = $conn->prepare("SELECT ruta_documento, nombre_interno_documento FROM contenido_dinamico WHERE id_contenido_dinamico = :id_contenido_dinamico");
+            $stmt->bindParam(':id_contenido_dinamico', $id_contenido_dinamico, PDO::PARAM_INT);
+            $stmt->execute();
+            $documento = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            if (!$documento) {
+                return ['res' => false, 'data' => "Documento no encontrado"];
+            }
+    
+            $filePath = $documento['ruta_documento'];
+            $fileName = $documento['nombre_interno_documento'];
+    
+            // Definir la ruta base correcta
+            $baseDir = 'C:/xampp/htdocs/Transparencia-Backend/';
+    
+            // Asegurarse de que el nombre del archivo no contenga caracteres maliciosos
+            $fileName = basename($fileName);
+            $filePath = $baseDir . $filePath;
+    
+            error_log("Buscando archivo: " . $filePath);
+    
+            if (file_exists($filePath) && strpos(realpath($filePath), realpath($baseDir)) === 0) {
+                $fileContent = file_get_contents($filePath);
+                $mimeType = mime_content_type($filePath);
+                return [
+                    'res' => true, 
+                    'data' => base64_encode($fileContent), 
+                    'mime' => $mimeType,
+                    'filename' => $fileName
+                ];
+            } else {
+                error_log("Archivo no encontrado o fuera del directorio permitido: " . $filePath);
+                return ['res' => false, 'data' => "Archivo no Encontrado:". $filePath];
+            }
+        } catch (PDOException $e) {
+            return ['res' => false, 'data' => "Error al obtener el documento: " . $e->getMessage()];
         }
     }
+    
 }
 ?>

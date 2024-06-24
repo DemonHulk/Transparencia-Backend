@@ -238,11 +238,11 @@ class ContenidoDinamicoController {
         }
     }
 
-    public function getDocument($fileName) {
-        error_log("Nombre de archivo encriptado recibido: " . $fileName);
+    public function getDocument($id_documento_dinamico) {
+        error_log("Nombre de archivo encriptado recibido: " . $id_documento_dinamico);
         
         try {
-            $decryptedName = $this->EncryptModel->decryptData($fileName);
+            $decryptedName = $this->EncryptModel->decryptData($id_documento_dinamico);
             error_log("Nombre de archivo desencriptado: " . $decryptedName);
         } catch (\Throwable $th) {
             error_log("Error al desencriptar el nombre del archivo: " . $th->getMessage());
