@@ -117,42 +117,6 @@ class ContenidoDinamicoModel {
             return ['res' => false, 'data' => "Error al insertar el contenido: " . $e->getMessage()];
         }
     }
-    
-
-    public function InsertContenidoModel($datos) {
-        try {
-            $conn = Conexion::Conexion();
-            $conn->beginTransaction();
-
-            // Si no se pasa el orden, obtener el último orden
-            if (!isset($datos['orden_contenido']) || empty($datos['orden_contenido'])) {
-                $stmt = $conn->prepare("SELECT MAX(orden_contenido) FROM contenido WHERE id_apartado_punto = :id_apartado_punto AND (fk_apartado_punto IS NULL OR fk_apartado_punto = :fk_apartado_punto)");
-                $stmt->bindParam(':id_apartado_punto', $datos['id_apartado_punto'], PDO::PARAM_INT);
-                $stmt->bindParam(':fk_apartado_punto', $datos['fk_apartado_punto'], PDO::PARAM_INT);
-                $stmt->execute();
-                $lastOrder = $stmt->fetchColumn();
-                $datos['orden_contenido'] = $lastOrder + 1;
-            }
-
-            $stmt = $conn->prepare("INSERT INTO contenido (id_usuario, id_apartado_punto, id_trimestre, contenido, orden_contenido, activo, fecha_creacion, hora_creacion, fecha_actualizado) VALUES (:id_usuario, :id_apartado_punto, :id_trimestre, :contenido, :orden_contenido, :activo, :fecha_creacion, :hora_creacion, :fecha_actualizado)");
-            $stmt->bindParam(':id_usuario', $datos['id_usuario'], PDO::PARAM_INT);
-            $stmt->bindParam(':id_apartado_punto', $datos['id_apartado_punto'], PDO::PARAM_INT);
-            $stmt->bindParam(':id_trimestre', $datos['id_trimestre'], PDO::PARAM_INT);
-            $stmt->bindParam(':contenido', $datos['contenido'], PDO::PARAM_STR);
-            $stmt->bindParam(':orden_contenido', $datos['orden_contenido'], PDO::PARAM_INT);
-            $stmt->bindParam(':activo', $datos['activo'], PDO::PARAM_BOOL);
-            $stmt->bindParam(':fecha_creacion', $datos['fecha_creacion'], PDO::PARAM_STR);
-            $stmt->bindParam(':hora_creacion', $datos['hora_creacion'], PDO::PARAM_STR);
-            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
-            $stmt->execute();
-
-            $conn->commit();
-            return "Contenido guardado exitosamente";
-        } catch (PDOException $e) {
-            $conn->rollBack();
-            throw new Exception("Error al insertar el contenido: " . $e->getMessage());
-        }
-    }
 
     public function UpdateModel($id, $datos) {
         try {

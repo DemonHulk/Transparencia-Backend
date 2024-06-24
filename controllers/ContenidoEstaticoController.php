@@ -43,15 +43,6 @@ class ContenidoEstaticoController {
         }
     }
 
-    public function InsertDocumentoController($datos) {
-        try {
-            $resultado = $this->ContenidoEstaticoModel->InsertDocumentoModel($datos);
-            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
-        } catch (Exception $e) {
-            ExceptionHandler::handle($e);
-        }
-    }
-
     public function InsertContenidoEstaticoController($datos) {
         // Obtener los datos encriptados
         $encryptedData = $datos['data'];
@@ -61,6 +52,17 @@ class ContenidoEstaticoController {
             $decryptedData = $this->EncryptModel->decryptData($encryptedData);
         } catch (Exception $e) {
             $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+
+
+        // Validar los datos desencriptados
+        if (!isset($decryptedData['htmlContent']) || !$this->validacionesModel->ValidarNoScript($decryptedData['htmlContent'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El Contenido no es valido."]]);
              // Mandamos los datos a encriptar
              $encryptedResponse = $this->EncryptModel->encryptJSON($response);
              // Retornamos los datos ya encriptados
