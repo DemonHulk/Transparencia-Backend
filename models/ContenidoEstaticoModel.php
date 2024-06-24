@@ -24,7 +24,7 @@ class ContenidoEstaticoModel {
             $stmt->execute();
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
-            throw new Exception("Error al obtener el contenido con ID $id: " . $e->getMessage());
+            return ['res' => false, 'data' => "Error al obtener el contenido: " . $e->getMessage()];
         }
     }
 
@@ -137,7 +137,7 @@ class ContenidoEstaticoModel {
             }
             return ['res' => true, 'data' => "Contenido Desactivado Correctamente"];
         } catch (PDOException $e) {
-            throw new Exception("Error al desactivar el contenido: " . $e->getMessage());
+            return ['res' => false, 'data' => "Error al desactivar el contenido: " . $e->getMessage()];
         }
     }
 

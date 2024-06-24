@@ -187,5 +187,6 @@ class ContenidoEstaticoController {
             ExceptionHandler::handle($e);
         }
      }
+     
 }
 ?>

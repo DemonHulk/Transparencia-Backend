@@ -79,6 +79,11 @@ class ContenidoDinamicoModel {
             }
             
             $activo = true;
+
+            // Verificar y manejar la extensión .pdf en nombreInterno
+            if (!preg_match('/\.pdf$/i', $datos['nombreInterno'])) {
+                $datos['nombreInterno'] .= '.pdf';
+            }
     
             // Guardar el archivo en la ruta especificada
             $archivoBase64 = base64_encode($datos['archivo']);
@@ -159,7 +164,7 @@ class ContenidoDinamicoModel {
             $stmtSelect->bindParam(':id', $id, PDO::PARAM_INT);
             $stmtSelect->execute();
             $documentoActual = $stmtSelect->fetch(PDO::FETCH_ASSOC);
-    
+
             $rutaDocumento = $documentoActual['ruta_documento'];
             $nombreAnteriorInterno = $documentoActual['nombre_interno_documento'];
             $nombreAnteriorExterno = $documentoActual['nombre_externo_documento'];
@@ -192,6 +197,11 @@ class ContenidoDinamicoModel {
     
             // Actualizar el archivo si se proporciona uno nuevo
             if (!empty($datos['archivo'])) {
+                // Eliminar el archivo existente si existe
+                if (file_exists($rutaDocumento)) {
+                    unlink($rutaDocumento);
+                }
+                
                 $rutaDocumento = 'assets/documents/' . $datos['nombreInterno'];
                 file_put_contents($rutaDocumento, $datos['archivo']);
             } 
@@ -270,6 +280,33 @@ class ContenidoDinamicoModel {
             return ['res' => true, 'data' => "Contenido Activado Correctamente"];
         } catch (PDOException $e) {
             return ['res' => false, 'data' => "Error al activar el contenido: " . $e->getMessage()];
+        }
+    }
+
+
+    public function getDocument($fileName) {
+        // Definir la ruta base correcta
+        $baseDir = 'C:/xampp/htdocs/Transparencia-Backend/assets/documents/';
+        
+        // Asegurarse de que el nombre del archivo no contenga caracteres maliciosos
+        $fileName = basename($fileName);
+        
+        $filePath = $baseDir . $fileName;
+
+        error_log("Buscando archivo: " . $filePath);
+
+        if (file_exists($filePath) && strpos(realpath($filePath), realpath($baseDir)) === 0) {
+            $fileContent = file_get_contents($filePath);
+            $mimeType = mime_content_type($filePath);
+            return [
+                'res' => true, 
+                'data' => base64_encode($fileContent), 
+                'mime' => $mimeType,
+                'filename' => $fileName
+            ];
+        } else {
+            error_log("Archivo no encontrado o fuera del directorio permitido: " . $filePath);
+            return ['res' => false, 'data' => "Archivo no Encontrado: " . $fileName . " (Ruta completa: " . $filePath . ")"];
         }
     }
 }

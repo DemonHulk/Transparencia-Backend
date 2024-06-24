@@ -35,6 +35,7 @@ return [
         'contenidoEstatico/(.+)' => 'ContenidoEstaticoController@QueryAllController',
         'contenidoEstaticoAct/(.+)' => 'ContenidoEstaticoController@ActivateController',
         'oneContenidoEstatico/(.+)' => 'ContenidoEstaticoController@QueryOneController',
+        'getDocument/(.+)' => 'ContenidoDinamicoController@getDocument',
     ],
     'POST' => [
         'area' => 'AreaController@InsertController',

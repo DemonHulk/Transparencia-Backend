@@ -60,6 +60,34 @@ class ContenidoDinamicoController {
             echo json_encode(['estado' => 400, 'resultado' => ['res' => false, 'data' => 'Error al desencriptar datos: ' . $e->getMessage()]]);
             return;
         }
+
+         // Validar los datos desencriptados
+         if (!isset($decryptedData['nombreInterno']) || !$this->validacionesModel->ValidarTextoNumero($decryptedData['nombreInterno'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre interno del documento no es valido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+
+        if (!isset($decryptedData['nombreExterno']) || !$this->validacionesModel->ValidarTextoNumero($decryptedData['nombreExterno'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre externo del documento no es valido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+
+        if (!isset($decryptedData['descripcion']) || !$this->validacionesModel->ValidarTextoNumero($decryptedData['descripcion'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La descripción del documento no es valido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
     
         // Obtener el archivo enviado
         $archivo = $_FILES['archivo'] ?? null;
@@ -106,6 +134,34 @@ class ContenidoDinamicoController {
             $decryptedID = $this->EncryptModel->decryptData($id);
         } catch (Exception $e) {
             echo json_encode(['estado' => 400, 'resultado' => ['res' => false, 'data' => 'Error al desencriptar datos: ' . $e->getMessage()]]);
+            return;
+        }
+
+        // Validar los datos desencriptados
+        if (!isset($decryptedData['nombreInterno']) || !$this->validacionesModel->ValidarTextoNumero($decryptedData['nombreInterno'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre interno del documento no es valido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+
+        if (!isset($decryptedData['nombreExterno']) || !$this->validacionesModel->ValidarTextoNumero($decryptedData['nombreExterno'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre externo del documento no es valido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+            return;
+        }
+
+        if (!isset($decryptedData['descripcion']) || !$this->validacionesModel->ValidarTextoNumero($decryptedData['descripcion'])) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "La descripción del documento no es valido."]]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
             return;
         }
 
@@ -180,6 +236,35 @@ class ContenidoDinamicoController {
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
-     }
+    }
+
+    public function getDocument($fileName) {
+        error_log("Nombre de archivo encriptado recibido: " . $fileName);
+        
+        try {
+            $decryptedName = $this->EncryptModel->decryptData($fileName);
+            error_log("Nombre de archivo desencriptado: " . $decryptedName);
+        } catch (\Throwable $th) {
+            error_log("Error al desencriptar el nombre del archivo: " . $th->getMessage());
+            $response = json_encode(['estado' => 400, 'resultado' => "Error al desencriptar datos"]);
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            echo $encryptedResponse;
+            return;
+        }
+    
+        try {
+            $resultado = $this->ContenidoDinamicoModel->getDocument($decryptedName);
+            error_log("Resultado de getDocument: " . json_encode($resultado));
+            $response = json_encode(['estado' => $resultado['res'] ? 200 : 404, 'resultado' => $resultado]);
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            error_log("Respuesta encriptada: " . $encryptedResponse);
+            echo $encryptedResponse;
+        } catch (Exception $e) {
+            error_log("Error en getDocument: " . $e->getMessage());
+            $response = json_encode(['estado' => 500, 'resultado' => "Error interno del servidor: " . $e->getMessage()]);
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            echo $encryptedResponse;
+        }
+    }
 }
 ?>
