@@ -36,6 +36,10 @@ return [
         'contenidoEstaticoAct/(.+)' => 'ContenidoEstaticoController@ActivateController',
         'oneContenidoEstatico/(.+)' => 'ContenidoEstaticoController@QueryOneController',
         'getDocument/(.+)' => 'ContenidoDinamicoController@getDocument',
+
+        'subtemaact/(.+)' => 'TitulosController@ActivateSubtemaController',
+        'titulo/(.+)' => 'TitulosController@QueryOneTituloController',
+        'subtemasdeltema/(.+)' => 'TitulosController@QuerySubetemasDelTemaController',
     ],
     'POST' => [
         'area' => 'AreaController@InsertController',
@@ -50,6 +54,9 @@ return [
         'contenidoDinamico' => 'ContenidoDinamicoController@InsertDocumentoController',
         'UpdatecontentDinamico/(.+)' => 'ContenidoDinamicoController@UpdateDocumentoController',
         'contenidoEstatico' => 'ContenidoEstaticoController@InsertContenidoEstaticoController',
+        
+        'subtema' => 'TitulosController@InsertSubtemaController',
+
     ],
     'PUT' => [
         'area/(.+)' => 'AreaController@UpdateController',
@@ -59,6 +66,8 @@ return [
         'ejercicio/(.+)' => 'EjercicioController@UpdateController',
         'titulos/(.+)' => 'TitulosController@UpdateController',
         'UpdatecontentEstatico/(.+)' => 'ContenidoEstaticoController@UpdateController',
+        'subtema/(.+)' => 'TitulosController@UpdateSubtituloController',
+
     ],
     'DELETE' => [
         'area/(.+)' => 'AreaController@DeleteController',
@@ -69,6 +78,7 @@ return [
         'titulos/(.+)' => 'TitulosController@DeleteController',
         'contenidoDinamico/(.+)' => 'ContenidoDinamicoController@DeleteController',
         'contenidoEstatico/(.+)' => 'ContenidoEstaticoController@DeleteController',
+        'subtema/(.+)' => 'TitulosController@DeleteSubtemaController',
     ],
 ];
 
