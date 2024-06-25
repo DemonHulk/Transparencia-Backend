@@ -188,7 +188,7 @@ class PuntoModel {
             $conn = Conexion::Conexion();
             $conn->beginTransaction();
 
-            $stmt = $conn->prepare("UPDATE punto SET activo = FALSE and fecha_actualizado  = :fecha_actualizado  WHERE id_punto = :id");
+            $stmt = $conn->prepare("UPDATE punto SET activo = FALSE, fecha_actualizado  = :fecha_actualizado  WHERE id_punto = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
@@ -212,7 +212,7 @@ class PuntoModel {
             $conn = Conexion::Conexion();
             $conn->beginTransaction();
 
-            $stmt = $conn->prepare("UPDATE punto SET activo = TRUE and fecha_actualizado  = :fecha_actualizado  WHERE id_punto = :id");
+            $stmt = $conn->prepare("UPDATE punto SET activo = TRUE, fecha_actualizado  = :fecha_actualizado  WHERE id_punto = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();

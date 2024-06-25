@@ -11,6 +11,7 @@ return [
         'usuario/(.+)' => 'UsuarioController@QueryOneController',
         'punto' => 'PuntoController@QueryAllController',
         'punto/(.+)' => 'PuntoController@QueryOneController',
+        'contenidoDinamicoAct/(.+)' => 'ContenidoDinamicoController@ActivateController',
 
         'areapunto_punto/(.+)' => 'PuntosAreasController@QueryAreaPunto_PuntoController',
         'puntosareas/allpuntosaccesoarea/(.+)' => 'PuntosAreasController@QueryAllPuntosAccesoAreaController',
@@ -29,7 +30,12 @@ return [
 
         'titulosdepunto/(.+)' => 'TitulosController@QueryTitulosPuntoController',
         'titulosmaspunto/(.+)' => 'TitulosController@QueryTitulosMasPuntoController',
-
+        'contenidoDinamico/(.+)' => 'ContenidoDinamicoController@QueryAllController',
+        'onecontenidoDinamico/(.+)' => 'ContenidoDinamicoController@QueryOneController',
+        'contenidoEstatico/(.+)' => 'ContenidoEstaticoController@QueryAllController',
+        'contenidoEstaticoAct/(.+)' => 'ContenidoEstaticoController@ActivateController',
+        'oneContenidoEstatico/(.+)' => 'ContenidoEstaticoController@QueryOneController',
+        'getDocument/(.+)' => 'ContenidoDinamicoController@getDocument',
     ],
     'POST' => [
         'area' => 'AreaController@InsertController',
@@ -41,7 +47,9 @@ return [
         'puntosareas/desactivate_puntoarea' => 'PuntosAreasController@Desactivate_PuntoAreaController',
         'ejercicio' => 'EjercicioController@InsertController',
         'titulos' => 'TitulosController@InsertController',
-
+        'contenidoDinamico' => 'ContenidoDinamicoController@InsertDocumentoController',
+        'UpdatecontentDinamico/(.+)' => 'ContenidoDinamicoController@UpdateDocumentoController',
+        'contenidoEstatico' => 'ContenidoEstaticoController@InsertContenidoEstaticoController',
     ],
     'PUT' => [
         'area/(.+)' => 'AreaController@UpdateController',
@@ -50,6 +58,7 @@ return [
         'trimestre/(.+)' => 'TrimestreController@UpdateController',
         'ejercicio/(.+)' => 'EjercicioController@UpdateController',
         'titulos/(.+)' => 'TitulosController@UpdateController',
+        'UpdatecontentEstatico/(.+)' => 'ContenidoEstaticoController@UpdateController',
     ],
     'DELETE' => [
         'area/(.+)' => 'AreaController@DeleteController',
@@ -58,6 +67,8 @@ return [
         'trimestre/(.+)' => 'TrimestreController@DeleteController',
         'ejercicio/(.+)' => 'EjercicioController@DeleteController',
         'titulos/(.+)' => 'TitulosController@DeleteController',
+        'contenidoDinamico/(.+)' => 'ContenidoDinamicoController@DeleteController',
+        'contenidoEstatico/(.+)' => 'ContenidoEstaticoController@DeleteController',
     ],
 ];
 
