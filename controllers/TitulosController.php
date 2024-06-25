@@ -27,6 +27,21 @@ class TitulosController {
         }
     }
 
+    public function mostrarTitulosSubtitulos($idPunto) {
+        try {
+            $decryptedID = $this->EncryptModel->decryptData($idPunto);
+            $resultado = $this->TitulosModel->mostrarJerarquia($decryptedID);
+            $response = json_encode(['estado' => 200, 'resultado' =>  $resultado]);
+            
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+
     public function QueryOneController($id) {
         try {
             $resultado = $this->TitulosModel->QueryOneModel($id);

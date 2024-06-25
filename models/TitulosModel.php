@@ -7,7 +7,7 @@ class TitulosModel {
     public function QueryAllModel() {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM titulos WHERE activo = true ORDER BY id_titulo");
+            $stmt = $conn->prepare("SELECT * FROM titulos WHERE activo = true ORDER BY orden_titulos");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -228,6 +228,81 @@ class TitulosModel {
         $stmt->bindParam(':new_order', $newOrder, PDO::PARAM_INT);
         $stmt->bindParam(':id_punto', $idPunto, PDO::PARAM_INT);
         $stmt->execute();
+    }
+
+    public function QueryAllModelByPunto($idPunto) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT * FROM titulos WHERE activo = true and id_punto = $idPunto ORDER BY orden_titulos");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener todos los títulos: " . $e->getMessage());
+        }
+    }
+
+    public function getContenidoDinamico($id_titulo) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT * FROM contenido_dinamico WHERE id_titulo = :id_titulo and activo = true ORDER BY orden");
+            $stmt->bindParam(':id_titulo', $id_titulo, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener contenido dinámico: " . $e->getMessage());
+        }
+    }
+
+    public function getContenidoEstatico($id_titulo) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT * FROM contenido_estatico WHERE id_titulo = :id_titulo and activo = true ORDER BY orden");
+            $stmt->bindParam(':id_titulo', $id_titulo, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener contenido estático: " . $e->getMessage());
+        }
+    }
+
+     private function construirJerarquia($titulos) {
+        $jerarquia = [];
+        $titulosIndex = [];
+
+        foreach ($titulos as $titulo) {
+            $titulo['contenido'] = $this->obtenerContenido($titulo['id_titulo'], $titulo['tipo_contenido']);
+            $titulosIndex[$titulo['id_titulo']] = $titulo;
+        }
+
+        foreach ($titulos as $titulo) {
+            if ($titulo['fk_titulos'] == null) {
+                $jerarquia[] = &$titulosIndex[$titulo['id_titulo']];
+            } else {
+                $titulosIndex[$titulo['fk_titulos']]['subtitulos'][] = &$titulosIndex[$titulo['id_titulo']];
+            }
+        }
+
+        return $jerarquia;
+    }
+
+    private function obtenerContenido($id_titulo, $tipo_contenido) {
+        if ($tipo_contenido == 2) {
+            return $this->getContenidoDinamico($id_titulo);
+        } else if ($tipo_contenido == 1) {
+            return $this->getContenidoEstatico($id_titulo);
+        } else {
+            return null;
+        }
+    }
+
+    public function mostrarJerarquia($idPunto) {
+        try {
+            $titulos = $this->QueryAllModelByPunto($idPunto);
+            $jerarquia = $this->construirJerarquia($titulos);
+            return json_encode($jerarquia, JSON_PRETTY_PRINT);
+        } catch (Exception $e) {
+            return json_encode(['error' => "Error: " . $e->getMessage()]);
+        }
     }
 
 
