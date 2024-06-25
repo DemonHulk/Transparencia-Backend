@@ -244,7 +244,7 @@ class TitulosModel {
     public function getContenidoDinamico($id_titulo) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM contenido_dinamico WHERE id_titulo = :id_titulo");
+            $stmt = $conn->prepare("SELECT * FROM contenido_dinamico WHERE id_titulo = :id_titulo and activo = true ORDER BY orden");
             $stmt->bindParam(':id_titulo', $id_titulo, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -256,7 +256,7 @@ class TitulosModel {
     public function getContenidoEstatico($id_titulo) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM contenido_estatico WHERE id_titulo = :id_titulo");
+            $stmt = $conn->prepare("SELECT * FROM contenido_estatico WHERE id_titulo = :id_titulo and activo = true ORDER BY orden");
             $stmt->bindParam(':id_titulo', $id_titulo, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
