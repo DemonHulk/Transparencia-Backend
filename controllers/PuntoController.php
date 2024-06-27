@@ -68,7 +68,7 @@ class PuntoController {
 
 
         // Validar nombre del punto
-        if (!$this->validacionesModel->ValidarTexto($decryptedData['nombrePunto'])) {
+        if (!$this->validacionesModel->ValidarTextoNumero($decryptedData['nombrePunto'])) {
             $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre del punto no es válido."]]);
             // Mandamos los datos a encriptar
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
@@ -117,7 +117,7 @@ class PuntoController {
         }
 
         // Validar nombre del punto
-        if (!$this->validacionesModel->ValidarTexto($decryptedData['nombrePunto'])) {
+        if (!$this->validacionesModel->ValidarTextoNumero($decryptedData['nombrePunto'])) {
             $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => "El nombre del punto no es válido."]]);
             // Mandamos los datos a encriptar
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);

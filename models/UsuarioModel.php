@@ -240,4 +240,29 @@ class UsuarioModel {
         }
     }
 
+    // Funcion para verificar el correo en el sistema
+    public function getUserByEmail($correo) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT id_usuario, correo FROM usuario WHERE correo = :correo");
+            $stmt->bindParam(':correo', $correo, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error al buscar el usuario: " . $e->getMessage());
+        }
+    }
+    
+    // Funcion para actualizar la contraseña por una ramdom
+    public function updatePassword($idUsuario, $hashedContrasenia) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("UPDATE usuario SET contrasenia = :contrasenia WHERE id_usuario = :idUsuario");
+            $stmt->bindParam(':contrasenia', $hashedContrasenia, PDO::PARAM_STR);
+            $stmt->bindParam(':idUsuario', $idUsuario, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            throw new Exception("Error al actualizar la contraseña: " . $e->getMessage());
+        }
+    }
 }
