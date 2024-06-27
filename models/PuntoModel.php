@@ -188,9 +188,8 @@ class PuntoModel {
             $conn = Conexion::Conexion();
             $conn->beginTransaction();
 
-            $stmt = $conn->prepare("UPDATE punto SET activo = FALSE, fecha_actualizado  = :fecha_actualizado  WHERE id_punto = :id");
+            $stmt = $conn->prepare("SELECT desactivarPunto(:id);");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
 
             if ($stmt->rowCount() == 0) {
@@ -206,15 +205,13 @@ class PuntoModel {
         }
     }
 
-
     public function ActivateModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
             $conn->beginTransaction();
 
-            $stmt = $conn->prepare("UPDATE punto SET activo = TRUE, fecha_actualizado  = :fecha_actualizado  WHERE id_punto = :id");
+            $stmt = $conn->prepare("SELECT reactivarPunto(:id)");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
 
             if ($stmt->rowCount() == 0) {
@@ -231,9 +228,6 @@ class PuntoModel {
             return ['res' => false, 'data' => "Error al activar el punto: " . $e->getMessage()];
         }
     }
-
-
-
 
     private function adjustOrder($conn, $newOrder, $currentOrder) {
         if ($newOrder < $currentOrder || $currentOrder == 0) {
@@ -261,6 +255,36 @@ class PuntoModel {
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
             return ['res' => false, 'data' => "Error al obtener los puntos: " . $e->getMessage()];
+        }
+    }
+
+    // Función para actualizar el orden de los puntos en la base de datos
+    public function actualizarOrdenPuntos($datos) {
+        try {
+            $conn = Conexion::Conexion();
+            $conn->beginTransaction();
+
+            foreach ($datos as $punto) {
+                $id_punto = $punto['id_punto'];
+                $nuevo_orden = $punto['orden_punto'];
+
+                // Actualizar el orden del punto en la base de datos
+                $stmt = $conn->prepare("UPDATE punto SET orden_punto = :nuevo_orden WHERE id_punto = :id_punto");
+                $stmt->bindParam(':nuevo_orden', $nuevo_orden, PDO::PARAM_INT);
+                $stmt->bindParam(':id_punto', $id_punto, PDO::PARAM_INT);
+                $stmt->execute();
+            }
+
+            $conn->commit();
+
+            // Devolver mensaje de éxito
+            return ['res' => true, 'data' => 'Orden de puntos actualizado correctamente'];
+        } catch (PDOException $e) {
+            // Rollback en caso de error
+            $conn->rollBack();
+
+            // Devolver mensaje de error
+            throw new Exception("Error al actualizar el orden de puntos: " . $e->getMessage());
         }
     }
 
