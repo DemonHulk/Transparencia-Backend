@@ -116,7 +116,7 @@ class ContenidoDinamicoController {
             // Retornamos los datos ya encriptados
             echo $encryptedResponse;
         } catch (Exception $e) {
-            echo json_encode(['estado' => 500, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
+            ExceptionHandler::handle($e);
         }
     }
 
@@ -186,7 +186,7 @@ class ContenidoDinamicoController {
             // Retornamos los datos ya encriptados
             echo $encryptedResponse;
         } catch (Exception $e) {
-            echo json_encode(['estado' => 500, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
+            ExceptionHandler::handle($e);
         }
     }
     

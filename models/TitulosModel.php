@@ -27,61 +27,66 @@ class TitulosModel {
         }
     }
 
-    public function InsertModel($datos) {
-        try {
-            $conn = Conexion::Conexion();
-            $conn->beginTransaction();
+        public function InsertModel($datos) {
+            try {
+                $conn = Conexion::Conexion();
+                $conn->beginTransaction();
 
-            // Validar si el nombre del titulo ya existe
-            $stmt = $conn->prepare("SELECT COUNT(*) FROM titulos WHERE nombre_titulo = :nombre and id_punto = :punto and fk_titulos IS NULL");
-            $stmt->bindParam(':nombre', $datos['nombreTitulo'], PDO::PARAM_STR);
-            $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
-            $stmt->execute();
-            $existingCount = $stmt->fetchColumn();
-
-            if ($existingCount > 0) {
-                $conn->rollBack();
-                return ['res' => false, 'data' => "Ya existe el tema con ese nombre"];
-            }
-
-            if (!isset($datos['orden_titulos']) || empty($datos['orden_titulos'])) {
-                // Obtener el último orden existente sin importar el estado
-                $stmt = $conn->prepare("SELECT MAX(orden_titulos) FROM titulos WHERE id_punto = :punto AND fk_titulos IS NULL");
+                // Validar si el nombre del titulo ya existe
+                $stmt = $conn->prepare("SELECT COUNT(*) FROM titulos WHERE nombre_titulo = :nombre and id_punto = :punto and fk_titulos IS NULL");
+                $stmt->bindParam(':nombre', $datos['nombreTitulo'], PDO::PARAM_STR);
                 $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
                 $stmt->execute();
-                $lastOrder = $stmt->fetchColumn();
-                $datos['orden_titulos'] = $lastOrder + 1;
+                $existingCount = $stmt->fetchColumn();
+
+                if ($existingCount > 0) {
+                    $conn->rollBack();
+                    return ['res' => false, 'data' => "Ya existe el tema con ese nombre"];
+                }
+
+                if (!isset($datos['orden_titulos']) || empty($datos['orden_titulos'])) {
+                    // Obtener el último orden existente sin importar el estado
+                    $stmt = $conn->prepare("SELECT MAX(orden_titulos) FROM titulos WHERE id_punto = :punto AND fk_titulos IS NULL");
+                    $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
+                    $stmt->execute();
+                    $lastOrder = $stmt->fetchColumn();
+                    $datos['orden_titulos'] = $lastOrder + 1;
+                }
+
+                // Ajustar los valores de orden_titulos
+                $this->adjustOrderTitulos($conn, $datos['orden_titulos'], 0, $datos['punto']);
+
+
+                // Insertar el punto en la tabla punto
+                $stmt = $conn->prepare("
+                    INSERT INTO titulos (id_punto, nombre_titulo, tipo_contenido, link, punto_destino, orden_titulos, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
+                    VALUES(:punto, :nombre, :tipocontenido, :eslink, :puntodestino, :orden, true, :fecha_creacion, :hora_creacion, :fecha_actualizado);");
+                $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
+                $stmt->bindParam(':nombre', $datos['nombreTitulo'], PDO::PARAM_STR);
+                $stmt->bindParam(':tipocontenido', $datos['tipoContenido'], PDO::PARAM_STR);
+                $esLinkBool = ($datos['esLink'] == '' ? false : true); // Convertir a booleano
+                $stmt->bindParam(':eslink', $esLinkBool, PDO::PARAM_BOOL);
+                $puntoDestino = isset($datos['puntodestino']) ? $datos['puntodestino'] : null; // Manejar NULL
+                $stmt->bindParam(':puntodestino', $puntoDestino, PDO::PARAM_INT);
+                $stmt->bindParam(':orden', $datos['orden_titulos'], PDO::PARAM_INT);
+                $stmt->bindParam(':fecha_creacion', $datos['fecha_creacion'], PDO::PARAM_STR);
+                $stmt->bindParam(':hora_creacion', $datos['hora_creacion'], PDO::PARAM_STR);
+                $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+                $stmt->execute();
+
+                // Crear la carpeta si no existe
+                $dir = 'C:/xampp/htdocs/Transparencia-Backend/assets/documents/' . $datos['nombreTitulo'];
+                if (!file_exists($dir)) {
+                    mkdir($dir, 0777, true);
+                }
+
+                $conn->commit();
+                return ['res' => true, 'data' => "Tema guardado exitosamente"];
+            } catch (PDOException $e) {
+                $conn->rollBack();
+                throw new Exception("Error al insertar el Titulo: " . $e->getMessage());
             }
-
-            // Ajustar los valores de orden_titulos
-            $this->adjustOrderTitulos($conn, $datos['orden_titulos'], 0, $datos['punto']);
-
-
-            // Insertar el punto en la tabla punto
-            $stmt = $conn->prepare("
-                INSERT INTO titulos (id_punto, nombre_titulo, tipo_contenido, link, punto_destino, orden_titulos, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
-                VALUES(:punto, :nombre, :tipocontenido, :eslink, :puntodestino, :orden, true, :fecha_creacion, :hora_creacion, :fecha_actualizado);");
-            $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
-            $stmt->bindParam(':nombre', $datos['nombreTitulo'], PDO::PARAM_STR);
-            $stmt->bindParam(':tipocontenido', $datos['tipoContenido'], PDO::PARAM_STR);
-            $esLinkBool = ($datos['esLink'] == '' ? false : true); // Convertir a booleano
-            $stmt->bindParam(':eslink', $esLinkBool, PDO::PARAM_BOOL);
-            $puntoDestino = isset($datos['puntodestino']) ? $datos['puntodestino'] : null; // Manejar NULL
-            $stmt->bindParam(':puntodestino', $puntoDestino, PDO::PARAM_INT);
-            $stmt->bindParam(':orden', $datos['orden_titulos'], PDO::PARAM_INT);
-            $stmt->bindParam(':fecha_creacion', $datos['fecha_creacion'], PDO::PARAM_STR);
-            $stmt->bindParam(':hora_creacion', $datos['hora_creacion'], PDO::PARAM_STR);
-            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
-            $stmt->execute();
-
-
-            $conn->commit();
-            return ['res' => true, 'data' => "Tema guardado exitosamente"];
-        } catch (PDOException $e) {
-            $conn->rollBack();
-            throw new Exception("Error al insertar el Titulo: " . $e->getMessage());
         }
-    }
 
 
     public function QueryTitulosPuntoModel($id) {
@@ -113,7 +118,7 @@ class TitulosModel {
         try {
             $conn = Conexion::Conexion();
             $conn->beginTransaction();
-
+    
             // Validar si el nombre del título ya existe
             $stmt = $conn->prepare("
                 SELECT COUNT(*) 
@@ -127,12 +132,18 @@ class TitulosModel {
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             $count = $stmt->fetchColumn();
-
+    
             if ($count > 0) {
                 $conn->rollBack();
                 return ['res' => false, 'data' => "Error: Ya existe otro Tema con el mismo nombre"];
             }
-
+    
+            // Obtener el nombre actual del título
+            $stmt = $conn->prepare("SELECT nombre_titulo FROM titulos WHERE id_titulo = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $currentNombre = $stmt->fetchColumn();
+    
             // Proceder con la actualización si no se encuentra duplicado
             $stmt = $conn->prepare("
                 UPDATE titulos 
@@ -142,24 +153,48 @@ class TitulosModel {
                     link = :eslink, 
                     fecha_actualizado = :fecha_actualizado 
                 WHERE id_titulo = :id");
-            
+    
             // Vincular los parámetros correctamente
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':nombreTitulo', $datos['nombreTitulo'], PDO::PARAM_STR);
             $stmt->bindParam(':tipocontenido', $datos['tipoContenido'], PDO::PARAM_STR);
-            
+    
             // Convertir el valor a booleano y vincularlo correctamente
-            $esLinkBool = filter_var($datos['esLink'], FILTER_VALIDATE_BOOLEAN); // Mejor manejo de booleanos
+            $esLinkBool = filter_var($datos['esLink'], FILTER_VALIDATE_BOOLEAN);
             $stmt->bindParam(':eslink', $esLinkBool, PDO::PARAM_BOOL);
-            
+    
             $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
-
+    
             if ($stmt->rowCount() == 0) {
                 $conn->rollBack();
                 return ['res' => false, 'data' => "Error al actualizar el Tema"];
             }
-
+    
+            // Actualizar el nombre de la carpeta si el nombre del título ha cambiado
+            if ($currentNombre !== $datos['nombreTitulo']) {
+                $currentDir = 'C:/xampp/htdocs/Transparencia-Backend/assets/documents/' . $currentNombre;
+                $newDir = 'C:/xampp/htdocs/Transparencia-Backend/assets/documents/' . $datos['nombreTitulo'];
+    
+                if (file_exists($currentDir)) {
+                    rename($currentDir, $newDir);
+                } else {
+                    mkdir($newDir, 0777, true);
+                }
+    
+                // Actualizar las rutas de los documentos en la tabla contenido_dinamico
+                $stmt = $conn->prepare("
+                    UPDATE contenido_dinamico 
+                    SET ruta_documento = REPLACE(ruta_documento, :currentPath, :newPath)
+                    WHERE id_titulo = :id");
+                $currentPath = 'assets/documents/' . $currentNombre;
+                $newPath = 'assets/documents/' . $datos['nombreTitulo'];
+                $stmt->bindParam(':currentPath', $currentPath, PDO::PARAM_STR);
+                $stmt->bindParam(':newPath', $newPath, PDO::PARAM_STR);
+                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->execute();
+            }
+    
             $conn->commit();
             return ['res' => true, 'data' => "Tema actualizado exitosamente"];
         } catch (PDOException $e) {
@@ -167,6 +202,8 @@ class TitulosModel {
             return ['res' => false, 'data' => "Error al actualizar el Tema: " . $e->getMessage()];
         }
     }
+    
+    
 
 
 

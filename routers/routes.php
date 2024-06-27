@@ -51,6 +51,7 @@ return [
         'UpdatecontentDinamico/(.+)' => 'ContenidoDinamicoController@UpdateDocumentoController',
         'contenidoEstatico' => 'ContenidoEstaticoController@InsertContenidoEstaticoController',
         'orderPuntos' => 'PuntoController@UpdateOrderPuntos',
+        'recuperarPassword' => 'UsuarioController@recoverPassword',
     ],
     'PUT' => [
         'area/(.+)' => 'AreaController@UpdateController',
