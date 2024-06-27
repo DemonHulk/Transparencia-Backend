@@ -50,6 +50,7 @@ return [
         'contenidoDinamico' => 'ContenidoDinamicoController@InsertDocumentoController',
         'UpdatecontentDinamico/(.+)' => 'ContenidoDinamicoController@UpdateDocumentoController',
         'contenidoEstatico' => 'ContenidoEstaticoController@InsertContenidoEstaticoController',
+        'orderPuntos' => 'PuntoController@UpdateOrderPuntos',
     ],
     'PUT' => [
         'area/(.+)' => 'AreaController@UpdateController',

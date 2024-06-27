@@ -217,4 +217,36 @@ class PuntoController {
             ExceptionHandler::handle($e);
         }
     }
+
+     public function UpdateOrderPuntos($datos) {
+        // Obtener los datos encriptados
+        $encryptedData = $datos['data'];
+        
+        //desencriptacion
+        try {
+            // Mandamos los datos encriptados a la funcion para desencriptarlos
+            $decryptedData = $this->EncryptModel->decryptData($encryptedData);
+        } catch (Exception $e) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
+            // Mandamos los datos a encriptar
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+            return;
+        }
+
+        try {
+            // Insertar punto
+            $resultado = $this->puntoModel->actualizarOrdenPuntos($decryptedData);
+            $response = json_encode(['estado' => 200, 'resultado' =>  $resultado]);
+
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+
+    }
 }
