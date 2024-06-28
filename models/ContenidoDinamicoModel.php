@@ -333,6 +333,55 @@ class ContenidoDinamicoModel {
             return ['res' => false, 'data' => "Error al obtener el documento: " . $e->getMessage()];
         }
     }
+
+public function SearchPDF($keyword) {
+    try {
+        $conn = Conexion::Conexion();
+        $stmt = $conn->prepare("
+            SELECT cd.id_contenido_dinamico, 
+                   p.id_punto, 
+                   p.orden_punto,
+                   t.id_titulo, 
+                   cd.nombre_externo_documento, 
+                   p.nombre_punto, 
+                   t.nombre_titulo  
+            FROM contenido_dinamico cd 
+            LEFT JOIN titulos t ON t.id_titulo = cd.id_titulo 
+            LEFT JOIN punto p ON p.id_punto = t.id_punto
+            WHERE p.activo = TRUE 
+              AND cd.activo = TRUE 
+              AND t.activo = TRUE 
+              AND LOWER(
+                  REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
+                      cd.nombre_externo_documento, 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u')
+              ) LIKE LOWER(:keyword)
+            LIMIT 10
+        ");
+        
+        // Sanitización y preparación de la palabra clave
+        $keyword = '%' . $this->removeAccents($keyword) . '%';
+        $stmt->bindParam(':keyword', $keyword, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        // Devolver los resultados de la consulta
+        return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
+    } catch (PDOException $e) {
+        // Registro de error para monitoreo y depuración
+        error_log("Error al obtener los datos del contenido: " . $e->getMessage());
+        return ['res' => false, 'data' => "Error al obtener los datos del contenido: " . $e->getMessage()];
+    }
+}
+
+function removeAccents($string) {
+    return str_replace(
+        ['á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú', 'ñ', 'Ñ'],
+        ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U', 'n', 'N'],
+        $string
+    );
+}
+
+
+
     
 }
 ?>

@@ -52,6 +52,7 @@ return [
         'contenidoEstatico' => 'ContenidoEstaticoController@InsertContenidoEstaticoController',
         'orderPuntos' => 'PuntoController@UpdateOrderPuntos',
         'recuperarPassword' => 'UsuarioController@recoverPassword',
+        'buscarPDF' => 'ContenidoDinamicoController@SearchFile',
     ],
     'PUT' => [
         'area/(.+)' => 'AreaController@UpdateController',
