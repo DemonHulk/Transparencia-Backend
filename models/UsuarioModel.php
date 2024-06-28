@@ -7,7 +7,7 @@ class UsuarioModel {
     public function QueryAllUserArea() {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT u.id_usuario, u.nombre, u.apellido1, u.apellido2, u.activo, a.nombre_area FROM usuario u JOIN area a ON u.id_area = a.id_area ORDER BY  u.id_usuario");
+            $stmt = $conn->prepare("SELECT u.id_usuario, u.correo, u.activo, a.nombre_area FROM usuario u JOIN area a ON u.id_area = a.id_area ORDER BY  u.id_usuario");
             $stmt->execute();
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
@@ -46,25 +46,8 @@ class UsuarioModel {
             if ($count > 0) {
                 return ['res' => false, 'data' => "El correo ya esta registrado en el sistema"];
             }
-
-            // Verificar que el número de teléfono no este registrado en el sistema
-            $checktell = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE telefono = :telefono");
-            $checktell->bindParam(':telefono', $datos['telefono'], PDO::PARAM_STR);
-            $checktell->execute();
-            $countTell = $checktell->fetchColumn();
-
-            if ($countTell > 0) {
-                return ['res' => false, 'data' => "El Número de Teléfono ya esta registrado en el sistema"];
-            }
                 
-            $stmt = $conn->prepare("INSERT INTO usuario (nombre, apellido1, apellido2, telefono, correo, contrasenia, id_area, fecha_creacion, hora_creacion, fecha_actualizado) VALUES (:nombre, :apellido1, :apellido2, :telefono, :correo, :contrasenia, :id_area, :fecha_creacion, :hora_creacion, :fecha_actualizado)");
-            $stmt->bindParam(':nombre', $datos['nombre'], PDO::PARAM_STR);
-            $stmt->bindParam(':apellido1', $datos['primerApellido'], PDO::PARAM_STR);
-            // Manejar para que segundoApellido pueda estar vacío
-            $segundoApellido = isset($datos['segundoApellido']) ? $datos['segundoApellido'] : '';
-            $stmt->bindParam(':apellido2', $segundoApellido, PDO::PARAM_STR);
-            
-            $stmt->bindParam(':telefono', $datos['telefono'], PDO::PARAM_STR);
+            $stmt = $conn->prepare("INSERT INTO usuario (correo, contrasenia, id_area, fecha_creacion, hora_creacion, fecha_actualizado) VALUES ( :correo, :contrasenia, :id_area, :fecha_creacion, :hora_creacion, :fecha_actualizado)");
             $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
             $stmt->bindParam(':contrasenia', $datos['password'], PDO::PARAM_STR);
             $stmt->bindParam(':id_area', $datos['id_area'], PDO::PARAM_INT);
@@ -93,17 +76,7 @@ class UsuarioModel {
             if ($count > 0) {
                 return ['res' => false, 'data' => "El correo ya está registrado por otro usuario"];
             }
-    
-            // Verificar que el número de teléfono no esté registrado en el sistema
-            $checktell = $conn->prepare("SELECT COUNT(*) FROM usuario WHERE telefono = :telefono AND id_usuario != :id");
-            $checktell->bindParam(':telefono', $datos['telefono'], PDO::PARAM_STR);
-            $checktell->bindValue(':id', $id, PDO::PARAM_INT);
-            $checktell->execute();
-            $countTell = $checktell->fetchColumn();
-    
-            if ($countTell > 0) {
-                return ['res' => false, 'data' => "El Número de Teléfono ya está registrado por otro usuario"];
-            }
+   
     
             // Inicializar $set_password y $set_id_area
             $set_password = '';
@@ -123,14 +96,10 @@ class UsuarioModel {
                 $set_id_area = ", id_area = :id_area";
             }
     
-            $sql = "UPDATE usuario SET nombre = :nombre, apellido1 = :apellido1, apellido2 = :apellido2, telefono = :telefono, correo = :correo $set_id_area, fecha_actualizado = :fecha_actualizado $set_password WHERE id_usuario = :id AND activo = TRUE";
+            $sql = "UPDATE usuario SET correo = :correo $set_id_area, fecha_actualizado = :fecha_actualizado $set_password WHERE id_usuario = :id AND activo = TRUE";
     
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->bindParam(':nombre', $datos['nombre'], PDO::PARAM_STR);
-            $stmt->bindParam(':apellido1', $datos['primerApellido'], PDO::PARAM_STR);
-            $stmt->bindParam(':apellido2', $datos['segundoApellido'], PDO::PARAM_STR);
-            $stmt->bindParam(':telefono', $datos['telefono'], PDO::PARAM_STR);
             $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
     
             // Vincular el id_area solo si se proporciona
