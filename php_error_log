@@ -628,3 +628,39 @@ Stack trace:
 [23-Jun-2024 09:53:29 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
 [23-Jun-2024 09:53:29 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 11
 [23-Jun-2024 09:53:29 Europe/Berlin] PHP Warning:  openssl_decrypt(): IV passed is only 6 bytes long, cipher expects an IV of precisely 16 bytes, padding with \0 in C:\xampp\htdocs\Transparencia-Backend\models\EncryptModel.php on line 18
+[28-Jun-2024 06:56:12 Europe/Berlin] PHP Fatal error:  Uncaught Exception: Error al insertar el usuario: SQLSTATE[23505]: Unique violation: 7 ERROR:  llave duplicada viola restricción de unicidad «usuario_pkey1»
+DETAIL:  Ya existe la llave (id_usuario)=(1). in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php:61
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php(108): UsuarioModel->InsertModel(Array)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->InsertController(Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#3 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 61
+[28-Jun-2024 06:56:48 Europe/Berlin] PHP Fatal error:  Uncaught Exception: Error al insertar el usuario: SQLSTATE[23505]: Unique violation: 7 ERROR:  llave duplicada viola restricción de unicidad «usuario_pkey1»
+DETAIL:  Ya existe la llave (id_usuario)=(2). in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php:61
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php(108): UsuarioModel->InsertModel(Array)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->InsertController(Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#3 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 61
+[28-Jun-2024 06:59:00 Europe/Berlin] PHP Fatal error:  Uncaught Exception: Error al insertar el usuario: SQLSTATE[23505]: Unique violation: 7 ERROR:  llave duplicada viola restricción de unicidad «usuario_pkey1»
+DETAIL:  Ya existe la llave (id_usuario)=(3). in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php:61
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php(108): UsuarioModel->InsertModel(Array)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->InsertController(Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#3 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 61
+[28-Jun-2024 06:59:40 Europe/Berlin] PHP Fatal error:  Uncaught Exception: Error al insertar el usuario: SQLSTATE[23505]: Unique violation: 7 ERROR:  llave duplicada viola restricción de unicidad «usuario_pkey1»
+DETAIL:  Ya existe la llave (id_usuario)=(4). in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php:61
+Stack trace:
+#0 C:\xampp\htdocs\Transparencia-Backend\controllers\UsuarioController.php(108): UsuarioModel->InsertModel(Array)
+#1 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(65): UsuarioController->InsertController(Array)
+#2 C:\xampp\htdocs\Transparencia-Backend\routers\FrontController.php(34): FrontController->despachar('UsuarioControll...', Array)
+#3 C:\xampp\htdocs\Transparencia-Backend\index.php(28): FrontController->manejarSolicitud()
+#4 {main}
+  thrown in C:\xampp\htdocs\Transparencia-Backend\models\UsuarioModel.php on line 61

@@ -243,11 +243,11 @@ class PuntoModel {
     public function QueryPuntoUserModel($id_area) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT p.id_punto, p.nombre_punto, p.fecha_creacion, p.activo
+            $stmt = $conn->prepare("SELECT p.*
                                     FROM punto as p
                                     INNER JOIN puntosareas as pa ON p.id_punto = pa.id_punto
                                     WHERE pa.id_area = :id_area and pa.activo = TRUE
-                                    ORDER BY p.nombre_punto");
+                                    ORDER BY p.orden_punto");
 
             $stmt->bindParam(':id_area', $id_area, PDO::PARAM_INT);
             $stmt->execute();
