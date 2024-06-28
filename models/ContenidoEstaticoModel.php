@@ -6,8 +6,12 @@ class ContenidoEstaticoModel {
     public function QueryAllModel($id) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT contEst.*, CONCAT(usr.nombre, ' ', usr.apellido1, ' ', usr.apellido2) AS nombre_completo FROM contenido_estatico AS contEst
-                                        JOIN usuario AS usr ON contEst.id_usuario = usr.id_usuario WHERE contEst.id_titulo = :id ORDER BY contEst.orden;");
+            $stmt = $conn->prepare("SELECT contEst.*, area.nombre_area, usr.correo
+                                    FROM contenido_estatico AS contEst
+                                    JOIN usuario AS usr ON contEst.id_usuario = usr.id_usuario
+                                    JOIN area ON usr.id_area = area.id_area
+                                    WHERE contEst.id_titulo = :id 
+                                    ORDER BY contEst.orden;");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
