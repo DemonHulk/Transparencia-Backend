@@ -266,5 +266,20 @@ class ContenidoDinamicoController {
             echo $encryptedResponse;
         }
     }
+
+    public function SearchFile($data) {
+        try {
+            $decryptText = $this->EncryptModel->decryptData($data['data']);
+            // Actualizamos el estado
+            $resultado = $this->ContenidoDinamicoModel->SearchPDF($decryptText);
+            $response = json_encode(['estado' => 200, 'resultado' => $resultado]);
+            // Mandamos los datos a encriptar
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
 }
 ?>
