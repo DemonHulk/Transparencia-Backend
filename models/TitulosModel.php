@@ -173,15 +173,21 @@ class TitulosModel {
 
             // Actualizar el nombre de la carpeta si el nombre del título ha cambiado
                 if ($currentNombre !== $datos['nombreTitulo']) {
-                   // Construir rutas relativas basadas en la ubicación del script actual
-                    $currentDir = realpath(__DIR__ . '/../assets/documents/' . $currentNombre);
-                    $newDir = realpath(__DIR__ . '/../assets/documents/' . $datos['nombreTitulo']);
+                 // Definir la ruta base
+                    $baseDir = __DIR__ . '/../assets/documents/';
+
+                    // Construir las rutas completas
+                    $currentDir = $baseDir . $currentNombre;
+                    $newDir = $baseDir . $datos['nombreTitulo'];
 
                     if (file_exists($currentDir)) {
                         rename($currentDir, $newDir);
                     } else {
-                        mkdir($newDir, 0777, true);
+                        if (!file_exists($newDir)) {
+                            mkdir($newDir, 0777, true);
+                        }
                     }
+
 
                 // Actualizar las rutas de los documentos en la tabla contenido_dinamico
                     $stmt = $conn->prepare("
@@ -530,7 +536,7 @@ class TitulosModel {
                 $stmt->execute();
 
                 // Crear la carpeta si no existe
-                $dir = realpath(__DIR__ . '/../assets/documents/' . $datos['nombreTitulo']);
+               $dir = __DIR__ . '/../assets/documents/' . $datos['nombreTitulo'];
                 if (!file_exists($dir)) {
                     mkdir($dir, 0777, true);
                 }
@@ -622,6 +628,26 @@ class TitulosModel {
                     $conn->rollBack();
                     return ['res' => false, 'data' => "Error al actualizar el Tema"];
                 }
+                 // Actualizar el nombre de la carpeta si el nombre del título ha cambiado
+                if ($currentNombre !== $datos['nombreTitulo']) {
+                 // Definir la ruta base
+                    $baseDir = __DIR__ . '/../assets/documents/';
+
+                    // Construir las rutas completas
+                    $currentDir = $baseDir . $currentNombre;
+                    $newDir = $baseDir . $datos['nombreTitulo'];
+
+                    if (file_exists($currentDir)) {
+                        rename($currentDir, $newDir);
+                    } else {
+                        if (!file_exists($newDir)) {
+                            mkdir($newDir, 0777, true);
+                        }
+                    }
+                }
+
+
+
 
                 $conn->commit();
                 return ['res' => true, 'data' => "Tema actualizado exitosamente"];
