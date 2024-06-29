@@ -269,7 +269,7 @@ private function getFullPath($conn, $tituloId, $subtitulo) {
         $tituloId = $result['fk_titulos'];
     }
     $path = implode('/', $path);
-    return __DIR__ . '/../assets/documents/' . $path . '/' . $subtitulo;
+    return 'assets/documents/' . $path . '/' . $subtitulo;
 }
 
     
