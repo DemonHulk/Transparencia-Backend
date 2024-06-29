@@ -275,8 +275,6 @@ class TitulosModel {
             }
         }
 
-
-
         public function getContenidoDinamico($id_titulo) {
             try {
                 $conn = Conexion::Conexion();
@@ -442,7 +440,6 @@ class TitulosModel {
             }
         }
 
-
         private function obtenerContenidoSubtitulos($id_titulo, $tipo_contenido) {
             if ($tipo_contenido == 2) {
                 return $this->getContenidoDinamicoSubtitulo($id_titulo);
@@ -452,7 +449,6 @@ class TitulosModel {
                 return null;
             }
         }
-
 
         private function construirJerarquiaSubtitulos($titulos) {
             $jerarquia = [];
@@ -472,7 +468,6 @@ class TitulosModel {
             }
             return $jerarquia;
         }
-
 
         public function mostrarJerarquiaSubtitulos($idTitulo) {
             try {
@@ -535,7 +530,7 @@ class TitulosModel {
                 $stmt->execute();
 
                 // Crear la carpeta si no existe
-                $dir = realpath(__DIR__ . '/../assets/documents/' . $nombreTitulo);
+                $dir = realpath(__DIR__ . '/../assets/documents/' . $datos['nombreTitulo']);
                 if (!file_exists($dir)) {
                     mkdir($dir, 0777, true);
                 }
@@ -574,7 +569,6 @@ class TitulosModel {
                 throw new Exception("Error al obtener el título principal: " . $e->getMessage());
             }
         }
-
 
         public function UpdateModelSubtema($id, $datos) {
             try {
@@ -636,9 +630,5 @@ class TitulosModel {
                 return ['res' => false, 'data' => "Error al actualizar el Tema: " . $e->getMessage()];
             }
         }
-
-
-
-
 
     }
