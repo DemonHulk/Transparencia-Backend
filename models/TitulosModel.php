@@ -175,7 +175,7 @@ class TitulosModel {
                 if ($currentNombre !== $datos['nombreTitulo']) {
                    // Construir rutas relativas basadas en la ubicación del script actual
                     $currentDir = realpath(__DIR__ . '/../assets/documents/' . $currentNombre);
-                    $newDir = realpath(__DIR__ . '/../assets/documents/' . $nombreTitulo);
+                    $newDir = realpath(__DIR__ . '/../assets/documents/' . $datos['nombreTitulo']);
 
                     if (file_exists($currentDir)) {
                         rename($currentDir, $newDir);
