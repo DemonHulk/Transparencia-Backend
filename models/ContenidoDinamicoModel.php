@@ -45,215 +45,233 @@ class ContenidoDinamicoModel {
     }
 
     public function InsertDocumentoModel($datos) {
-        try {
-            $conn = Conexion::Conexion();
-            $conn->beginTransaction();
-            
-            // Verificar y manejar la extensión .pdf en nombreInterno
-            if (!preg_match('/\.pdf$/i', $datos['nombreInterno'])) {
-                $datos['nombreInterno'] .= '.pdf';
-            }
+    try {
+        $conn = Conexion::Conexion();
+        $conn->beginTransaction();
+        
+        // Verificar y manejar la extensión .pdf en nombreInterno
+        if (!preg_match('/\.pdf$/i', $datos['nombreInterno'])) {
+            $datos['nombreInterno'] .= '.pdf';
+        }
 
-            // Validar si ya existe un archivo con el mismo nombre interno
-            $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_interno_documento = :nombre_interno_documento AND id_titulo = :id_titulo");
+        // Validar si ya existe un archivo con el mismo nombre interno
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_interno_documento = :nombre_interno_documento AND id_titulo = :id_titulo");
+        $stmt->bindParam(':nombre_interno_documento', $datos['nombreInterno'], PDO::PARAM_STR);
+        $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
+        $stmt->execute();
+        $existingInternalFileCount = $stmt->fetchColumn();
+
+        if ($existingInternalFileCount > 0) {
+            return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre interno para el mismo titulo."];
+        }
+
+        // Validar si ya existe un archivo con el mismo nombre externo
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_externo_documento = :nombre_externo_documento AND id_titulo = :id_titulo");
+        $stmt->bindParam(':nombre_externo_documento', $datos['nombreExterno'], PDO::PARAM_STR);
+        $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
+        $stmt->execute();
+        $existingExternalFileCount = $stmt->fetchColumn();
+
+        if ($existingExternalFileCount > 0) {
+            return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre externo para el mismo titulo."];
+        }
+
+        // Si no se pasa el orden, obtener el último orden
+        if (!isset($datos['orden']) || empty($datos['orden'])) {
+            $stmt = $conn->prepare("SELECT MAX(orden) FROM contenido_dinamico WHERE id_titulo = :id_titulo");
+            $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
+            $stmt->execute();
+            $lastOrder = $stmt->fetchColumn();
+            $datos['orden'] = $lastOrder + 1;
+        }
+        
+        $activo = true;
+
+        // Obtener el título del documento y la jerarquía completa
+        $stmt = $conn->prepare("SELECT nombre_titulo, fk_titulos FROM titulos WHERE id_titulo = :id_titulo");
+        $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
+        $stmt->execute();
+        $titulo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$titulo) {
+            return ['res' => false, 'data' => "No se encontró el título con el ID especificado."];
+        }
+
+        // Obtener la ruta completa de todos los padres
+        $rutaCarpeta = $this->getFullPath($conn, $titulo['fk_titulos'], $titulo['nombre_titulo']);
+        if (!is_dir($rutaCarpeta)) {
+            mkdir($rutaCarpeta, 0777, true);
+        }
+
+        // Guardar el archivo en la carpeta especificada
+        $archivoBase64 = base64_encode($datos['archivo']);
+        $contenidoArchivo = base64_decode($archivoBase64);
+        $rutaDocumento = $rutaCarpeta . '/' . $datos['nombreInterno'];
+        file_put_contents($rutaDocumento, $contenidoArchivo);
+
+        $stmt = $conn->prepare("INSERT INTO contenido_dinamico (id_usuario, id_titulo, nombre_externo_documento, nombre_interno_documento, ruta_documento, id_trimestre, descripcion, orden, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
+                                VALUES (:id_usuario, :id_titulo, :nombre_externo_documento, :nombre_interno_documento, :ruta_documento, :id_trimestre, :descripcion, :orden, :activo, :fecha_creacion, :hora_creacion, :fecha_actualizado)");
+        $stmt->bindParam(':id_usuario', $datos['id_usuario'], PDO::PARAM_INT);
+        $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
+        $stmt->bindParam(':nombre_externo_documento', $datos['nombreExterno'], PDO::PARAM_STR);
+        $stmt->bindParam(':nombre_interno_documento', $datos['nombreInterno'], PDO::PARAM_STR);
+        $stmt->bindParam(':ruta_documento', $rutaDocumento, PDO::PARAM_STR);
+        $stmt->bindParam(':id_trimestre', $datos['id_trimestre'], PDO::PARAM_INT);
+        $stmt->bindParam(':descripcion', $datos['descripcion'], PDO::PARAM_STR);
+        $stmt->bindParam(':orden', $datos['orden'], PDO::PARAM_INT);
+        $stmt->bindParam(':activo', $activo, PDO::PARAM_BOOL);
+        $stmt->bindParam(':fecha_creacion', $datos['fecha_creacion'], PDO::PARAM_STR);
+        $stmt->bindParam(':hora_creacion', $datos['hora_creacion'], PDO::PARAM_STR);
+        $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+        $stmt->execute();
+
+        $conn->commit();
+
+        if ($stmt) {
+            return ['res' => true, 'data' => "Documento guardado exitosamente"];
+        }
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        return ['res' => false, 'data' => "Error al insertar el contenido: " . $e->getMessage()];
+    }
+}
+
+
+
+    public function UpdateModel($id, $datos) {
+    try {
+        $conn = Conexion::Conexion();
+        $conn->beginTransaction();
+
+        // Verificar y manejar la extensión .pdf en nombreInterno
+        if (!preg_match('/\.pdf$/i', $datos['nombreInterno'])) {
+            $datos['nombreInterno'] .= '.pdf';
+        }
+
+        // Obtener la información actual del documento
+        $stmtSelect = $conn->prepare("SELECT ruta_documento, nombre_interno_documento, nombre_externo_documento, id_titulo FROM contenido_dinamico WHERE id_contenido_dinamico = :id");
+        $stmtSelect->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmtSelect->execute();
+        $documentoActual = $stmtSelect->fetch(PDO::FETCH_ASSOC);
+
+        $rutaDocumento = $documentoActual['ruta_documento'];
+        $nombreAnteriorInterno = $documentoActual['nombre_interno_documento'];
+        $nombreAnteriorExterno = $documentoActual['nombre_externo_documento'];
+        $idTituloActual = $documentoActual['id_titulo'];
+
+        // Validar si ya existe un archivo con el mismo nombre interno (si se cambia)
+        if ($nombreAnteriorInterno !== $datos['nombreInterno']) {
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_interno_documento = :nombre_interno_documento AND id_contenido_dinamico != :id AND id_titulo = :id_titulo");
             $stmt->bindParam(':nombre_interno_documento', $datos['nombreInterno'], PDO::PARAM_STR);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
             $stmt->execute();
             $existingInternalFileCount = $stmt->fetchColumn();
-    
+
             if ($existingInternalFileCount > 0) {
-                return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre interno para el mismo titulo."];
+                return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre interno en este tema."];
             }
-    
-            // Validar si ya existe un archivo con el mismo nombre externo
-            $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_externo_documento = :nombre_externo_documento AND id_titulo = :id_titulo");
+        }
+
+        // Validar si ya existe un archivo con el mismo nombre externo (si se cambia)
+        if ($nombreAnteriorExterno !== $datos['nombreExterno']) {
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_externo_documento = :nombre_externo_documento AND id_contenido_dinamico != :id AND id_titulo = :id_titulo");
             $stmt->bindParam(':nombre_externo_documento', $datos['nombreExterno'], PDO::PARAM_STR);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
             $stmt->execute();
             $existingExternalFileCount = $stmt->fetchColumn();
-    
+
             if ($existingExternalFileCount > 0) {
-                return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre externo para el mismo titulo."];
+                return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre externo en este tema."];
             }
-    
-            // Si no se pasa el orden, obtener el último orden
-            if (!isset($datos['orden']) || empty($datos['orden'])) {
-                $stmt = $conn->prepare("SELECT MAX(orden) FROM contenido_dinamico WHERE id_titulo = :id_titulo");
-                $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
-                $stmt->execute();
-                $lastOrder = $stmt->fetchColumn();
-                $datos['orden'] = $lastOrder + 1;
+        }
+
+        // Obtener el título del documento y la jerarquía completa
+        $stmt = $conn->prepare("SELECT nombre_titulo, fk_titulos FROM titulos WHERE id_titulo = :id_titulo");
+        $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
+        $stmt->execute();
+        $titulo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$titulo) {
+            return ['res' => false, 'data' => "No se encontró el título con el ID especificado."];
+        }
+
+        // Obtener la ruta completa de todos los padres
+        $rutaCarpeta = $this->getFullPath($conn, $titulo['fk_titulos'], $titulo['nombre_titulo']);
+        if (!is_dir($rutaCarpeta)) {
+            mkdir($rutaCarpeta, 0777, true);
+        }
+
+        // Actualizar el archivo si se proporciona uno nuevo
+        if (!empty($datos['archivo'])) {
+            // Eliminar el archivo existente si existe
+            if (file_exists($rutaDocumento)) {
+                unlink($rutaDocumento);
             }
             
-            $activo = true;
-    
-            // Obtener el título del documento
-            $stmt = $conn->prepare("SELECT nombre_titulo FROM titulos WHERE id_titulo = :id_titulo");
-            $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
-            $stmt->execute();
-            $titulo = $stmt->fetchColumn();
-    
-            if (!$titulo) {
-                return ['res' => false, 'data' => "No se encontró el título con el ID especificado."];
-            }
-    
-            // Verificar si existe la carpeta, si no, crearla
-            $rutaCarpeta = 'assets/documents/' . $titulo;
-            if (!is_dir($rutaCarpeta)) {
-                mkdir($rutaCarpeta, 0777, true);
-            }
-    
-            // Guardar el archivo en la carpeta especificada
-            $archivoBase64 = base64_encode($datos['archivo']);
-            $contenidoArchivo = base64_decode($archivoBase64);
             $rutaDocumento = $rutaCarpeta . '/' . $datos['nombreInterno'];
-            file_put_contents($rutaDocumento, $contenidoArchivo);
-    
-            $stmt = $conn->prepare("INSERT INTO contenido_dinamico (id_usuario, id_titulo, nombre_externo_documento, nombre_interno_documento, ruta_documento, id_trimestre, descripcion, orden, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
-                                    VALUES (:id_usuario, :id_titulo, :nombre_externo_documento, :nombre_interno_documento, :ruta_documento, :id_trimestre, :descripcion, :orden, :activo, :fecha_creacion, :hora_creacion, :fecha_actualizado)");
-            $stmt->bindParam(':id_usuario', $datos['id_usuario'], PDO::PARAM_INT);
-            $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
-            $stmt->bindParam(':nombre_externo_documento', $datos['nombreExterno'], PDO::PARAM_STR);
-            $stmt->bindParam(':nombre_interno_documento', $datos['nombreInterno'], PDO::PARAM_STR);
-            $stmt->bindParam(':ruta_documento', $rutaDocumento, PDO::PARAM_STR);
-            $stmt->bindParam(':id_trimestre', $datos['id_trimestre'], PDO::PARAM_INT);
-            $stmt->bindParam(':descripcion', $datos['descripcion'], PDO::PARAM_STR);
-            $stmt->bindParam(':orden', $datos['orden'], PDO::PARAM_INT);
-            $stmt->bindParam(':activo', $activo, PDO::PARAM_BOOL);
-            $stmt->bindParam(':fecha_creacion', $datos['fecha_creacion'], PDO::PARAM_STR);
-            $stmt->bindParam(':hora_creacion', $datos['hora_creacion'], PDO::PARAM_STR);
-            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
-            $stmt->execute();
-    
-            $conn->commit();
-    
-            if ($stmt) {
-                return ['res' => true, 'data' => "Documento guardado exitosamente"];
+            file_put_contents($rutaDocumento, $datos['archivo']);
+        } 
+        // Si solo se cambió el nombre, renombrar el archivo existente
+        elseif ($nombreAnteriorInterno !== $datos['nombreInterno']) {
+            $rutaAnterior = $rutaDocumento;
+            $rutaDocumento = $rutaCarpeta . '/' . $datos['nombreInterno'];
+            if (file_exists($rutaAnterior)) {
+                rename($rutaAnterior, $rutaDocumento);
             }
-        } catch (PDOException $e) {
-            $conn->rollBack();
-            return ['res' => false, 'data' => "Error al insertar el contenido: " . $e->getMessage()];
         }
-    }
-    
-    public function UpdateModel($id, $datos) {
-        try {
-            $conn = Conexion::Conexion();
-            $conn->beginTransaction();
 
-            // Verificar y manejar la extensión .pdf en nombreInterno
-            if (!preg_match('/\.pdf$/i', $datos['nombreInterno'])) {
-                $datos['nombreInterno'] .= '.pdf';
-            }
-    
-            // Obtener la información actual del documento
-            $stmtSelect = $conn->prepare("SELECT ruta_documento, nombre_interno_documento, nombre_externo_documento FROM contenido_dinamico WHERE id_contenido_dinamico = :id");
-            $stmtSelect->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmtSelect->execute();
-            $documentoActual = $stmtSelect->fetch(PDO::FETCH_ASSOC);
-    
-            $rutaDocumento = $documentoActual['ruta_documento'];
-            $nombreAnteriorInterno = $documentoActual['nombre_interno_documento'];
-            $nombreAnteriorExterno = $documentoActual['nombre_externo_documento'];
-    
-            // Validar si ya existe un archivo con el mismo nombre interno (si se cambia)
-            if ($nombreAnteriorInterno !== $datos['nombreInterno']) {
-                $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_interno_documento = :nombre_interno_documento AND id_contenido_dinamico != :id AND id_titulo = :id_titulo");
-                $stmt->bindParam(':nombre_interno_documento', $datos['nombreInterno'], PDO::PARAM_STR);
-                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
-                $stmt->execute();
-                $existingInternalFileCount = $stmt->fetchColumn();
-    
-                if ($existingInternalFileCount > 0) {
-                    return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre interno en este tema."];
-                }
-            }
-    
-            // Validar si ya existe un archivo con el mismo nombre externo (si se cambia)
-            if ($nombreAnteriorExterno !== $datos['nombreExterno']) {
-                $stmt = $conn->prepare("SELECT COUNT(*) FROM contenido_dinamico WHERE nombre_externo_documento = :nombre_externo_documento AND id_contenido_dinamico != :id AND id_titulo = :id_titulo");
-                $stmt->bindParam(':nombre_externo_documento', $datos['nombreExterno'], PDO::PARAM_STR);
-                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
-                $stmt->execute();
-                $existingExternalFileCount = $stmt->fetchColumn();
-    
-                if ($existingExternalFileCount > 0) {
-                    return ['res' => false, 'data' => "Ya existe un archivo con el mismo nombre externo en este tema."];
-                }
-            }
-    
-            // Obtener el título del documento
-            $stmt = $conn->prepare("SELECT nombre_titulo FROM titulos WHERE id_titulo = :id_titulo");
-            $stmt->bindParam(':id_titulo', $datos['id_titulo'], PDO::PARAM_INT);
-            $stmt->execute();
-            $titulo = $stmt->fetchColumn();
-    
-            if (!$titulo) {
-                return ['res' => false, 'data' => "No se encontró el título con el ID especificado."];
-            }
-    
-            // Verificar si existe la carpeta, si no, crearla
-            $rutaCarpeta = 'assets/documents/' . $titulo;
-            if (!is_dir($rutaCarpeta)) {
-                mkdir($rutaCarpeta, 0777, true);
-            }
-    
-            // Actualizar el archivo si se proporciona uno nuevo
-            if (!empty($datos['archivo'])) {
-                // Eliminar el archivo existente si existe
-                if (file_exists($rutaDocumento)) {
-                    unlink($rutaDocumento);
-                }
-                
-                $rutaDocumento = $rutaCarpeta . '/' . $datos['nombreInterno'];
-                file_put_contents($rutaDocumento, $datos['archivo']);
-            } 
-            // Si solo se cambió el nombre, renombrar el archivo existente
-            elseif ($nombreAnteriorInterno !== $datos['nombreInterno']) {
-                $rutaAnterior = $rutaDocumento;
-                $rutaDocumento = $rutaCarpeta . '/' . $datos['nombreInterno'];
-                if (file_exists($rutaAnterior)) {
-                    rename($rutaAnterior, $rutaDocumento);
-                }
-            }
-    
-            // Construir la consulta de actualización
-            $sql = "UPDATE contenido_dinamico SET 
-                        id_usuario = :id_usuario, 
-                        nombre_externo_documento = :nombre_externo_documento, 
-                        nombre_interno_documento = :nombre_interno_documento, 
-                        id_trimestre = :id_trimestre, 
-                        descripcion = :descripcion,  
-                        fecha_actualizado = :fecha_actualizado,
-                        ruta_documento = :ruta_documento
-                    WHERE id_contenido_dinamico = :id";
-    
-            $stmt = $conn->prepare($sql);
-    
-            // Vincular parámetros
-            $stmt->bindParam(':id_usuario', $datos['id_usuario'], PDO::PARAM_INT);
-            $stmt->bindParam(':nombre_externo_documento', $datos['nombreExterno'], PDO::PARAM_STR);
-            $stmt->bindParam(':nombre_interno_documento', $datos['nombreInterno'], PDO::PARAM_STR);
-            $stmt->bindParam(':id_trimestre', $datos['id_trimestre'], PDO::PARAM_INT);
-            $stmt->bindParam(':descripcion', $datos['descripcion'], PDO::PARAM_STR);
-            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
-            $stmt->bindParam(':ruta_documento', $rutaDocumento, PDO::PARAM_STR);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    
-            $stmt->execute();
-            $conn->commit();
-    
-            if ($stmt) {
-                return ['res' => true, 'data' => "Documento actualizado exitosamente"];
-            }
-        } catch (PDOException $e) {
-            $conn->rollBack();
-            throw new Exception("Error al actualizar el documento: " . $e->getMessage());
+        // Construir la consulta de actualización
+        $sql = "UPDATE contenido_dinamico SET 
+                    id_usuario = :id_usuario, 
+                    nombre_externo_documento = :nombre_externo_documento, 
+                    nombre_interno_documento = :nombre_interno_documento, 
+                    id_trimestre = :id_trimestre, 
+                    descripcion = :descripcion,  
+                    fecha_actualizado = :fecha_actualizado,
+                    ruta_documento = :ruta_documento
+                WHERE id_contenido_dinamico = :id";
+
+        $stmt = $conn->prepare($sql);
+
+        // Vincular parámetros
+        $stmt->bindParam(':id_usuario', $datos['id_usuario'], PDO::PARAM_INT);
+        $stmt->bindParam(':nombre_externo_documento', $datos['nombreExterno'], PDO::PARAM_STR);
+        $stmt->bindParam(':nombre_interno_documento', $datos['nombreInterno'], PDO::PARAM_STR);
+        $stmt->bindParam(':id_trimestre', $datos['id_trimestre'], PDO::PARAM_INT);
+        $stmt->bindParam(':descripcion', $datos['descripcion'], PDO::PARAM_STR);
+        $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+        $stmt->bindParam(':ruta_documento', $rutaDocumento, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+        $conn->commit();
+
+        if ($stmt) {
+            return ['res' => true, 'data' => "Documento actualizado exitosamente"];
         }
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        throw new Exception("Error al actualizar el documento: " . $e->getMessage());
     }
-    
+}
+
+// Función recursiva para obtener la ruta completa
+private function getFullPath($conn, $tituloId, $subtitulo) {
+    $path = [];
+    while ($tituloId != null) {
+        $stmt = $conn->prepare("SELECT nombre_titulo, fk_titulos FROM titulos WHERE id_titulo = :id");
+        $stmt->bindParam(':id', $tituloId, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        array_unshift($path, $result['nombre_titulo']);
+        $tituloId = $result['fk_titulos'];
+    }
+    $path = implode('/', $path);
+    return __DIR__ . '/../assets/documents/' . $path . '/' . $subtitulo;
+}
+
     
     
 

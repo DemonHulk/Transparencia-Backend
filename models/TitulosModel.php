@@ -301,9 +301,9 @@ class TitulosModel {
             try {
                 $conn = Conexion::Conexion();
                 $stmt = $conn->prepare("SELECT ce.*, u.correo, a.nombre_area  FROM contenido_estatico ce 
-                LEFT JOIN usuario u ON u.id_usuario = ce.id_usuario 
-                LEFT JOIN area a ON a.id_area  = u.id_area 
-                WHERE ce.id_titulo = :id_titulo and ce.activo = true ORDER BY orden");
+                    LEFT JOIN usuario u ON u.id_usuario = ce.id_usuario 
+                    LEFT JOIN area a ON a.id_area  = u.id_area 
+                    WHERE ce.id_titulo = :id_titulo and ce.activo = true ORDER BY orden");
                 $stmt->bindParam(':id_titulo', $id_titulo, PDO::PARAM_INT);
                 $stmt->execute();
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -435,9 +435,9 @@ class TitulosModel {
             try {
                 $conn = Conexion::Conexion();
                 $stmt = $conn->prepare("SELECT ce.*, u.correo, a.nombre_area  FROM contenido_estatico ce 
-                LEFT JOIN usuario u ON u.id_usuario = ce.id_usuario 
-                LEFT JOIN area a ON a.id_area  = u.id_area 
-                WHERE ce.id_titulo = :id_titulo ORDER BY orden");
+                    LEFT JOIN usuario u ON u.id_usuario = ce.id_usuario 
+                    LEFT JOIN area a ON a.id_area  = u.id_area 
+                    WHERE ce.id_titulo = :id_titulo ORDER BY orden");
                 $stmt->bindParam(':id_titulo', $id_titulo, PDO::PARAM_INT);
                 $stmt->execute();
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -490,8 +490,8 @@ class TitulosModel {
                 $conn = Conexion::Conexion();
                 $conn->beginTransaction();
 
-                // Validar si el nombre del titulo ya existe
-                $stmt = $conn->prepare("SELECT COUNT(*) FROM titulos WHERE nombre_titulo = :nombre and id_punto = :punto and fk_titulos = :titulo");
+        // Validar si el nombre del título ya existe
+                $stmt = $conn->prepare("SELECT COUNT(*) FROM titulos WHERE nombre_titulo = :nombre AND id_punto = :punto AND fk_titulos = :titulo");
                 $stmt->bindParam(':nombre', $datos['nombreTitulo'], PDO::PARAM_STR);
                 $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
                 $stmt->bindParam(':titulo', $datos['titulo'], PDO::PARAM_INT);
@@ -505,7 +505,7 @@ class TitulosModel {
                 }
 
                 if (!isset($datos['orden_titulos']) || empty($datos['orden_titulos'])) {
-                    // Obtener el último orden existente sin importar el estado
+            // Obtener el último orden existente sin importar el estado
                     $stmt = $conn->prepare("SELECT MAX(orden_titulos) FROM titulos WHERE id_punto = :punto AND fk_titulos = :titulo");
                     $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
                     $stmt->bindParam(':titulo', $datos['titulo'], PDO::PARAM_INT);
@@ -515,146 +515,163 @@ class TitulosModel {
                     $datos['orden_titulos'] = $lastOrder + 1;
                 }
 
-                // Ajustar los valores de orden_titulos
+        // Ajustar los valores de orden_titulos
                 $this->adjustOrderTitulos($conn, $datos['orden_titulos'], 0, $datos['punto']);
 
-
-                // Insertar el punto en la tabla punto
+        // Insertar el punto en la tabla punto
                 $stmt = $conn->prepare("
-                    INSERT INTO titulos (id_punto,fk_titulos, nombre_titulo, tipo_contenido, punto_destino, orden_titulos, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
-                    VALUES(:punto, :titulo,:nombre, :tipocontenido, :puntodestino, :orden, true, :fecha_creacion, :hora_creacion, :fecha_actualizado);");
+                    INSERT INTO titulos (id_punto, fk_titulos, nombre_titulo, tipo_contenido, punto_destino, orden_titulos, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
+                    VALUES(:punto, :titulo, :nombre, :tipocontenido, :puntodestino, :orden, true, :fecha_creacion, :hora_creacion, :fecha_actualizado);");
                 $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
                 $stmt->bindParam(':titulo', $datos['titulo'], PDO::PARAM_INT);
                 $stmt->bindParam(':nombre', $datos['nombreTitulo'], PDO::PARAM_STR);
                 $stmt->bindParam(':tipocontenido', $datos['tipoContenido'], PDO::PARAM_STR);
-                $puntoDestino = isset($datos['puntodestino']) ? $datos['puntodestino'] : null; // Manejar NULL
-                $stmt->bindParam(':puntodestino', $puntoDestino, PDO::PARAM_INT);
-                $stmt->bindParam(':orden', $datos['orden_titulos'], PDO::PARAM_INT);
-                $stmt->bindParam(':fecha_creacion', $datos['fecha_creacion'], PDO::PARAM_STR);
-                $stmt->bindParam(':hora_creacion', $datos['hora_creacion'], PDO::PARAM_STR);
-                $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
-                $stmt->execute();
+        $puntoDestino = isset($datos['puntodestino']) ? $datos['puntodestino'] : null; // Manejar NULL
+        $stmt->bindParam(':puntodestino', $puntoDestino, PDO::PARAM_INT);
+        $stmt->bindParam(':orden', $datos['orden_titulos'], PDO::PARAM_INT);
+        $stmt->bindParam(':fecha_creacion', $datos['fecha_creacion'], PDO::PARAM_STR);
+        $stmt->bindParam(':hora_creacion', $datos['hora_creacion'], PDO::PARAM_STR);
+        $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+        $stmt->execute();
 
-                // Crear la carpeta si no existe
-               $dir = __DIR__ . '/../assets/documents/' . $datos['nombreTitulo'];
-                if (!file_exists($dir)) {
-                    mkdir($dir, 0777, true);
-                }
+        // Obtener la ruta completa de todos los padres
+        $fullPath = $this->getFullPath($conn, $datos['titulo'], $datos['nombreTitulo']);
 
-                $conn->commit();
-                return ['res' => true, 'data' => "Subtema guardado exitosamente"];
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                throw new Exception("Error al insertar el Subtema: " . $e->getMessage());
-            }
+        // Crear la carpeta si no existe
+        if (!file_exists($fullPath)) {
+            mkdir($fullPath, 0777, true);
         }
 
-        public function obtenerTituloPrincipal($idTitulo) {
-            try {
-                $conn = Conexion::Conexion();
-                $stmt = $conn->prepare("
-                    WITH RECURSIVE titulo_ancestros AS (
-                        SELECT id_titulo, fk_titulos, nombre_titulo
-                        FROM titulos
-                        WHERE id_titulo = :idTitulo
-
-                        UNION ALL
-
-                        SELECT t.id_titulo, t.fk_titulos, t.nombre_titulo
-                        FROM titulos t
-                        JOIN titulo_ancestros a ON t.id_titulo = a.fk_titulos
-                        )
-                    SELECT id_titulo, fk_titulos, nombre_titulo
-                    FROM titulo_ancestros
-                    WHERE fk_titulos IS NULL;
-                    ");
-                $stmt->bindParam(':idTitulo', $idTitulo, PDO::PARAM_INT);
-                $stmt->execute();
-                return $stmt->fetch(PDO::FETCH_ASSOC);
-            } catch (PDOException $e) {
-                throw new Exception("Error al obtener el título principal: " . $e->getMessage());
-            }
-        }
-
-        public function UpdateModelSubtema($id, $datos) {
-            try {
-                $conn = Conexion::Conexion();
-                $conn->beginTransaction();
-
-            // Validar si el nombre del título ya existe
-                $stmt = $conn->prepare("
-                    SELECT COUNT(*) 
-                    FROM titulos 
-                    WHERE nombre_titulo = :nombre 
-                    AND id_punto = :punto 
-                    AND fk_titulos = :titulo
-                    AND id_titulo != :id");
-                $stmt->bindParam(':nombre', $datos['nombreTitulo'], PDO::PARAM_STR);
-                $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
-                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                $stmt->bindParam(':titulo', $datos['titulo'], PDO::PARAM_INT);
-
-                $stmt->execute();
-                $count = $stmt->fetchColumn();
-
-                if ($count > 0) {
-                    $conn->rollBack();
-                    return ['res' => false, 'data' => "Error: Ya existe otro Tema con el mismo nombre"];
-                }
-
-            // Obtener el nombre actual del título
-                $stmt = $conn->prepare("SELECT nombre_titulo FROM titulos WHERE id_titulo = :id");
-                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                $stmt->execute();
-                $currentNombre = $stmt->fetchColumn();
-
-            // Proceder con la actualización si no se encuentra duplicado
-                $stmt = $conn->prepare("
-                    UPDATE titulos 
-                    SET 
-                    nombre_titulo = :nombreTitulo, 
-                    tipo_contenido = :tipocontenido, 
-                    fecha_actualizado = :fecha_actualizado 
-                    WHERE id_titulo = :id");
-
-            // Vincular los parámetros correctamente
-                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                $stmt->bindParam(':nombreTitulo', $datos['nombreTitulo'], PDO::PARAM_STR);
-                $stmt->bindParam(':tipocontenido', $datos['tipoContenido'], PDO::PARAM_STR);
-                $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
-                $stmt->execute();
-
-                if ($stmt->rowCount() == 0) {
-                    $conn->rollBack();
-                    return ['res' => false, 'data' => "Error al actualizar el Tema"];
-                }
-                 // Actualizar el nombre de la carpeta si el nombre del título ha cambiado
-                if ($currentNombre !== $datos['nombreTitulo']) {
-                 // Definir la ruta base
-                    $baseDir = __DIR__ . '/../assets/documents/';
-
-                    // Construir las rutas completas
-                    $currentDir = $baseDir . $currentNombre;
-                    $newDir = $baseDir . $datos['nombreTitulo'];
-
-                    if (file_exists($currentDir)) {
-                        rename($currentDir, $newDir);
-                    } else {
-                        if (!file_exists($newDir)) {
-                            mkdir($newDir, 0777, true);
-                        }
-                    }
-                }
-
-
-
-
-                $conn->commit();
-                return ['res' => true, 'data' => "Tema actualizado exitosamente"];
-            } catch (PDOException $e) {
-                $conn->rollBack();
-                return ['res' => false, 'data' => "Error al actualizar el Tema: " . $e->getMessage()];
-            }
-        }
-
+        $conn->commit();
+        return ['res' => true, 'data' => "Subtema guardado exitosamente"];
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        throw new Exception("Error al insertar el Subtema: " . $e->getMessage());
     }
+}
+
+
+
+
+public function obtenerTituloPrincipal($idTitulo) {
+    try {
+        $conn = Conexion::Conexion();
+        $stmt = $conn->prepare("
+            WITH RECURSIVE titulo_ancestros AS (
+                SELECT id_titulo, fk_titulos, nombre_titulo
+                FROM titulos
+                WHERE id_titulo = :idTitulo
+
+                UNION ALL
+
+                SELECT t.id_titulo, t.fk_titulos, t.nombre_titulo
+                FROM titulos t
+                JOIN titulo_ancestros a ON t.id_titulo = a.fk_titulos
+                )
+            SELECT id_titulo, fk_titulos, nombre_titulo
+            FROM titulo_ancestros
+            WHERE fk_titulos IS NULL;
+            ");
+        $stmt->bindParam(':idTitulo', $idTitulo, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        throw new Exception("Error al obtener el título principal: " . $e->getMessage());
+    }
+}
+
+public function UpdateModelSubtema($id, $datos) {
+    try {
+        $conn = Conexion::Conexion();
+        $conn->beginTransaction();
+
+        // Validar si el nombre del título ya existe
+        $stmt = $conn->prepare("
+            SELECT COUNT(*) 
+            FROM titulos 
+            WHERE nombre_titulo = :nombre 
+            AND id_punto = :punto 
+            AND fk_titulos = :titulo
+            AND id_titulo != :id");
+        $stmt->bindParam(':nombre', $datos['nombreTitulo'], PDO::PARAM_STR);
+        $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':titulo', $datos['titulo'], PDO::PARAM_INT);
+
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+
+        if ($count > 0) {
+            $conn->rollBack();
+            return ['res' => false, 'data' => "Error: Ya existe otro Tema con el mismo nombre"];
+        }
+
+        // Obtener el nombre actual del título y la jerarquía completa
+        $stmt = $conn->prepare("SELECT nombre_titulo, fk_titulos FROM titulos WHERE id_titulo = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $currentTitulo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Proceder con la actualización si no se encuentra duplicado
+        $stmt = $conn->prepare("
+            UPDATE titulos 
+            SET 
+            nombre_titulo = :nombreTitulo, 
+            tipo_contenido = :tipocontenido, 
+            fecha_actualizado = :fecha_actualizado 
+            WHERE id_titulo = :id");
+
+        // Vincular los parámetros correctamente
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':nombreTitulo', $datos['nombreTitulo'], PDO::PARAM_STR);
+        $stmt->bindParam(':tipocontenido', $datos['tipoContenido'], PDO::PARAM_STR);
+        $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+        $stmt->execute();
+
+        if ($stmt->rowCount() == 0) {
+            $conn->rollBack();
+            return ['res' => false, 'data' => "Error al actualizar el Tema"];
+        }
+
+        // Actualizar el nombre de la carpeta si el nombre del título ha cambiado
+        if ($currentTitulo['nombre_titulo'] !== $datos['nombreTitulo']) {
+            // Obtener la ruta completa de todos los padres para el nombre actual
+            $currentFullPath = $this->getFullPath($conn, $currentTitulo['fk_titulos'], $currentTitulo['nombre_titulo']);
+
+            // Obtener la ruta completa de todos los padres para el nuevo nombre
+            $newFullPath = $this->getFullPath($conn, $currentTitulo['fk_titulos'], $datos['nombreTitulo']);
+
+            if (file_exists($currentFullPath)) {
+                rename($currentFullPath, $newFullPath);
+            } else {
+                if (!file_exists($newFullPath)) {
+                    mkdir($newFullPath, 0777, true);
+                }
+            }
+        }
+
+        $conn->commit();
+        return ['res' => true, 'data' => "Tema actualizado exitosamente"];
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        return ['res' => false, 'data' => "Error al actualizar el Tema: " . $e->getMessage()];
+    }
+}
+
+// Función recursiva para obtener la ruta completa
+private function getFullPath($conn, $tituloId, $subtitulo) {
+    $path = [];
+    while ($tituloId != null) {
+        $stmt = $conn->prepare("SELECT nombre_titulo, fk_titulos FROM titulos WHERE id_titulo = :id");
+        $stmt->bindParam(':id', $tituloId, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        array_unshift($path, $result['nombre_titulo']);
+        $tituloId = $result['fk_titulos'];
+    }
+    $path = implode('/', $path);
+    return __DIR__ . '/../assets/documents/' . $path . '/' . $subtitulo;
+}
+
+
+}
