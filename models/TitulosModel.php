@@ -173,8 +173,9 @@ class TitulosModel {
 
             // Actualizar el nombre de la carpeta si el nombre del título ha cambiado
                 if ($currentNombre !== $datos['nombreTitulo']) {
-                    $currentDir = 'C:/xampp/htdocs/Transparencia-Backend/assets/documents/' . $currentNombre;
-                    $newDir = 'C:/xampp/htdocs/Transparencia-Backend/assets/documents/' . $datos['nombreTitulo'];
+                   // Construir rutas relativas basadas en la ubicación del script actual
+                    $currentDir = realpath(__DIR__ . '/../assets/documents/' . $currentNombre);
+                    $newDir = realpath(__DIR__ . '/../assets/documents/' . $nombreTitulo);
 
                     if (file_exists($currentDir)) {
                         rename($currentDir, $newDir);
@@ -534,7 +535,7 @@ class TitulosModel {
                 $stmt->execute();
 
                 // Crear la carpeta si no existe
-                $dir = 'C:/xampp/htdocs/Transparencia-Backend/assets/documents/' . $datos['nombreTitulo'];
+                $dir = realpath(__DIR__ . '/../assets/documents/' . $nombreTitulo);
                 if (!file_exists($dir)) {
                     mkdir($dir, 0777, true);
                 }

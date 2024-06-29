@@ -308,7 +308,7 @@ class ContenidoDinamicoModel {
             $fileName = $documento['nombre_interno_documento'];
     
             // Definir la ruta base correcta
-            $baseDir = 'C:/xampp/htdocs/Transparencia-Backend/';
+            $baseDir = __DIR__ . '/../'; // Esto te lleva un nivel atrás del directorio actual
     
             // Asegurarse de que el nombre del archivo no contenga caracteres maliciosos
             $fileName = basename($fileName);
