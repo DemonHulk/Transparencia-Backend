@@ -40,6 +40,10 @@ return [
         'contenidoEstaticoAct/(.+)' => 'ContenidoEstaticoController@ActivateController',
         'oneContenidoEstatico/(.+)' => 'ContenidoEstaticoController@QueryOneController',
         'getDocument/(.+)' => 'ContenidoDinamicoController@getDocument',
+        'historial' => 'HistorialController@QueryAllVistosController',
+        'historialNoVisto' => 'HistorialController@QueryAllNoVistosController',
+        'verHistorial/(.+)' => 'HistorialController@verController',
+        'historialAct/(.+)' => 'HistorialController@ActivateController',
     ],
     'POST' => [
         'area' => 'AreaController@InsertController',
@@ -77,6 +81,7 @@ return [
         'titulos/(.+)' => 'TitulosController@DeleteController',
         'contenidoDinamico/(.+)' => 'ContenidoDinamicoController@DeleteController',
         'contenidoEstatico/(.+)' => 'ContenidoEstaticoController@DeleteController',
+        'historial/(.+)' => 'HistorialController@DeleteController',
     ],
 ];
 
