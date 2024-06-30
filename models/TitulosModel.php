@@ -18,7 +18,7 @@ class TitulosModel {
     public function QueryOneModel($id) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM titulos WHERE id_titulo = :id AND activo = true");
+            $stmt = $conn->prepare("SELECT * FROM titulos WHERE id_titulo = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
