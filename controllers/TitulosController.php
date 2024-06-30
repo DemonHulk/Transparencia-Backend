@@ -41,11 +41,31 @@ class TitulosController {
         }
     }
 
+    public function mostrarSubtitulosByTitulo($idTitulo) {
+        try {
+            $decryptedID = $this->EncryptModel->decryptData($idTitulo);
+            $resultado = $this->TitulosModel->mostrarJerarquiaSubtitulos($decryptedID);
+            $resultadoTitulo = $this->TitulosModel->QueryOneModel($decryptedID);
+            $response = json_encode(['estado' => 200, 'subtitulos' =>  $resultado, 'titulo'=>$resultadoTitulo]);
+            
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
 
     public function QueryOneController($id) {
         try {
-            $resultado = $this->TitulosModel->QueryOneModel($id);
-            echo json_encode(['estado' => 200, 'resultado' => $resultado]);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+
+            $resultado = $this->TitulosModel->QueryOneModel($decryptedID);
+            $response =json_encode(['estado' => 200, 'resultado' => $resultado]);
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
@@ -55,6 +75,21 @@ class TitulosController {
         try {
             $decryptedID = $this->EncryptModel->decryptData($id);
             $resultado = $this->TitulosModel->QueryTitulosPuntoModel($decryptedID);
+            $response = json_encode(['estado' => 200, 'resultado' =>  $resultado]);
+
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+    public function QueryTituloPadre($id) {
+        try {
+            $decryptedID = $this->EncryptModel->decryptData($id);
+            $resultado = $this->TitulosModel->obtenerTituloPrincipal($decryptedID);
             $response = json_encode(['estado' => 200, 'resultado' =>  $resultado]);
 
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
@@ -122,6 +157,41 @@ class TitulosController {
     }
 
 
+    public function InsertSubtemaController($datos) {
+             // Obtener los datos encriptados
+             $encryptedData = $datos['data'];
+            try {
+                // Mandamos los datos encriptados a la funcion para desencriptarlos
+                $decryptedData = $this->EncryptModel->decryptData($encryptedData);
+            } catch (Exception $e) {
+                $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
+                // Mandamos los datos a encriptar
+                $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+                // Retornamos los datos ya encriptados
+                echo $encryptedResponse;
+                return;
+            }
+
+            // Asignar fechas y horas
+            $decryptedData['fecha_creacion'] = date('Y-m-d');
+            $decryptedData['hora_creacion'] = date('H:i:s');
+            $decryptedData['fecha_actualizado'] = date('Y-m-d');
+
+
+            try {
+                // Insertar punto
+                $resultado = $this->TitulosModel->InsertModelSubtema($decryptedData);
+                $response = json_encode(['estado' => 200, 'resultado' =>  $resultado]);
+                 // Mandamos los datos a encriptar
+                 $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+                 // Retornamos los datos ya encriptados
+                 echo $encryptedResponse;
+            } catch (Exception $e) {
+                ExceptionHandler::handle($e);
+            }
+        }
+
+
 
 
     /**
@@ -152,6 +222,38 @@ class TitulosController {
         try {
             // Actualizar titulo
             $resultado = $this->TitulosModel->UpdateModel($decryptedID, $decryptedData);
+            $response = json_encode(['estado' => 200, 'resultado' =>  $resultado]);
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+    public function UpdateControllerSubtema($id, $datos) {
+        // Obtener los datos encriptados
+        $encryptedData = $datos['data'];
+    
+        try {
+            // Mandamos los datos encriptados a la funcion para desencriptarlos
+            $decryptedData = $this->EncryptModel->decryptData($encryptedData);
+            $decryptedID = $this->EncryptModel->decryptData($id);
+        } catch (Exception $e) {
+            $response = json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
+            // Mandamos los datos a encriptar
+            $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+            return;
+        }
+
+        // Asignar fecha actualizada
+        $decryptedData['fecha_actualizado'] = date('Y-m-d');
+
+        try {
+            // Actualizar titulo
+            $resultado = $this->TitulosModel->UpdateModelSubtema($decryptedID, $decryptedData);
             $response = json_encode(['estado' => 200, 'resultado' =>  $resultado]);
             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
             // Retornamos los datos ya encriptados
