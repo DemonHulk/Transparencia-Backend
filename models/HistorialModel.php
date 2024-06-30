@@ -7,13 +7,20 @@ class HistorialModel {
     public function QueryAllVistosModel() {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM historial ORDER BY fecha_creacion");
+            $stmt = $conn->prepare("
+                SELECT h.*, a.nombre_area
+                FROM historial h
+                INNER JOIN area a ON h.id_area = a.id_area
+                ORDER BY h.fecha_creacion DESC, h.hora_creacion DESC
+            ");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             throw new Exception("Error al obtener todos los títulos: " . $e->getMessage());
         }
     }
+    
+    
 
     public function QueryAllNoVistosModel() {
         try {
