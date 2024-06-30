@@ -71,6 +71,20 @@ class TitulosController {
         }
     }
 
+     public function QueryOneControllerSubtema($id) {
+        try {
+            $decryptedID = $this->EncryptModel->decryptData($id);
+
+            $resultado = $this->TitulosModel->obtenerSubtituloInformacion($decryptedID);
+            $response =json_encode(['estado' => 200, 'resultado' => $resultado]);
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+            // Retornamos los datos ya encriptados
+            echo $encryptedResponse;
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
     public function QueryTitulosPuntoController($id) {
         try {
             $decryptedID = $this->EncryptModel->decryptData($id);

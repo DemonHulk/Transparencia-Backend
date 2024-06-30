@@ -33,6 +33,7 @@ return [
         'titulosdepunto/(.+)' => 'TitulosController@QueryTitulosPuntoController',
         'titulosmaspunto/(.+)' => 'TitulosController@QueryTitulosMasPuntoController',
         'subtitulosPorTema/(.+)' => 'TitulosController@mostrarSubtitulosByTitulo',
+        'subtituloData/(.+)' => 'TitulosController@QueryOneControllerSubtema',
         'contenidoDinamico/(.+)' => 'ContenidoDinamicoController@QueryAllController',
         'onecontenidoDinamico/(.+)' => 'ContenidoDinamicoController@QueryOneController',
         'contenidoEstatico/(.+)' => 'ContenidoEstaticoController@QueryAllController',

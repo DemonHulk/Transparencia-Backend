@@ -456,12 +456,28 @@ class TitulosModel {
             }
         }
 
+        public function obtenerSubtituloInformacion($idSubtema){
+            $subtema = $this->QueryOneModel($idSubtema);
+            if($subtema){
+                $contenido = $this->obtenerContenidoSubtitulos($idSubtema, $subtema['tipo_contenido']);
+                if($contenido){
+                    $subtema['contenido'] = $contenido;
+                } else {
+                    $subtema['contenido'] = [];
+                }
+                return $subtema;
+            } else {
+                return null;
+            }
+        }
+
+
         private function construirJerarquiaSubtitulos($titulos) {
             $jerarquia = [];
             $titulosIndex = [];
 
             foreach ($titulos as $titulo) {
-                $titulo['contenido'] = $this->obtenerContenidoSubtitulos($titulo['id_titulo'], $titulo['tipo_contenido']);
+                // $titulo['contenido'] = $this->obtenerContenidoSubtitulos($titulo['id_titulo'], $titulo['tipo_contenido']);
                 $titulosIndex[$titulo['id_titulo']] = $titulo;
             }
 
