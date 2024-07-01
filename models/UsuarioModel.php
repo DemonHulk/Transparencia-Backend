@@ -7,7 +7,7 @@ class UsuarioModel {
     public function QueryAllUserArea() {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT u.id_usuario, u.correo, u.activo, a.nombre_area FROM usuario u JOIN area a ON u.id_area = a.id_area ORDER BY  u.id_usuario");
+            $stmt = $conn->prepare("SELECT u.id_usuario, u.correo, u.activo, a.nombre_area, a.activo as area_estado FROM usuario u JOIN area a ON u.id_area = a.id_area ORDER BY  u.id_usuario");
             $stmt->execute();
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
@@ -18,7 +18,7 @@ class UsuarioModel {
     public function QueryOneModel($id) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT u.*, a.id_area, a.nombre_area FROM usuario u JOIN area a ON u.id_area = a.id_area WHERE id_usuario = :id");
+            $stmt = $conn->prepare("SELECT u.*, a.id_area, a.nombre_area,a.activo as area_estado FROM usuario u JOIN area a ON u.id_area = a.id_area WHERE id_usuario = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
