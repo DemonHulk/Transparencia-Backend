@@ -4,7 +4,7 @@ class Conexion {
 
     static public function InfoDatabase() {
         return array(
-            "database" => "transparencia5",  
+            "database" => "transparencia",  
             "user" => "transparencia_user_uh345",
             "pass" => "jkjrytuf*53sd",
             "host" => "localhost",

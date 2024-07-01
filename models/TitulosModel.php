@@ -286,9 +286,10 @@ class TitulosModel {
             try {
                 $conn = Conexion::Conexion();
                 $stmt = $conn->prepare("
-                    SELECT ce.*, u.correo, a.nombre_area  FROM contenido_dinamico ce  
+                    SELECT ce.*, u.correo, a.nombre_area, t.activo as estado_trimestre  FROM contenido_dinamico ce  
                     LEFT JOIN usuario u ON u.id_usuario = ce.id_usuario 
                     LEFT JOIN area a ON a.id_area  = u.id_area 
+                    LEFT JOIN trimestre t ON t.id_trimestre = ce.id_trimestre
                     WHERE ce.id_titulo = :id_titulo and ce.activo = true ORDER BY orden");
                 $stmt->bindParam(':id_titulo', $id_titulo, PDO::PARAM_INT);
                 $stmt->execute();
@@ -419,11 +420,12 @@ class TitulosModel {
             try {
                 $conn = Conexion::Conexion();
                 $stmt = $conn->prepare("
-                    SELECT ce.*, u.correo, a.nombre_area, t.trimestre  FROM contenido_dinamico ce  
+                    SELECT ce.*, u.correo, a.nombre_area, t.activo as estado_trimestre, CONCAT(t.trimestre,' ', e.ejercicio) as trimestre  FROM contenido_dinamico ce  
                     LEFT JOIN usuario u ON u.id_usuario = ce.id_usuario 
-                    LEFT JOIN area a ON a.id_area  = u.id_area
-                    LEFT JOIN trimestre t  ON t.id_trimestre  = ce.id_trimestre 
-                    WHERE ce.id_titulo = :id_titulo ORDER BY orden");
+                    LEFT JOIN area a ON a.id_area  = u.id_area 
+                    LEFT JOIN trimestre t ON t.id_trimestre = ce.id_trimestre
+                    LEFT JOIN ejercicio e ON e.id_ejercicio = t.id_ejercicio
+                    WHERE ce.id_titulo = :id_titulo  ORDER BY orden");
                 $stmt->bindParam(':id_titulo', $id_titulo, PDO::PARAM_INT);
                 $stmt->execute();
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);

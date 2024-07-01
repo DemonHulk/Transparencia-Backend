@@ -13,7 +13,8 @@ class ContenidoDinamicoModel {
                                     contD.descripcion,
                                     contD.activo, 
                                     contD.fecha_actualizado,
-                                     CONCAT(tr.trimestre, ' ', ej.ejercicio) AS trimestre
+                                     CONCAT(tr.trimestre, ' ', ej.ejercicio) AS trimestre,
+                                     tr.activo as trimestre_estado
                                 FROM 
                                     contenido_dinamico contD
                                 INNER JOIN 
@@ -35,7 +36,9 @@ class ContenidoDinamicoModel {
     public function QueryOneModel($id) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM contenido_dinamico WHERE id_contenido_dinamico = :id AND activo = true");
+            $stmt = $conn->prepare("SELECT cd.*, t.activo as trimestre_estado FROM contenido_dinamico cd 
+                LEFT JOIN trimestre t ON t.id_trimestre = cd.id_trimestre
+                WHERE cd.id_contenido_dinamico = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];

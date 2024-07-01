@@ -7,7 +7,7 @@ class EjercicioModel {
     public function QueryAllModel() {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM ejercicio ORDER BY id_ejercicio");
+            $stmt = $conn->prepare("SELECT * FROM ejercicio ORDER BY ejercicio");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {

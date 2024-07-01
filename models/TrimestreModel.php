@@ -7,7 +7,7 @@ class TrimestreModel {
     public function QueryAllModel() {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT t.id_trimestre, t.trimestre, t.activo, t.fecha_creacion, e.ejercicio FROM trimestre t JOIN ejercicio e ON t.id_ejercicio = e.id_ejercicio ORDER BY  t.trimestre");
+            $stmt = $conn->prepare("SELECT t.id_trimestre, t.trimestre, t.activo, t.fecha_creacion, e.ejercicio, e.activo as ejercicio_estado FROM trimestre t JOIN ejercicio e ON t.id_ejercicio = e.id_ejercicio ORDER BY  e.ejercicio,t.trimestre");
             $stmt->execute();
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
         } catch (PDOException $e) {
@@ -18,7 +18,9 @@ class TrimestreModel {
     public function QueryOneModel($id) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT * FROM trimestre WHERE id_trimestre = :id AND activo = true");
+            $stmt = $conn->prepare("SELECT t.*,e.activo as ejercicio_estado, e.ejercicio  FROM trimestre t 
+                JOIN ejercicio e ON t.id_ejercicio = e.id_ejercicio
+                WHERE t.id_trimestre = :id ");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return ['res' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
