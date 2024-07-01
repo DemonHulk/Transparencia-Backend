@@ -54,7 +54,10 @@ class ContenidoEstaticoModel {
 			file_put_contents($rutaDocumento, $contenidoArchivo);
 
 
-            $stmt = $conn->prepare("INSERT INTO contenido (id_usuario, id_apartado_punto, nombre_externo_documento, nombre_interno_documento, ruta_documento, id_trimestre, contenido, orden_contenido, activo, fecha_creacion, hora_creacion, fecha_actualizado) VALUES (:id_usuario, :id_apartado_punto, :nombre_externo_documento, :nombre_interno_documento, :ruta_documento, :id_trimestre, :contenido, :orden_contenido, :activo, :fecha_creacion, :hora_creacion, :fecha_actualizado)");
+            $stmt = $conn->prepare("INSERT INTO contenido (id_usuario, id_apartado_punto, nombre_externo_documento, nombre_interno_documento, ruta_documento, 
+                                    id_trimestre, contenido, orden_contenido, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
+                                    VALUES (:id_usuario, :id_apartado_punto, :nombre_externo_documento, :nombre_interno_documento, :ruta_documento, :id_trimestre, :contenido, 
+                                    :orden_contenido, :activo, :fecha_creacion, :hora_creacion, :fecha_actualizado )");
             $stmt->bindParam(':id_usuario', $datos['id_usuario'], PDO::PARAM_INT);
             $stmt->bindParam(':id_apartado_punto', $datos['id_apartado_punto'], PDO::PARAM_INT);
             $stmt->bindParam(':nombre_externo_documento', $datos['nombre_externo_documento'], PDO::PARAM_STR);
@@ -67,13 +70,14 @@ class ContenidoEstaticoModel {
             $stmt->bindParam(':fecha_creacion', $datos['fecha_creacion'], PDO::PARAM_STR);
             $stmt->bindParam(':hora_creacion', $datos['hora_creacion'], PDO::PARAM_STR);
             $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+            $stmt->bindParam(':hora_actualizado', $datos['hora_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
 
             $conn->commit();
             return "Documento guardado exitosamente";
         } catch (PDOException $e) {
             $conn->rollBack();
-            throw new Exception("Error al insertar el documento: " . $e->getMessage());
+            throw new Exception("Error al insertar el documento");
         }
     }
 
@@ -107,7 +111,7 @@ class ContenidoEstaticoModel {
             return ['res' => true, 'data' => "Contenido guardado exitosamente"];
         } catch (PDOException $e) {
             $conn->rollBack();
-            return ['res' => false, 'data' => "Error al insertar el contenido: " . $e->getMessage()];
+            return ['res' => false, 'data' => "Error al insertar el contenido"];
         }
     }
 
@@ -119,36 +123,37 @@ class ContenidoEstaticoModel {
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':id_usuario', $datos['id_usuario'], PDO::PARAM_INT);
             $stmt->bindParam(':contenido', $datos['htmlContent'], PDO::PARAM_STR);
-            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR); 
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
                 return ['res' => false, 'data' => "No se encontro el contenido"];
             }
             return ['res' => true, 'data' => "Contenido Actualizado exitosamente"];
         } catch (PDOException $e) {
-            return ['res' => false, 'data' => "Error al insertar el contenido: " . $e->getMessage()];
+            return ['res' => false, 'data' => "Error al actualizar el contenido"];
         }
     }
 
-    public function DeleteModel($id) {
+    public function DeleteModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("UPDATE contenido_estatico SET activo = false WHERE id_contenido_estatico = :id");
+            $stmt = $conn->prepare("UPDATE contenido_estatico SET activo = false,fecha_actualizado = :fecha_actualizado  WHERE id_contenido_estatico = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
             if ($stmt->rowCount() == 0) {
                 return ['res' => false, 'data' => "No se encontró el contenido, intente mas tarde"];
             }
             return ['res' => true, 'data' => "Contenido Desactivado Correctamente"];
         } catch (PDOException $e) {
-            return ['res' => false, 'data' => "Error al desactivar el contenido: " . $e->getMessage()];
+            return ['res' => false, 'data' => "Error al desactivar el contenido"];
         }
     }
 
     public function ActivateModel($id, $datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("UPDATE contenido_estatico SET activo = true, fecha_actualizado = :fecha_actualizado WHERE id_contenido_estatico = :id");
+            $stmt = $conn->prepare("UPDATE contenido_estatico SET activo = true, fecha_actualizado = :fecha_actualizado  WHERE id_contenido_estatico = :id");
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':fecha_actualizado', $datos['fecha_actualizado'], PDO::PARAM_STR);
             $stmt->execute();
@@ -157,7 +162,7 @@ class ContenidoEstaticoModel {
             }
             return ['res' => true, 'data' => "Contenido Activado Correctamente"];
         } catch (PDOException $e) {
-            return ['res' => false, 'data' => "Error al activar el contenido: " . $e->getMessage()];
+            return ['res' => false, 'data' => "Error al activar el contenido"];
         }
     }
 }

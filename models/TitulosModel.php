@@ -59,9 +59,10 @@ class TitulosModel {
 
                 // Insertar el punto en la tabla punto
             $stmt = $conn->prepare("
-                INSERT INTO titulos (id_punto, nombre_titulo, tipo_contenido, link, punto_destino, orden_titulos, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
-                VALUES(:punto, :nombre, :tipocontenido, :eslink, :puntodestino, :orden, true, :fecha_creacion, :hora_creacion, :fecha_actualizado);");
+                INSERT INTO titulos (id_punto, id_usuario, nombre_titulo, tipo_contenido, link, punto_destino, orden_titulos, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
+                VALUES(:punto, :id_usuario, :nombre, :tipocontenido, :eslink, :puntodestino, :orden, true, :fecha_creacion, :hora_creacion, :fecha_actualizado);");
             $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
+            $stmt->bindParam(':id_usuario', $datos['id_usuario'], PDO::PARAM_INT);
             $stmt->bindParam(':nombre', $datos['nombreTitulo'], PDO::PARAM_STR);
             $stmt->bindParam(':tipocontenido', $datos['tipoContenido'], PDO::PARAM_STR);
                 $esLinkBool = ($datos['esLink'] == '' ? false : true); // Convertir a booleano
@@ -536,10 +537,11 @@ class TitulosModel {
 
         // Insertar el punto en la tabla punto
                 $stmt = $conn->prepare("
-                    INSERT INTO titulos (id_punto, fk_titulos, nombre_titulo, tipo_contenido, punto_destino, orden_titulos, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
-                    VALUES(:punto, :titulo, :nombre, :tipocontenido, :puntodestino, :orden, true, :fecha_creacion, :hora_creacion, :fecha_actualizado);");
+                    INSERT INTO titulos (id_punto, id_usuario, fk_titulos, nombre_titulo, tipo_contenido, punto_destino, orden_titulos, activo, fecha_creacion, hora_creacion, fecha_actualizado) 
+                    VALUES(:punto, :id_usuario, :titulo, :nombre, :tipocontenido, :puntodestino, :orden, true, :fecha_creacion, :hora_creacion, :fecha_actualizado);");
                 $stmt->bindParam(':punto', $datos['punto'], PDO::PARAM_INT);
                 $stmt->bindParam(':titulo', $datos['titulo'], PDO::PARAM_INT);
+                $stmt->bindParam(':id_usuario', $datos['id_usuario'], PDO::PARAM_INT);
                 $stmt->bindParam(':nombre', $datos['nombreTitulo'], PDO::PARAM_STR);
                 $stmt->bindParam(':tipocontenido', $datos['tipoContenido'], PDO::PARAM_STR);
         $puntoDestino = isset($datos['puntodestino']) ? $datos['puntodestino'] : null; // Manejar NULL

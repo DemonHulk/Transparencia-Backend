@@ -21,6 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     header("Access-Control-Allow-Headers: Content-Type, Authorization");
 }
 
+// Definimos la zona horaria
+date_default_timezone_set("America/Mazatlan");
 require_once "database/conexion.php"; 
 require_once 'routers/FrontController.php';
 

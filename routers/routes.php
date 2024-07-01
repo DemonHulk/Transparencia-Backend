@@ -40,6 +40,10 @@ return [
         'contenidoEstaticoAct/(.+)' => 'ContenidoEstaticoController@ActivateController',
         'oneContenidoEstatico/(.+)' => 'ContenidoEstaticoController@QueryOneController',
         'getDocument/(.+)' => 'ContenidoDinamicoController@getDocument',
+        'historial' => 'HistorialController@QueryAllVistosController',
+        'historialNoVisto' => 'HistorialController@QueryAllNoVistosController',
+        'verHistorial/(.+)' => 'HistorialController@verController',
+        'historialAct/(.+)' => 'HistorialController@ActivateController',
     ],
     'POST' => [
         'area' => 'AreaController@InsertController',
@@ -56,7 +60,6 @@ return [
         'UpdatecontentDinamico/(.+)' => 'ContenidoDinamicoController@UpdateDocumentoController',
         'contenidoEstatico' => 'ContenidoEstaticoController@InsertContenidoEstaticoController',
         'orderPuntos' => 'PuntoController@UpdateOrderPuntos',
-        'recuperarPassword' => 'UsuarioController@recoverPassword',
         'buscarPDF' => 'ContenidoDinamicoController@SearchFile',
     ],
     'PUT' => [
@@ -78,6 +81,7 @@ return [
         'titulos/(.+)' => 'TitulosController@DeleteController',
         'contenidoDinamico/(.+)' => 'ContenidoDinamicoController@DeleteController',
         'contenidoEstatico/(.+)' => 'ContenidoEstaticoController@DeleteController',
+        'historial/(.+)' => 'HistorialController@DeleteController',
     ],
 ];
 
