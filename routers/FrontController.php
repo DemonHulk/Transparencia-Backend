@@ -1,10 +1,14 @@
 <?php
+require_once 'models/EncryptModel.php';
 
 class FrontController {
     private $rutas;
+    private $EncryptModel;
 
     public function __construct() {
         $this->rutas = require 'routes.php';
+        $this->EncryptModel = new EncryptModel();
+
     }
 
 
@@ -28,10 +32,22 @@ class FrontController {
         $uri = $this->obtenerUri();
 
         if (isset($this->rutas[$metodo])) {
-            foreach ($this->rutas[$metodo] as $ruta => $controladorAccion) {
+            foreach ($this->rutas[$metodo] as $ruta => $configuracion) {
                 if (preg_match("#^$ruta$#", $uri, $matches)) {
-                    array_shift($matches); // Eliminar la primera coincidencia que es la cadena completa
-                    return $this->despachar($controladorAccion, $matches);
+                    array_shift($matches);
+                    // Verificar si la ruta requiere sesión
+                    if (isset($configuracion['require_session']) && $configuracion['require_session']) {
+                        // Verificar sesión antes de despachar la acción
+                        if (!$this->verificarSesion()) {
+                            // Si la sesión no es válida, enviar respuesta de no autorizado
+                            http_response_code(200);
+                            echo $encryptedResponse = $this->EncryptModel->encryptJSON(json_encode(['estado' => false, 'resultado'=> ['data' => 'No autorizado']]));
+                          
+                            exit;
+                        }
+                    }   
+                    // Despachar la acción del controlador
+                    return $this->despachar($configuracion, $matches);
                 }
             }
         }
@@ -39,12 +55,21 @@ class FrontController {
         $this->enviarRespuestaNoEncontrada();
     }
 
+    private function verificarSesion() {
+        // Aquí implementa tu lógica para verificar si la sesión es válida
+        // Por ejemplo, verificar el token de sesión almacenado en una cookie o en el cuerpo de la solicitud encriptada
+        // Devuelve true si la sesión es válida, o false si no lo es
+        return false; // Ejemplo simple, ajusta según tus necesidades
+    }
 
-    private function despachar($controladorAccion, $parametros) {
-        list($nombreControlador, $accion) = explode('@', $controladorAccion);
+
+    private function despachar($configuracion, $parametros) {
+        $nombreControlador = $configuracion['controller'];
+        $accion = $configuracion['action'];
+        
         require_once "controllers/$nombreControlador.php";
         $controlador = new $nombreControlador();
-        
+
         // Obtener el método de la solicitud
         $metodo = $_SERVER['REQUEST_METHOD'];
 
@@ -65,6 +90,7 @@ class FrontController {
             call_user_func([$controlador, $accion], $datos);
         }
     }
+
 
 
     private function enviarRespuestaNoEncontrada() {
