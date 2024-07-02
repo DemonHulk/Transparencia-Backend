@@ -163,7 +163,7 @@ class UsuarioModel {
     public function verificarUserModel($datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT u.id_usuario, u.contrasenia, u.activo, a.id_area, a.nombre_area FROM usuario u JOIN area a ON u.id_area = a.id_area WHERE u.correo = :correo");
+            $stmt = $conn->prepare("SELECT u.id_usuario, u.contrasenia, u.activo, a.id_area, a.nombre_area, a.activo as area_estado FROM usuario u JOIN area a ON u.id_area = a.id_area WHERE u.correo = :correo");
             $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
             $stmt->execute();
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -172,7 +172,11 @@ class UsuarioModel {
             if ($usuario) {
                 
                 if (!$usuario['activo']) {
-                    return ['res' => false, 'message' => 'Cuenta suspendida'];
+                    return ['res' => false, 'message' => 'Cuenta suspendida, comunicate con soporte'];
+                }
+
+                if (!$usuario['area_estado']) {
+                    return ['res' => false, 'message' => 'Área suspendida, comunicate con soporte'];
                 }
                 
                 if (password_verify($datos['contrasenia'], $usuario['contrasenia'])) {
