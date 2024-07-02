@@ -270,4 +270,30 @@ class UsuarioController {
             ExceptionHandler::handle($e);
         }
     }
+
+    public function VerifySesion($datos) {
+
+        // Obtener los datos encriptados
+        $encryptedData = $datos['data'];
+
+        try {
+            // Mandamos los datos encriptados a la funcion para desencriptarlos
+            $decryptedData = $this->EncryptModel->decryptData($encryptedData);
+        } catch (Exception $e) {
+            echo json_encode(['estado' => 200, 'resultado' => ['res' => false, 'data' => $e->getMessage()]]);
+            return;
+        }
+    
+        try {
+            // Actualizar usuario
+            $resultado = $this->usuarioModel->QueryAccesoUsuario($decryptedData);
+            $response = json_encode(['estado' => 200, 'resultado' =>$resultado]);
+             // Mandamos los datos a encriptar
+             $encryptedResponse = $this->EncryptModel->encryptJSON($response);
+             // Retornamos los datos ya encriptados
+             echo $encryptedResponse;
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
 }

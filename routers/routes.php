@@ -61,6 +61,7 @@ return [
         'contenidoEstatico' => 'ContenidoEstaticoController@InsertContenidoEstaticoController',
         'orderPuntos' => 'PuntoController@UpdateOrderPuntos',
         'buscarPDF' => 'ContenidoDinamicoController@SearchFile',
+        'VerifySesion' => 'UsuarioController@VerifySesion',
     ],
     'PUT' => [
         'area/(.+)' => 'AreaController@UpdateController',

@@ -208,4 +208,31 @@ class UsuarioModel {
             return ['res' => false, 'data' => "Error los puntos de acceso con el $id: " . $e->getMessage()];
         }
     }
+
+
+    public function QueryAccesoUsuario($data) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT u.* FROM usuario u 
+                LEFT JOIN area a ON a.id_area  = u.id_usuario 
+                WHERE u.id_usuario = :idUsuario AND a.id_area = :idArea AND u.activo = TRUE AND a.activo = TRUE");
+            $stmt->bindParam(':idUsuario', $data['usuario'], PDO::PARAM_INT);
+            $stmt->bindParam(':idArea', $data['area'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Contar el número de registros
+            $rowCount = $stmt->rowCount();
+
+            // Verificar si el número de registros es 1
+            if ($rowCount === 1) {
+                return ['res' => true, 'data' => true];
+            } else {
+                return ['res' => true, 'data' => false];
+            }
+        } catch (PDOException $e) {
+            return ['res' => false, 'data' => "Error " . $e->getMessage()];
+        }
+    }
+
+
 }
