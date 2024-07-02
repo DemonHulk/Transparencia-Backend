@@ -6,7 +6,7 @@ return [
         'areaAct/(.+)' => ['controller' => 'AreaController', 'action' => 'ActivateController', 'require_session' => true],
         'areaAct' => ['controller' => 'AreaController', 'action' => 'QueryActController', 'require_session' => true],
         'puntoAct/(.+)' => ['controller' => 'PuntoController', 'action' => 'ActivateController', 'require_session' => true],
-        'usuario' => ['controller' => 'UsuarioController', 'action' => 'QueryAllController'],
+        'usuario' => ['controller' => 'UsuarioController', 'action' => 'QueryAllController', 'require_session' => true],
         'usuario/(.+)' => ['controller' => 'UsuarioController', 'action' => 'QueryOneController', 'require_session' => true],
         'punto' => ['controller' => 'PuntoController', 'action' => 'QueryAllController'],
         'punto/(.+)' => ['controller' => 'PuntoController', 'action' => 'QueryOneController', 'require_session' => true],
