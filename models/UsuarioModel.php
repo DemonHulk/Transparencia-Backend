@@ -163,7 +163,7 @@ class UsuarioModel {
     public function verificarUserModel($datos) {
         try {
             $conn = Conexion::Conexion();
-            $stmt = $conn->prepare("SELECT u.id_usuario, u.contrasenia, u.activo, a.id_area, a.nombre_area FROM usuario u JOIN area a ON u.id_area = a.id_area WHERE u.correo = :correo");
+            $stmt = $conn->prepare("SELECT u.id_usuario, u.contrasenia, u.activo, a.id_area, a.nombre_area, a.activo as area_estado FROM usuario u JOIN area a ON u.id_area = a.id_area WHERE u.correo = :correo");
             $stmt->bindParam(':correo', $datos['correo'], PDO::PARAM_STR);
             $stmt->execute();
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -172,7 +172,11 @@ class UsuarioModel {
             if ($usuario) {
                 
                 if (!$usuario['activo']) {
-                    return ['res' => false, 'message' => 'Cuenta suspendida'];
+                    return ['res' => false, 'message' => 'Cuenta suspendida, comunicate con soporte'];
+                }
+
+                if (!$usuario['area_estado']) {
+                    return ['res' => false, 'message' => 'Área suspendida, comunicate con soporte'];
                 }
                 
                 if (password_verify($datos['contrasenia'], $usuario['contrasenia'])) {
@@ -208,4 +212,55 @@ class UsuarioModel {
             return ['res' => false, 'data' => "Error los puntos de acceso con el $id: " . $e->getMessage()];
         }
     }
+
+
+    public function QueryAccesoUsuario($data) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT u.* FROM usuario u 
+                LEFT JOIN area a ON a.id_area  = u.id_usuario 
+                WHERE u.id_usuario = :idUsuario AND a.id_area = :idArea AND u.activo = TRUE AND a.activo = TRUE");
+            $stmt->bindParam(':idUsuario', $data['usuario'], PDO::PARAM_INT);
+            $stmt->bindParam(':idArea', $data['area'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Contar el número de registros
+            $rowCount = $stmt->rowCount();
+
+            // Verificar si el número de registros es 1
+            if ($rowCount === 1) {
+                return ['res' => true, 'data' => true];
+            } else {
+                return ['res' => false, 'data' => false];
+            }
+        } catch (PDOException $e) {
+            return ['res' => false, 'data' => "Error " . $e->getMessage()];
+        }
+    }
+
+    public function QueryAccesoUsuarioInterno($data) {
+        try {
+            $conn = Conexion::Conexion();
+            $stmt = $conn->prepare("SELECT u.* FROM usuario u 
+                LEFT JOIN area a ON a.id_area  = u.id_usuario 
+                WHERE u.id_usuario = :idUsuario AND a.id_area = :idArea AND u.activo = TRUE AND a.activo = TRUE");
+            $stmt->bindParam(':idUsuario', $data['id_usuario'], PDO::PARAM_INT);
+            $stmt->bindParam(':idArea', $data['id_area'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Contar el número de registros
+            $rowCount = $stmt->rowCount();
+
+            // Verificar si el número de registros es 1
+            if ($rowCount === 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+
 }
