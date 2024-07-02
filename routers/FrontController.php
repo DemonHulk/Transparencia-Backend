@@ -1,13 +1,16 @@
 <?php
 require_once 'models/EncryptModel.php';
+require_once 'models/UsuarioModel.php';
 
 class FrontController {
     private $rutas;
     private $EncryptModel;
+    private $usuarioModel;
 
     public function __construct() {
         $this->rutas = require 'routes.php';
         $this->EncryptModel = new EncryptModel();
+        $this->usuarioModel = new UsuarioModel();
 
     }
 
@@ -55,12 +58,32 @@ class FrontController {
         $this->enviarRespuestaNoEncontrada();
     }
 
-    private function verificarSesion() {
-        // Aquí implementa tu lógica para verificar si la sesión es válida
-        // Por ejemplo, verificar el token de sesión almacenado en una cookie o en el cuerpo de la solicitud encriptada
-        // Devuelve true si la sesión es válida, o false si no lo es
-        return false; // Ejemplo simple, ajusta según tus necesidades
-    }
+        private function verificarSesion() {
+            // Obtener el token de autorización del header HTTP
+            $headers = apache_request_headers();
+            if (isset($headers['Authorization'])) {
+                $authorizationHeader = $headers['Authorization'];
+                 try {
+                    // Mandamos los datos encriptados a la funcion para desencriptarlos
+                    $decryptedData = $this->EncryptModel->decryptData($authorizationHeader);
+                } catch (Exception $e) {
+                    echo $e;
+                    return false;
+                }
+
+                if($decryptedData['id_usuario'] && $decryptedData['id_area']){
+                $resultado = $this->usuarioModel->QueryAccesoUsuarioInterno($decryptedData);
+                return $resultado;
+                
+                }else{
+                    return false;     
+                }
+
+                return true; 
+            }
+            
+            return false; 
+        }
 
 
     private function despachar($configuracion, $parametros) {
